@@ -1,0 +1,5 @@
+packages:
+  - 'examples/*'
+
+minimumReleaseAgeExclude:
+  - '@deepseek-ai/dsh-client-ui-primitives@0.1.2-alpha.5'

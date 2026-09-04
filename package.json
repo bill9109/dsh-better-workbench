@@ -1,0 +1,95 @@
+{
+  "name": "dsh-workbench",
+  "version": "0.2.0",
+  "description": "Extensible DSH Web workbench host with durable instances, templates, and page, panel, and capsule presentations",
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh-plugin",
+    "dsh-bundle",
+    "dsh-workbench",
+    "web-ui",
+    "workbench",
+    "plugin-host"
+  ],
+  "type": "module",
+  "main": "./lib/index.js",
+  "types": "./lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./invariant": {
+      "types": "./lib/types/invariant.d.ts",
+      "default": "./lib/invariant.js"
+    },
+    "./src/*": "./src/*",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/*.js",
+    "lib/types",
+    "src",
+    "docs",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md",
+    "README.i18n.yaml",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "license": "BSD-3-Clause",
+  "engines": {
+    "node": "^20.0.0 || >=22.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bill9109/dsh-workbench.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bill9109/dsh-workbench/issues"
+  },
+  "homepage": "https://github.com/bill9109/dsh-workbench#readme",
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-client-ui-primitives": "^0.1.2-alpha.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-client-ui-primitives": "0.1.2-alpha.5",
+    "@types/node": "^24.0.0",
+    "@types/react": "~18.3.1",
+    "@types/react-dom": "~18.3.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tsdown": "^0.22.2",
+    "typescript": "^5.6.0"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:example": "pnpm --dir examples/design-board run build",
+    "check": "tsc -p tsconfig.json --noEmit --pretty false",
+    "check:example": "pnpm --dir examples/design-board run check",
+    "test": "node tests/service.mjs",
+    "verify:i18n": "node scripts/verify-i18n.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-primitives"
+      ]
+    }
+  }
+}

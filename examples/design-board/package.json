@@ -1,0 +1,85 @@
+{
+  "name": "dsh-workbench-design-board",
+  "version": "0.2.0",
+  "description": "Reference DSH Workbench application for inspecting real DSH Web design tokens, primitives, and product layouts",
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh-plugin",
+    "dsh-workbench",
+    "design-system"
+  ],
+  "type": "module",
+  "main": "./lib/index.js",
+  "types": "./lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./invariant": {
+      "types": "./lib/types/invariant.d.ts",
+      "default": "./lib/invariant.js"
+    },
+    "./src/*": "./src/*",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/*.js",
+    "lib/types",
+    "src",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md",
+    "LICENSE"
+  ],
+  "license": "BSD-3-Clause",
+  "engines": {
+    "node": "^20.0.0 || >=22.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bill9109/dsh-workbench.git",
+    "directory": "examples/design-board"
+  },
+  "bugs": {
+    "url": "https://github.com/bill9109/dsh-workbench/issues"
+  },
+  "homepage": "https://github.com/bill9109/dsh-workbench/tree/main/examples/design-board#readme",
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-client-ui-primitives": "^0.1.2-alpha.5",
+    "dsh-workbench": "^0.2.0",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-client-ui-primitives": "0.1.2-alpha.5",
+    "@types/node": "^24.0.0",
+    "@types/react": "~18.3.1",
+    "dsh-workbench": "file:../..",
+    "react": "18.2.0",
+    "typescript": "^5.6.0"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "tsc -p tsconfig.json --noEmit --pretty false"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "dsh-workbench",
+        "@deepseek-ai/dsh-client-ui-primitives"
+      ]
+    }
+  }
+}

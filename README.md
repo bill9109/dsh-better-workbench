@@ -1,0 +1,191 @@
+# dsh-workbench — Extensible workspaces for DeepSeek Harness
+
+[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-5B4CF0?style=flat-square)](https://github.com/bill9109/dsh-workbench/releases)
+[![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-%5E20%20%7C%20%3E%3D22-339933?style=flat-square&logo=nodedotjs&logoColor=white)](package.json)
+[![DSH profile](https://img.shields.io/badge/DSH-Web-5B4CF0?style=flat-square)](cordis.patch.yml)
+
+**Install:** `dsh plugin --profile web add github:bill9109/dsh-workbench`
+
+**A DeepSeek Harness Web UI plugin that provides a permanent Workbench home, durable application instances, templates, and reusable `page`, `panel`, and `capsule` presentation hosts for third-party DSH applications.**
+
+[English](README.md) | [中文](README.zh.md)
+
+## Why this exists
+
+DSH plugins can contribute tools, services, and small UI entries, but a complete browser application needs more than a component mount. It needs a stable place in navigation, persistent instances, a route that survives reloads, explicit coexistence rules with Conversation, and recovery when an application is temporarily unavailable.
+
+`dsh-workbench` owns that shared infrastructure. Applications register a definition with the Workbench Client Service; Workbench renders their instances, stores only stable JSON state, and removes each contribution with its Cordis fiber. Applications remain responsible for their own UI, resources, and asynchronous teardown.
+
+The built-in home is always available, even when no Workbench application is installed.
+
+## Features
+
+- Permanent Workbench home integrated with the DSH sidebar
+- Responsive card grid for installed Workbench instances
+- Explicit `conversation`, `workbench-home`, and `workbench-instance` routes
+- Application registry with stable `appId` values
+- Durable instance creation, ordering, renaming, configuration, and deletion
+- Instance templates and optional Agent Creator templates
+- `page` presentation for an exclusive center application
+- Right or bottom `panel` presentations with `push` or `overlay` behavior
+- Conversation-adjacent floating `capsule` presentations
+- Unavailable-instance recovery when an application is removed and later restored
+- Versioned JSON persistence with v1-to-v2 migration
+- Cordis fiber disposal and reactivation for applications, templates, and creators
+- Application-authoring Skill and bilingual protocol reference under `docs/`
+- A complete DSH design-system reference application under `examples/design-board/`
+
+## Usage
+
+Open **首页** in the Workbench section of the expanded DSH sidebar. The home shows every stored instance as a card.
+
+Use **创建工作台** to reveal templates and installed applications. Selecting a template or application creates an instance and opens its default presentation. Existing cards reopen their instance directly.
+
+The sidebar also provides Workbench search, view options, creation, renaming, deletion, and ordering. The compact sidebar does not insert a separate Workbench-home icon.
+
+## Install
+
+This repository's root package is a DSH **bundle** (`package.json` declares `dsh.bundle` and `dsh.client`). Install it into the `web` profile with the standard plugin command. No DSH source changes or `config.yaml` entries are required:
+
+```sh
+dsh plugin --profile web add github:bill9109/dsh-workbench
+# or from a local checkout:
+dsh plugin --profile web add /path/to/dsh-workbench
+```
+
+The repository commits its build output in `lib/`, so a GitHub installation does not require a local build.
+
+After installation, restart DSH Web and hard-refresh the browser. The package must enter the browser boot graph before its Client plugin can load.
+
+### Install the design-board example
+
+The reference application is intentionally not enabled by the base bundle. Clone the repository, install the base first, then install the example package:
+
+```sh
+git clone https://github.com/bill9109/dsh-workbench.git
+cd dsh-workbench
+dsh plugin --profile web add "$PWD"
+dsh plugin --profile web add "$PWD/examples/design-board"
+```
+
+Restart DSH Web and hard-refresh the browser. **DSH UI 样式看板** then appears as a default Workbench instance and as a creation template.
+
+### Upgrade
+
+```sh
+dsh plugin --profile web update github:bill9109/dsh-workbench
+```
+
+For a local-path installation, pull the replacement checkout and run `add` again for the root and any installed example packages. Restart DSH Web and hard-refresh afterward.
+
+### Uninstall
+
+Remove applications before removing their Workbench host:
+
+```sh
+dsh plugin --profile web remove dsh-workbench-design-board
+dsh plugin --profile web remove dsh-workbench
+```
+
+Removing an application preserves its stored instances as unavailable records. Reinstalling an application with the same `appId` restores those instances.
+
+## Application model
+
+A Workbench application is a DSH Client plugin that declares a hard dependency on the `workbench` Client Service and registers its contributions inside Cordis effects:
+
+```ts
+import type { WorkbenchClientContext } from 'dsh-workbench/client'
+import { MyWorkbench } from './MyWorkbench.tsx'
+
+export const inject = ['workbench']
+
+export function apply(ctx: WorkbenchClientContext): void {
+  ctx.effect(() => ctx.workbench.registerApp({
+    protocolVersion: 1,
+    appId: 'example-workbench',
+    title: 'Example Workbench',
+    presentations: [{ kind: 'page', conversation: 'exclusive' }],
+    defaultPresentation: 'page',
+    renderMain: MyWorkbench,
+  }), 'example-workbench: app registration')
+}
+```
+
+Applications declare only presentations they can render:
+
+| Presentation | Conversation | Required renderer | Purpose |
+| --- | --- | --- | --- |
+| `page` | `exclusive` | `renderMain` | Full center application; optional `renderSecondary` |
+| `panel` | `resident` | `renderPanel` | Right or bottom panel using `push` or `overlay` |
+| `capsule` | `resident` | `renderCapsule` | Lightweight conversation or floating surface |
+
+Read the [Workbench application-authoring Skill](docs/application-authoring/SKILL.md) and the [complete English reference](docs/application-authoring.md) before publishing an application. A Chinese reference is available in [docs/application-authoring.zh.md](docs/application-authoring.zh.md).
+
+## Persistence and lifecycle
+
+Workbench persists only stable identifiers, the active route, ordering, titles, and plain acyclic JSON configuration. It never stores React nodes, functions, Cordis contexts, services, DOM nodes, sockets, processes, or class instances.
+
+Every application, template, and Agent Creator registration returns a disposer owned by the contributing Cordis Client fiber. When the fiber stops, Workbench removes the contribution but keeps its durable instances. Re-registering the same stable ID restores availability without duplicating entries.
+
+Client HMR replaces the complete Client plugin fiber; React local state is not preserved. Installing a new package or changing a package manifest, bundle ID, or dependency graph still requires a rebuild plus a page refresh or DSH Web restart.
+
+## Troubleshooting
+
+| Symptom | Resolution |
+| --- | --- |
+| The Workbench section or **首页** does not appear | Verify the bundle is present with `dsh --profile web --dump-config | grep workbench`, restart DSH Web, and hard-refresh the browser |
+| The design board does not appear | Install the root package before `examples/design-board`, verify both packages are in the `web` profile, then restart and hard-refresh |
+| A stored card says the application is unavailable | Reinstall or reactivate the package that owns the same `appId`; the record is preserved intentionally |
+| Changes to Client source do not appear | Rebuild `lib/client.js`. HMR only works while the matching DSH Client watcher is running; otherwise refresh or restart |
+| A page covers Conversation instead of unmounting it | This is the current DSH 0.1.x compatibility adapter. It suppresses Conversation interaction but does not unmount the Conversation React tree |
+| An application disappears after a plugin update | Check that its `registerApp`, `registerTemplate`, styles, listeners, and other registrations are returned from `ctx.effect()` and that it still injects `workbench` |
+
+## Design-board example
+
+[`examples/design-board`](examples/design-board) is the first reference application for the protocol. It is a browser-only `page + conversation: exclusive` Workbench application and registers a default instance plus an instance template.
+
+Its information architecture is fixed:
+
+1. `总览`
+2. `基础资源`
+3. `规范`
+4. `产品页面`
+
+The board is derived from current DSH component source. It documents semantic tokens, typography, icons, primitives, shell regions, settings, session UI, conversation flow, the real Composer, trajectory, overlays, states, and accessibility. It is a design reference, not a generic component gallery.
+
+## Model experience
+
+The base and design-board example add no model tools, prompts, or Session-log events. Workbench UI state is not model-visible. An optional Agent Creator is a separate application contribution and must record every new model-visible request and result through an auditable Session/Agent path.
+
+## Development and verification
+
+The build scripts need a DSH checkout. They can locate one through the `dsh` command, or you can set it explicitly:
+
+```sh
+pnpm install
+DSH_CHECKOUT=/path/to/dsh pnpm run build
+pnpm run check
+pnpm test
+DSH_CHECKOUT=/path/to/dsh pnpm run build:example
+pnpm run check:example
+pnpm run verify:i18n
+```
+
+Repository layout:
+
+- `src/` — Workbench Client Service, persistence controller, sidebar, home, and presentation hosts
+- `tests/` — service lifecycle, routing, migration, templates, and unavailable-instance recovery
+- `docs/` — Workbench application-authoring Skill and bilingual protocol references
+- `examples/design-board/` — complete reference Workbench application with its own bundle manifest
+- `lib/` — committed base-plugin build output
+
+## Community and about
+
+- Use [GitHub Issues](https://github.com/bill9109/dsh-workbench/issues) for reproducible bugs, focused feature requests, and usage questions.
+- Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes; report vulnerabilities privately through [SECURITY.md](SECURITY.md).
+- See [CHANGELOG.md](CHANGELOG.md) for release and compatibility notes.
+
+## License
+
+BSD-3-Clause
