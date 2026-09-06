@@ -1,5 +1,7 @@
-const checkout = process.env.DSH_CHECKOUT
-if (checkout === undefined) throw new Error('DSH_CHECKOUT is required; run `pnpm run build`')
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { packageBundles } from './scripts/client-bundle.mjs'
 
-const { clientBundle } = await import(`${checkout}/packages/client/tsdown.client.ts`)
-export default clientBundle('dsh-workbench', ['lib/types/index.js', 'lib/types/invariant.js'])
+const root = fileURLToPath(new URL('.', import.meta.url))
+const manifest = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8'))
+export default packageBundles(manifest, { root })

@@ -31,7 +31,8 @@
   },
   "files": [
     "lib/*.js",
-    "lib/types",
+    "lib/*.js.map",
+    "lib/types/**/*.d.ts",
     "src",
     "cordis.patch.yml",
     "README.md",
@@ -62,13 +63,15 @@
     "@deepseek-ai/dsh-client-ui-primitives": "0.1.2-alpha.5",
     "@types/node": "^24.0.0",
     "@types/react": "~18.3.1",
-    "dsh-workbench": "file:../..",
+    "dsh-workbench": "workspace:^",
     "react": "18.2.0",
     "typescript": "^5.6.0"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "check": "tsc -p tsconfig.json --noEmit --pretty false"
+    "build:dry-run": "node scripts/build.mjs --dry-run",
+    "build:verify": "node scripts/build.mjs --verify",
+    "check": "node scripts/build.mjs --check"
   },
   "dsh": {
     "bundle": {

@@ -1,207 +1,173 @@
 ---
 name: dsh-workbench-application-authoring
-description: "创建、迁移或审查注册到 dsh-workbench 的 DSH Workbench 应用，覆盖 page/panel/capsule 呈现、实例与模板、Agent Creator、Cordis disposer、持久化降级、Client HMR 和真实 GUI 验收。"
-whenToUse: "当开发者需要把 DSH Client 插件注册到 dsh-workbench、添加 Workbench 模板、接入 Agent Creator、迁移旧 Workbench 应用，或审查 Workbench 应用是否真正支持热插拔时使用。"
+description: "开发或审查 DSH Workbench 应用，覆盖配置版本、异步持久化、呈现与 activation 资源所有权。"
+whenToUse: "注册 Workbench 应用、模板或 Creator；迁移配置；验证持久化与卸载。"
 ---
 
-# Workbench 应用开发 Skill
+# Workbench 应用开发规范
 
-本文是 `dsh-workbench` 应用专属 Skill。它定义第三方 DSH Client 插件如何注册到基座，并继承实例持久化、导航、缺失降级和 Cordis Client fiber 重激活能力。
+本文描述当前尚未发布的单一应用协议：`protocolVersion: 1`。本次重设计不引入协议 v2，也不保留旧同步 API。接入前阅读当前 [types.ts](../src/client/types.ts)、[service.ts](../src/client/service.ts)、[storage.ts](../src/client/storage.ts) 与安装包 manifest。
 
-## 适用范围
+## 所有权
 
-使用本 Skill 处理：
+基座负责应用、模板、Creator 注册表，实例元数据、导航、配置持久化与呈现宿主。应用负责组件、业务文件、外部数据、订阅与异步资源。不要另建 Workbench 实例数据库、全局 React Root 或竞争的页面路由。业务文档放在应用自己的存储或 Host 服务中；配置中的路径不代表 Workbench 会管理、备份或删除该文件。
 
-- 新建或迁移注册到 `dsh-workbench` 的 DSH Client Workbench 应用；
-- 为应用增加 `page`、`panel` 或 `capsule` 呈现；
-- 注册实例模板、Agent 模板或 Creator 能力；
-- 审查应用的 disposer、持久化、卸载残留和 Client HMR；
-- 在真实 3080 GUI 中验证 Workbench 的创建、打开、返回和窄宽度行为。
+声明 `inject = ['workbench']` 并使用 `WorkbenchClientContext`。在 `apply` 内同步注册，通过 `ctx.effect()` 返回每个 disposer；注册不必等待存储初始化。需要读取已有实例的命令式初始化应等待 `workbench.ready`，处理失败并提供 `retry()`，不要静默降级为内存成功。
 
-不要用本 Skill：
+## 完整 Client 示例
 
-- 替代通用 DSH/Cordis 插件开发规范；先遵守 `dsh-cordis-plugin-authoring`；
-- 把 Workbench 应用实现成独立页面路由、全局 React Root 或第二套实例存储；
-- 从 Client 点击事件直接调用模型而不经过可追踪的 Session/Agent 流程。
+将下面的编译型 Client 模块放在 `src/client/index.tsx`。示例直接提交小型 JSON 更新；带编辑草稿的应用还需遵守下文 dirty 规则。
 
-## 开始前检查
-
-1. 阅读当前版本的 `dsh-workbench` `package.json`、`src/client/types.ts` 和本 Skill；不要从旧版本猜协议。
-2. 确认目标 DSH 版本、当前 `dsh-workbench` bundle、`dsh.client.inject` 和运行中的 3080 GUI。
-3. 确认应用需要的呈现模式、是否需要实例模板、是否需要 Agent Creator，以及每个注册的 disposer 所属 fiber。
-4. 如果使用 DSH 原生 Slot 或其他服务，先查询当前版本的真实 Slot、Service 和方法签名。
-
-## 角色与边界
-
-- `dsh-workbench` 是领域基础设施插件，拥有应用、模板和 Creator Registry，以及首页、实例和呈现路由。
-- Workbench 应用插件贡献运行时 UI 和 JSON 默认配置，不创建自己的页面路由、全局 React Root 或 Workbench 实例存储。
-- Creator 插件负责把 Agent 模板接入真实 Session/Agent 流程。所有送入模型的需求必须进入 Session log。
-- 应用注册表中的组件只在当前 activation 内存在；持久化层只保存稳定 ID、路由和 JSON 配置。
-
-## 最小应用
-
-```ts
-import type { WorkbenchClientContext } from 'dsh-workbench/client'
-import { MyWorkbench } from './MyWorkbench.tsx'
+```tsx
+import { useState } from 'react'
+import type { WorkbenchClientContext, WorkbenchRenderProps } from 'dsh-workbench/client'
 
 export const inject = ['workbench']
+
+function Counter({ instance, updateConfig, reportError }: WorkbenchRenderProps) {
+  const [saving, setSaving] = useState(false)
+  const increment = async () => {
+    setSaving(true)
+    reportError(null)
+    try {
+      await updateConfig({ count: Number(instance.config.count) + 1 })
+    } catch (error) {
+      reportError(error instanceof Error ? error.message : String(error))
+    } finally {
+      setSaving(false)
+    }
+  }
+  return <button disabled={saving} onClick={() => { void increment() }}>
+    {String(instance.config.count)} + 1
+  </button>
+}
 
 export function apply(ctx: WorkbenchClientContext): void {
   ctx.effect(() => ctx.workbench.registerApp({
     protocolVersion: 1,
-    appId: '@example/my-workbench',
-    title: '示例工作台',
-    description: '应用用途',
+    appId: '@example/counter',
+    title: 'Counter',
+    source: { packageName: '@example/counter', version: '0.1.0' },
+    config: {
+      version: 1,
+      defaults: () => ({ count: 0 }),
+      validate(config) {
+        if (!Number.isSafeInteger(config.count) || Number(config.count) < 0) {
+          throw new Error('count must be a non-negative safe integer')
+        }
+      },
+    },
+    allowMultiple: true,
     presentations: [{ kind: 'page', conversation: 'exclusive' }],
     defaultPresentation: 'page',
-    renderMain: MyWorkbench,
-  }), 'my-workbench: app registration')
+    renderMain: Counter,
+  }), 'counter: application')
+  ctx.effect(() => ctx.workbench.registerTemplate({
+    templateId: '@example/counter:blank',
+    title: 'Blank counter',
+    kind: 'instance',
+    appId: '@example/counter',
+    defaultConfig: { count: 0 },
+  }), 'counter: template')
 }
 ```
 
-`workbench` 是硬依赖。必须同时声明 `inject = ['workbench']` 并使用 `WorkbenchClientContext`；不能通过 patch 行顺序或计时器等待基座。
+应用包必须声明 DSH Client 元数据、构建 Client closure bundle，并与基座一起安装到 Web profile。独立包请参考 [examples/starter](../examples/starter)，使用公开 `dsh-workbench/build/client-bundle` helper。它已在复制出的独立布局测试，但未经过全新 registry 安装；从 registry 使用需要先发布本次重设计与 helper。[设计板 package](../examples/design-board/package.json) 是仓库内参考，不是独立 starter。`dsh-workbench/client` 的 type-only import 不产生运行时 import 需求。不要把 TSX 粘贴进未经转换的动态插件函数体。
 
-## 稳定标识
+## 标识与配置
 
-- `protocolVersion` 当前只能是 `1`。
-- `appId`、`templateId` 和 `creatorId` 是公开、可持久化标识。使用包名命名空间，发布后不改语义。
-- 重复注册立即报错。注册函数返回幂等 disposer，必须交给当前 Cordis fiber 的 `ctx.effect()`。
-- 临时卸载应用不会删除实例。实例显示为不可用，同一 `appId` 重新注册后恢复。
+- 为 `appId`、`templateId`、`creatorId` 使用稳定命名空间；同时重复注册会报错。`source?: { packageName, version, repository? }` 是发布者自报元数据，不是经过认证的身份或权限。
+- 普通 `createInstance` 用 `crypto.randomUUID()` 分配 ID；将 ID 当作不透明值，不解析应用名前缀。显式 `defaultInstance.instanceId` 仍受支持，旧数据导入保留原 ID，未指定默认 ID 时才生成 UUID。`allowMultiple` 默认为 false，已有实例会被复用。
+- 所有应用必填 `config: { version, defaults, validate, migrate? }`。`version` 是正安全整数，`defaults()` 返回新 JSON 对象；同步 `validate(config): void` 用抛错表示非法配置。验证不是归一化步骤，修改验证参数不会被保存。
+- 配置必须是无环普通 JSON，数字必须有限。不能包含函数、Context、Service、DOM、类实例、undefined、socket 或凭据。更新是浅合并 patch，嵌套对象需提供完整目标值。
+- `migrate(config, fromVersion, { signal })` 可返回配置或 Promise；结果必须是当前 schema 并通过验证。配置迁移不应修改业务文件或执行不可逆操作。
 
-## 呈现模式
-
-应用必须声明至少一种呈现模式，并把默认模式设为其中之一。
-
-```ts
-presentations: [
-  { kind: 'page', conversation: 'exclusive' },
-  {
-    kind: 'panel',
-    placement: 'right',
-    behavior: 'push',
-    conversation: 'resident',
-  },
-  {
-    kind: 'capsule',
-    placement: 'floating',
-    conversation: 'resident',
-  },
-]
-```
-
-| 模式 | Conversation | 应用渲染入口 | 用途 |
-| --- | --- | --- | --- |
-| `page` | `exclusive` | `renderMain`，可选 `renderSecondary` | 设计规范、数据看板、管理页面 |
-| `panel` | `resident` | `renderPanel` | 文件、终端、检查器等持续协作面板 |
-| `capsule` | `resident` | `renderCapsule` | 摘要、状态、轻量入口 |
-
-声明 `panel` 必须提供 `renderPanel`；声明 `capsule` 必须提供 `renderCapsule`。组件通过 `WorkbenchRenderProps.presentation` 获得已经解析的具体模式。
-
-DSH 0.1.x 尚无正式中心页面 Slot。当前 `page` 由基座兼容宿主覆盖中心区域并屏蔽 Conversation 交互，尚不等价于卸载 Conversation React 子树；未来切换到正式 Shell 页面出口时，应用协议和组件不需要改变。
-
-## 组件契约
+升级到配置版本 2 时，同时替换 defaults、validator 并提供迁移，例如：
 
 ```ts
-interface WorkbenchRenderProps {
-  instance: WorkbenchInstance
-  presentation: WorkbenchPresentation
-  updateConfig(patch: WorkbenchConfig): void
-  close(): void
-  openHome(): void
-  openConversation(): void
+config: {
+  version: 2,
+  defaults: () => ({ count: 0, step: 1 }),
+  validate(config) {
+    if (!Number.isSafeInteger(config.count) || Number(config.count) < 0
+      || !Number.isSafeInteger(config.step) || Number(config.step) < 1) {
+      throw new Error('Invalid counter configuration')
+    }
+  },
+  async migrate(config, fromVersion, { signal }) {
+    if (fromVersion !== 1) throw new Error('Unsupported source configuration')
+    return { ...config, step: 1 }
+  },
 }
 ```
 
-应用组件：
+旧配置没有迁移函数时进入 `migration-error`；配置版本高于应用支持版本时为 `incompatible`。应用缺失时实例保留。宿主在渲染前准备、验证实例；判断可渲染性要看 `status`，不能只看 `available`。`prepareInstance()` 结束后仍可能是错误状态，应读取最新快照。
 
-- 只从 props、应用自己的 store 和 React hooks 获得数据，不读取 Cordis `ctx`。
-- 使用 `updateConfig()` 持久化 JSON 配置。它执行浅层合并；嵌套对象应提交完整的新值。
-- 不修改 `#root`、Conversation DOM、Workbench 路由或基座的 CSS 变量。
-- 不创建额外页面级 React Root。面板和胶囊的宿主由基座提供。
-- 使用 DSH 语义 token，样式节点归属应用 fiber，并在卸载时移除。
+## 持久化与冲突
 
-## SVG 图标制作
+IndexedDB 用一个完整 repository-state 记录保存实例、已撤销默认实例的应用 ID 和迁移前配置备份。readwrite 事务读最新状态，在同步 update 回调内检查 revision 后原子提交。异步迁移在事务外执行；提交前再次核对应用 generation 与 revision，在同一事务中保存备份和新配置。验证失败、冲突或事务中止不会替换原配置。`exportInstance(id)` 返回 `Promise<WorkbenchInstanceExport>`，含 JSON 实例和配置备份；Surface 提供 JSON 下载。`restoreBackup(id, backupRevision, expectedRevision)` 仅提供 API：备份 configVersion 必须等于当前应用支持版本，通过验证且当前 revision 匹配，才会原子备份当前配置并替换。没有自动降级、JSON 导入或备份恢复 UI。
 
-1. 先检查当前版本 `@deepseek-ai/dsh-client-ui-primitives` 的 icon exports 和相邻 DSH 组件。有语义匹配的现成图标就复用；只有缺少目标 glyph 时才手绘 SVG，不为一个简单图标引入另一套图标系统。
-2. 图标使用 `currentColor`，由容器的语义 token 控制默认、hover、active 和 disabled 颜色；不在 SVG 内写死产品颜色。
-3. 沿用已有 DSH 构造。紧凑 Figma glyph 通常使用 `16 16` 或 `14 14` viewBox 与 `fill="currentColor"`；手绘 outline 通常使用 `fill="none"`、`stroke="currentColor"`、`strokeWidth="1.3"` 到 `strokeWidth="1.5"`，并设置圆角 line cap 和 line join。
-4. 按视觉墨迹而不是 CSS 盒子校准尺寸。`width`、`height` 和 `viewBox` 不代表实际可见像素占用；应比较路径 `getBBox()`、stroke 外扩、实际渲染尺寸和相邻图标截图，差异不明确时把 SVG 栅格化并检查 alpha 像素边界。同标称尺寸下，outline 往往需要比 fill 更大的路径范围。
-5. stroke 必须保留在 viewBox 内，并在实际渲染尺寸和设备缩放下检查斜线、对称轴、半像素落点、裁切和模糊。视觉重量不足时优先外扩路径，不任意加粗 stroke。
-6. 有文本或已有可访问名称的控件内，装饰 SVG 使用 `aria-hidden="true"` 和 `focusable="false"`；纯图标按钮由按钮承担 `aria-label` 和 tooltip，SVG 不成为第二个焦点。
-7. 在展开/紧凑容器、默认/hover/active/disabled、桌面/窄宽度和产品支持的主题中验收。图标不能改变控件尺寸、溢出或裁切，并应与相邻 DSH 图标保持接近的视觉重量。
+同源标签页共享实例数据；通知只使缓存失效，再读取已提交数据。配置写入采用 revision compare-and-swap，不是盲覆盖或自动合并。`updateConfig(patch, expectedRevision?)` 返回提交后的 revision。草稿必须保留开始编辑时的 revision，不能因收到远端 snapshot 自动更新基准；省略 revision 时，宿主使用首次 setDirty(true) 捕获的基准，否则使用当前渲染 revision。成功后可用返回值推进草稿基准。冲突后先重新读取并协调最新状态，不要循环用旧数据覆盖。重命名、删除也检查 revision；排序是原子的列表更新。保存成功意味着事务完成，而非仅乐观更新了界面。
 
-## 实例模板
+当前标签页路由单独放在 `sessionStorage` 的 `dsh-workbench.navigation.v1`。每实例呈现偏好放在 `dsh-workbench.presentations.v1`；`open(id)` 优先使用仍被应用支持的已记忆 kind，再回退到默认模式。仓库首次初始化会从 `dsh-workbench.state.v3`、`dsh-workbench.state.v2` 或 `dsh-workbench.instances.v1` 导入可识别记录；保留原 localStorage key，并在 IndexedDB 留存源字符串与导入标记。这是数据导入，不是兼容旧应用 API。浏览器存储受 origin 限制，可能被清理或不可用，不是托管备份服务。
 
-实例模板创建已经安装应用的新实例。模板本身是纯 JSON contribution：
+## 服务与渲染契约
+
+| 操作 | 返回 |
+| --- | --- |
+| `registerApp / registerCreator` | 同步注册；disposer 返回 `Promise<void>` |
+| `registerTemplate` | 同步 disposer |
+| `updateInstanceConfig` | `Promise<number>` 提交后的 revision |
+| `ready`、`retry()`、`prepareInstance(id)` | `Promise<void>` |
+| `createInstance(appId, title?, config?)` | `Promise<WorkbenchInstance>` |
+| `startCreation(templateId)` | `Promise<{ instanceId } \| { sessionId }>` |
+| `renameInstance / deleteInstance / reorderInstances` | `Promise<void>` |
+| `open / openHome / openConversation / close` | 同步导航，dirty 确认可能拒绝离开 |
+| `getSnapshot / subscribe` | 快照 / 订阅 disposer |
+
+`createInstance` 与 `startCreation` 返回结果；命令式调用方应明确用 `open(result.instanceId)` 打开实例，内置创建 UI 自行完成导航。应用不能 dispose 共享服务，服务生命周期归基座。
+
+Renderer 得到 `instance`、实际 `presentation`、`updateConfig(patch, expectedRevision?): Promise<number>`、`setDirty(boolean)`、`reportError(string | null)`、`setPresentation(kind)`、`close`、`openHome` 与 `openConversation`。编辑草稿时标记 dirty，仅在保存成功或明确丢弃后清除，并显示异步错误。dirty 仅在运行时存在，Workbench 不自动保存组件状态。离开确认覆盖 Workbench 路由，不保证阻止 DSH 导航或关闭浏览器。
+
+每次应用注册获得新的 generation。卸载撤销运行时贡献、使旧代次写入失效，但保留持久化实例；相同 appId 重新注册后经过验证或迁移再恢复可用。Client fiber 替换不保留 React 局部状态；应用仍需在 cleanup 取消请求，并在外部写入前拒绝迟到响应。
+
+保存成功不会自动清除 dirty。应用只在保存对应的编辑代次仍是最新代次时调用 setDirty(false)，或在用户明确放弃草稿后清除。保存期间继续输入的草稿必须保持 dirty。
+
+异步迁移接收 `{ signal }`，应用注销及基座 dispose 会 abort 并等待已启动的迁移/Creator 任务，默认 5 秒后仍未静止则记录并拒绝 teardown。超时不是清理成功；宿主不能强制终止忽略 signal 的第三方代码。注册 disposer 必须交给 Cordis 等待，迁移与 Creator 必须自行收束外部资源。
+
+损坏的旧 JSON 和非法实例被隔离，不阻止合法实例导入；原始源字符串保存在 recovery 与独立 legacy-backup 中，首页展示原因并提供原始备份下载。不会自动回退到较旧 key 或删除原数据；尚无修复 JSON 后重新导入的界面。
+
+## 呈现与 DOM 限制
+
+| 模式 | 声明 | Renderer |
+| --- | --- | --- |
+| `page` | `conversation: 'exclusive'` | `renderMain`，可选 `renderSecondary` |
+| `panel` | `placement: 'right' \| 'bottom'`、`behavior: 'push' \| 'overlay'`、`conversation: 'resident'` | `renderPanel` |
+| `capsule` | `placement: 'floating'`、`conversation: 'resident'` | `renderCapsule` |
+
+每种 kind 最多声明一次，默认值必须已声明。未实现插入 conversation 内部的 capsule。`resolvePresentationLayout(presentation, width, height)` 返回 `{ presentation, panelSize, rightInset, bottomInset }`。右侧大小为 `min(360, width)`，底部为 `min(280, height * .55)`；容器 width < 720 时右侧 push 降为 overlay，height < 560 时底部 push 降为 overlay。宿主与 adapter 共享 `--workbench-panel-size`，传给应用的是实际行为，不一定是请求的 push。
+
+基座保留面向 `sidebar.workspaces` 与 `conversation` 的 DOM 兼容层，不修改 DSH 源码。page 成功挂载后隐藏 Conversation 内容并屏蔽交互，不卸载 DSH React 子树。侧栏、中心独立挂载和重试，卸载恢复所接管的 style 与 root；应用不要在该层上叠加自己的选择器。
+
+导航使用核实过的可选 `sessions.list.getSnapshot().current` / `subscribe`，并保留窄化的叶子会话行冒泡 click 适配。嵌套菜单和按钮、preventDefault、修饰键点击不会关闭 Workbench。这不是通用 DSH 导航意图 API：可观察切换到另一会话，但“新建会话”复用当前已选空会话时可能不会关闭 Workbench。sessions 服务缺失时仅有 DOM fallback。未来 DSH DOM 结构变化可能要求更新 adapter。
+
+## 模板与 Agent Creator
+
+实例模板是已安装应用的 JSON 元数据，提供的 `defaultConfig` 必须通过应用验证。Agent 模板引用独立 Creator，其方法签名为：
 
 ```ts
-ctx.effect(() => ctx.workbench.registerTemplate({
-  templateId: '@example/my-workbench:blank',
-  title: '空白工作台',
-  description: '从默认布局开始',
-  kind: 'instance',
-  appId: '@example/my-workbench',
-  defaultTitle: '未命名工作台',
-  defaultConfig: { section: 'overview' },
-}), 'my-workbench: template registration')
+start(template, context: { signal: AbortSignal; requestId: string }):
+  Promise<{ instanceId: string } | { sessionId: string }>
 ```
 
-应用卸载后模板保留在其模板插件的 activation 中，但显示为不可用；应用重新注册后自动恢复可用。
+用 `ctx.effect(() => workbench.registerCreator(definition))` 注册。只能连接已经核实的真实 Host/Session API，Workbench 不自动创建 Agent。模型可见的请求、结果、错误必须进入可审计的 Session 流程。返回已经提交且存在的 Workbench instanceId 或真实 sessionId。`cancelCreation()` 会 abort signal 并忽略旧结果，不保证远端 Host/Agent 停止，也不回滚已提交工作。Creator 必须自行实现协作取消与资源清理。
 
-## Agent 模板与 Creator
+## 构建与验收
 
-Agent 模板只描述用户可见入口和创建 brief，不直接调用模型：
+仓库自带 build helper，不依赖 DSH checkout 或 `DSH_CHECKOUT`。构建工具支持 Node `^22.18.0 || >=24.11.0`；source 测试需要 Node 22.18+ 的 TypeScript stripping，同时还需满足所安装依赖的 engine 要求。package.json 的已发布产物 runtime engine 范围是另一项约束。
 
-```ts
-ctx.effect(() => ctx.workbench.registerTemplate({
-  templateId: '@example/dashboard-agent',
-  title: '数据看板',
-  description: '由 Agent 创建一个数据展示工作台',
-  kind: 'agent',
-  creatorId: '@example/workbench-agent-creator',
-  brief: '创建符合 DSH 设计规范的数据看板工作台。',
-}), 'dashboard: agent template')
-```
+按任务运行 `pnpm run check`、`pnpm test`、`pnpm run build:verify`、`pnpm --dir examples/design-board run build:verify` 与 `pnpm run verify:i18n`。build 脚本支持 `--dry-run`（不写入）、`--check`（临时声明产物）和 `--verify`（临时完整构建）；普通 `pnpm run build` 写入 `lib`。发布或更新提交产物前，必须显式运行 `pnpm run build` 与 `pnpm run build:example` 重建基座及示例。
 
-独立 Creator 插件注册运行时处理器：
+至少覆盖创建、保存、刷新、非法配置、迁移成功/失败/新版本不兼容、revision 冲突、初始化失败与 retry、卸载重注册、旧 generation、Creator 取消与真实窄容器尺寸。另行验证组装后的 DSH GUI、会话菜单与卸载恢复；source 测试或隔离构建通过不等于正在运行的 GUI 已验证。Client HMR 需要匹配 watcher，manifest 或依赖图变化仍需构建加刷新或重启。
 
-```ts
-ctx.effect(() => ctx.workbench.registerCreator({
-  creatorId: '@example/workbench-agent-creator',
-  start(template) {
-    // 将 template.brief 转换成可追踪的 Session/Agent 请求。
-  },
-}), 'workbench-agent-creator: registration')
-```
-
-Creator 缺失时 Agent 模板显示为不可用。Creator 必须通过正式 Host/Client 协议调用 Agent，并让用户需求、执行结果和错误都能从 Session log 重建；不能从 Client 点击事件直接注入不可追踪的模型输入。
-
-## 热插拔责任
-
-基座自动保证：
-
-1. 应用、模板和 Creator 注册撤销后立即离开 Registry snapshot。
-2. Workbench 实例、顺序、JSON 配置和当前路由跨应用短暂卸载保留。
-3. 当前应用缺失时渲染不可用占位，不因 HMR 自动跳回 Conversation。
-4. 相同稳定 ID 重新注册后恢复当前实例。
-5. `dsh-workbench` provider fiber 替换时，声明硬依赖的消费者由 Cordis 重新激活。
-
-应用开发者仍然负责：
-
-1. 所有注册、事件、计时器、Observer、Worker、socket 和进程归属 `ctx.effect()` 或组件 effect cleanup。
-2. 异步操作使用 `AbortSignal` 或 activation generation；旧响应不能写入新 activation。
-3. 模块顶层不创建 store、listener、DOM、React Root 或外部资源。
-4. Host/Client wire 只传 lossless JSON，并定义版本与错误响应。
-5. Client HMR 会替换整个插件 fiber，不保证保留 React 局部状态。
-
-## 最低验收
-
-每个 Workbench 应用至少验证：
-
-1. 挂载后应用和模板出现。
-2. 创建、打开、改名和更新配置正常。
-3. dispose 后贡献消失、实例保留并显示不可用。
-4. 同一 ID 重新挂载后只存在一个贡献，原实例恢复。
-5. 插件样式、事件、Observer、计时器和异步任务没有残留。
-6. `page`、`panel` 或 `capsule` 的 Conversation 关系符合声明。
-7. 真实 DSH GUI 无控制台错误，窄宽度下内容不溢出。
+复用已安装 DSH primitive 图标和语义色 token。图标按钮应有可访问名称、键盘焦点和稳定尺寸；与相邻 DSH 控件比较视觉重量、裁切和窄屏布局。

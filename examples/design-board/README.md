@@ -82,16 +82,26 @@ The example contributes no model tools, prompts, or Session-log events. It is br
 
 ## Development and verification
 
-From the repository root:
+The repository-local build helper needs no DSH checkout or `DSH_CHECKOUT`. Build tooling requires Node `^22.18.0 || >=24.11.0`. From the repository root, verify without overwriting committed `lib` artifacts:
 
 ```sh
 pnpm install
-DSH_CHECKOUT=/path/to/dsh pnpm run build
-DSH_CHECKOUT=/path/to/dsh pnpm run build:example
+pnpm run check
 pnpm run check:example
+pnpm run build:verify
+pnpm --dir examples/design-board run build:verify
 ```
 
-The example build links the root Workbench package locally for type-checking and bundling. Verify the assembled application in DSH Web after restart and browser refresh; browser-only source changes support automatic replacement only while the matching DSH Client watcher is rebuilding the client bundle.
+The example build compiles current root Workbench declarations in a temporary directory; it does not modify node_modules or require prebuilt root declarations. The design board remains a repository-local reference. For a separately copied package, use [the standalone starter](../starter), which consumes the public build helper.
+
+Before publishing or installing changed source, explicitly regenerate both base and example artifacts:
+
+```sh
+pnpm run build
+pnpm run build:example
+```
+
+The unreleased contract changes are not installed by source-only edits or temporary verification. Verify the assembled application in DSH Web after restart and browser refresh; browser-only source changes support automatic replacement only while the matching DSH Client watcher is rebuilding the client bundle.
 
 ## License
 

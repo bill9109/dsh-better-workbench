@@ -31,7 +31,7 @@ The built-in home is always available, even when no Workbench application is ins
 - Right or bottom `panel` presentations with `push` or `overlay` behavior
 - Conversation-adjacent floating `capsule` presentations
 - Unavailable-instance recovery when an application is removed and later restored
-- Versioned JSON persistence with v1-to-v2 migration
+- IndexedDB atomic state transactions, revision conflict checks, versioned configuration and legacy-data import
 - Cordis fiber disposal and reactivation for applications, templates, and creators
 - Application-authoring Skill and bilingual protocol reference under `docs/`
 - A complete DSH design-system reference application under `examples/design-board/`
@@ -54,7 +54,7 @@ dsh plugin --profile web add github:bill9109/dsh-workbench
 dsh plugin --profile web add /path/to/dsh-workbench
 ```
 
-The repository commits its build output in `lib/`, so a GitHub installation does not require a local build.
+Released revisions include committed `lib/` artifacts. This working tree contains an unreleased protocol redesign: before publishing it or installing changed source, rebuild both the base and example artifacts as described below. A source-only change does not update an installed GUI.
 
 After installation, restart DSH Web and hard-refresh the browser. The package must enter the browser boot graph before its Client plugin can load.
 
@@ -103,6 +103,13 @@ export const inject = ['workbench']
 export function apply(ctx: WorkbenchClientContext): void {
   ctx.effect(() => ctx.workbench.registerApp({
     protocolVersion: 1,
+    config: {
+      version: 1,
+      defaults: () => ({ section: 'overview' }),
+      validate(config) {
+        if (typeof config.section !== 'string') throw new Error('Invalid section')
+      },
+    },
     appId: 'example-workbench',
     title: 'Example Workbench',
     presentations: [{ kind: 'page', conversation: 'exclusive' }],
@@ -118,17 +125,27 @@ Applications declare only presentations they can render:
 | --- | --- | --- | --- |
 | `page` | `exclusive` | `renderMain` | Full center application; optional `renderSecondary` |
 | `panel` | `resident` | `renderPanel` | Right or bottom panel using `push` or `overlay` |
-| `capsule` | `resident` | `renderCapsule` | Lightweight conversation or floating surface |
+| `capsule` | `resident` | `renderCapsule` | Lightweight floating surface only |
 
 Read the [Workbench application-authoring Skill](docs/application-authoring/SKILL.md) and the [complete English reference](docs/application-authoring.md) before publishing an application. A Chinese reference is available in [docs/application-authoring.zh.md](docs/application-authoring.zh.md).
 
 ## Persistence and lifecycle
 
-Workbench persists only stable identifiers, the active route, ordering, titles, and plain acyclic JSON configuration. It never stores React nodes, functions, Cordis contexts, services, DOM nodes, sockets, processes, or class instances.
+IndexedDB persists instance metadata and plain acyclic JSON configuration in atomic full-state transactions, with revision checks for conflicting writes. Routes and remembered per-instance presentations live separately in per-tab sessionStorage. Initial import reads the old localStorage keys without deleting them. Ordinary instance creation uses UUIDs; explicit default IDs and imported IDs retain their meaning. Business files are not hosted or backed up by Workbench.
+
+The unreleased redesign keeps one application protocol, `protocolVersion: 1`, with mandatory `config.version/defaults/validate`, optional async `config.migrate`, and asynchronous creation/save/rename/delete/reorder. It does not support the old synchronous application API. Optional `source` is self-reported metadata, not authenticated provenance. A new activation generation prevents stale app callbacks from writing after replacement.
 
 Every application, template, and Agent Creator registration returns a disposer owned by the contributing Cordis Client fiber. When the fiber stops, Workbench removes the contribution but keeps its durable instances. Re-registering the same stable ID restores availability without duplicating entries.
 
 Client HMR replaces the complete Client plugin fiber; React local state is not preserved. Installing a new package or changing a package manifest, bundle ID, or dependency graph still requires a rebuild plus a page refresh or DSH Web restart.
+
+The instance Surface offers JSON export of instance metadata/config and recorded config backups. `restoreBackup` is available only as a service API, requiring matching active configVersion, validation and revision CAS; it also backs up the current config. No automatic downgrade, JSON import or backup-restore UI is provided.
+
+## Integration limits
+
+The DOM compatibility layer requires no DSH source changes. It preserves the Conversation React tree, mounting Workbench separately and restoring its owned styles on unload. It observes the optional real `sessions.list` selection plus narrow bubbling session-row clicks. A New Session action that reuses the already selected blank session may not close Workbench; this is not a universal navigation-intent API. Session menus and nested controls are excluded.
+
+Right panels use `min(360, container width)`, bottom panels `min(280, container height * .55)`. Push falls back to overlay below width 720 (right) or height 560 (bottom). Applications receive effective presentation. Capsules are floating-only. Creator cancellation signals `AbortSignal`; it does not guarantee remote Agent termination or roll back committed work.
 
 ## Troubleshooting
 
@@ -160,17 +177,26 @@ The base and design-board example add no model tools, prompts, or Session-log ev
 
 ## Development and verification
 
-The build scripts need a DSH checkout. They can locate one through the `dsh` command, or you can set it explicitly:
+Builds use repository-local helpers; no DSH checkout or `DSH_CHECKOUT` is required. Build tooling supports Node `^22.18.0 || >=24.11.0`. Source tests use Node 22.18+ TypeScript stripping and must also satisfy dependency engine requirements; this is separate from the published runtime engine badge above. Verification builds use temporary directories without replacing `lib`:
 
 ```sh
 pnpm install
-DSH_CHECKOUT=/path/to/dsh pnpm run build
+pnpm run build:verify
 pnpm run check
 pnpm test
-DSH_CHECKOUT=/path/to/dsh pnpm run build:example
+pnpm --dir examples/design-board run build:verify
 pnpm run check:example
 pnpm run verify:i18n
 ```
+
+Before release or a source-based installation, explicitly regenerate both sets of committed artifacts:
+
+```sh
+pnpm run build
+pnpm run build:example
+```
+
+`--dry-run` prints the plan without writes; `--check` and `--verify` use temporary output. [examples/starter](examples/starter) demonstrates the public `dsh-workbench/build/client-bundle` helper in a standalone package layout; it is distinct from the design-board repository example. Copied standalone-layout validation is not a fresh registry-install test; registry use requires publication of the new helper and protocol artifacts.
 
 Repository layout:
 

@@ -4,8 +4,1601 @@ window.__ModuleLoader__.load({
 		var module = { exports: {} };
 		var exports = module.exports;
 		Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+		//#region \0rolldown/runtime.js
+		var __create = Object.create;
+		var __defProp = Object.defineProperty;
+		var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+		var __getOwnPropNames = Object.getOwnPropertyNames;
+		var __getProtoOf = Object.getPrototypeOf;
+		var __hasOwnProp = Object.prototype.hasOwnProperty;
+		var __copyProps = (to, from, except, desc) => {
+			if (from && typeof from === "object" || typeof from === "function") for (var keys = __getOwnPropNames(from), i = 0, n = keys.length, key; i < n; i++) {
+				key = keys[i];
+				if (!__hasOwnProp.call(to, key) && key !== except) __defProp(to, key, {
+					get: ((k) => from[k]).bind(null, key),
+					enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+				});
+			}
+			return to;
+		};
+		var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule || !__hasOwnProp.call(mod, "default") ? __defProp(target, "default", {
+			value: mod,
+			enumerable: true
+		}) : target, mod));
+		//#endregion
+		let react = require("react");
 		let _deepseek_ai_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
+		_deepseek_ai_dsh_client_ui_primitives = __toESM(_deepseek_ai_dsh_client_ui_primitives, 1);
 		let react_jsx_runtime = require("react/jsx-runtime");
+		//#region src/client/icon-gallery-styles.ts
+		const ICON_GALLERY_STYLE = `
+.dsh-icon-meta { display:flex; flex-wrap:wrap; gap:8px 20px; font:var(--dsw-font-xxs-12); color:var(--dsw-alias-label-tertiary); }
+.dsh-icon-meta code { overflow-wrap:anywhere; }
+.dsh-icon-library-toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:12px; padding:20px 0; border-bottom:1px solid var(--dsw-alias-border-l1); }
+.dsh-icon-library-toolbar > :first-child { flex:1; min-width:180px; }
+.dsh-icon-library-toolbar select { max-width:100%; height:32px; border:1px solid var(--dsw-alias-border-l2); border-radius:8px; background:var(--dsw-alias-bg-base); color:var(--dsw-alias-label-primary); padding:0 8px; font:var(--dsw-font-xxs-12); }
+.dsh-icon-library-toolbar > span { font:var(--dsw-font-xxs-12); color:var(--dsw-alias-label-tertiary); }
+.dsh-icon-library-layout { display:grid; grid-template-columns:minmax(0,1fr) 260px; gap:28px; align-items:start; padding-top:24px; }
+.dsh-icon-library-group { margin-bottom:28px; }
+.dsh-icon-library-group h2 { display:flex; align-items:center; gap:10px; margin:0 0 14px; font:var(--dsw-font-xs-strong-13); }
+.dsh-icon-library-group h2 span { color:var(--dsw-alias-label-tertiary); font:var(--dsw-font-xxxs-11); }
+.dsh-icon-library-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:8px; }
+.dsh-icon-tile { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:0; height:104px; padding:8px 4px; border:1px solid var(--dsw-alias-border-l1); border-radius:6px; background:var(--dsw-alias-bg-base); color:var(--dsw-alias-label-primary); cursor:pointer; }
+.dsh-icon-tile:hover { background:var(--dsw-alias-interactive-bg-hover); }
+.dsh-icon-tile[aria-pressed=true] { border-color:var(--dsw-alias-state-business-primary); background:var(--dsw-alias-interactive-bg-hover); }
+.dsh-icon-tile:focus-visible, .dsh-icon-library-toolbar select:focus-visible { outline:2px solid var(--dsw-alias-state-business-primary); outline-offset:2px; }
+.dsh-icon-tile-glyph { display:flex; align-items:center; justify-content:center; height:32px; width:32px; flex:none; }
+.dsh-icon-tile strong { font:var(--dsw-font-xxs-12); text-align:center; overflow-wrap:anywhere; }
+.dsh-icon-tile small { font:var(--dsw-font-xxxs-11); color:var(--dsw-alias-label-tertiary); }
+.dsh-icon-inspector { position:sticky; top:20px; min-width:0; border-left:1px solid var(--dsw-alias-border-l1); padding-left:20px; }
+.dsh-icon-inspector h2 { font:var(--dsw-font-base-strong-16); margin:0 0 6px; }
+.dsh-icon-inspector code { font:var(--dsw-font-markdown-code-block-small); overflow-wrap:anywhere; color:var(--dsw-alias-label-tertiary); }
+.dsh-icon-inspector-preview { height:132px; display:flex; align-items:center; justify-content:center; margin-top:16px; background:var(--dsw-alias-bg-layer-1); border:1px solid var(--dsw-alias-border-l1); }
+.dsh-icon-specimens { display:grid; grid-template-columns:1fr 1fr; }
+.dsh-icon-specimens > div { display:flex; align-items:center; justify-content:center; gap:8px; min-height:48px; font:var(--dsw-font-xxxs-11); }
+.dsh-icon-inverse { background:var(--dsw-alias-label-primary); color:var(--dsw-alias-bg-base); }
+.dsh-icon-inspector dl { margin:16px 0; font:var(--dsw-font-xxs-12); }
+.dsh-icon-inspector dl > div { padding:8px 0; border-bottom:1px solid var(--dsw-alias-border-l1); }
+.dsh-icon-inspector dt { color:var(--dsw-alias-label-tertiary); margin-bottom:4px; }
+.dsh-icon-inspector dd { margin:0; overflow-wrap:anywhere; }
+.dsh-icon-inspector pre { white-space:pre-wrap; overflow-wrap:anywhere; font:var(--dsw-font-markdown-code-block-small); padding:12px; background:var(--dsw-alias-bg-layer-1); }
+.dsh-icon-contexts { display:grid; gap:10px; font:var(--dsw-font-xxs-12); }
+.dsh-icon-contexts > div { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.dsh-icon-contexts small { color:var(--dsw-alias-label-tertiary); }
+.dsh-icon-copy-status { display:block; min-height:22px; margin-top:6px; font:var(--dsw-font-xxs-12); color:var(--dsw-alias-label-secondary); }
+.dsh-icon-empty { display:flex; align-items:center; flex-direction:column; gap:16px; padding:60px 12px; font:var(--dsw-font-xs-13); }
+@container (max-width:760px) { .dsh-icon-library-layout { grid-template-columns:minmax(0,1fr); } .dsh-icon-inspector { position:static; border-left:0; border-top:1px solid var(--dsw-alias-border-l1); padding:20px 0 0; } .dsh-icon-inspector-preview { height:100px; } }
+`;
+		//#endregion
+		//#region src/client/IconGallery.tsx
+		function IconGallery({ groups }) {
+			const [query, setQuery] = (0, react.useState)("");
+			const [category, setCategory] = (0, react.useState)("all");
+			const [selectedName, setSelectedName] = (0, react.useState)("IconAgentPresetOutline16");
+			const [copyState, setCopyState] = (0, react.useState)("");
+			const all = groups.flatMap((group) => group.icons);
+			const selected = all.find((item) => item.name === selectedName) ?? all[0];
+			const SelectedIcon = selected.icon;
+			const visible = groups.filter((group) => category === "all" || category === group.title).map((group) => ({
+				...group,
+				icons: group.icons.filter((item) => [
+					item.name,
+					item.label,
+					item.usage
+				].some((value) => value.toLowerCase().includes(query.trim().toLowerCase())))
+			})).filter((group) => group.icons.length);
+			const count = visible.reduce((total, group) => total + group.icons.length, 0);
+			const snippet = `import { ${selected.name} } from '@deepseek-ai/dsh-client-ui-primitives'\n\n<${selected.name} size={${selected.size}} />`;
+			const copy = async () => {
+				try {
+					await navigator.clipboard.writeText(snippet);
+					setCopyState("已复制");
+				} catch {
+					setCopyState("复制失败，请检查剪贴板权限");
+				}
+			};
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+				className: "dsh-specimen-content dsh-icon-library",
+				children: [
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("style", { children: ICON_GALLERY_STYLE }),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
+						className: "dsh-specimen-intro",
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "基础资源 / Icons" }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h1", { children: "图标" }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+								className: "dsh-icon-meta",
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [all.length, " 个图标"] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: "@deepseek-ai/dsh-client-ui-primitives" })]
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-icon-library-toolbar",
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
+								icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconSearchOutline16, {}),
+								"aria-label": "搜索图标",
+								placeholder: "搜索名称、用途或组件名",
+								value: query,
+								onChange: (event) => setQuery(event.target.value)
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
+								"aria-label": "图标分类",
+								value: category,
+								onChange: (event) => setCategory(event.target.value),
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+									value: "all",
+									children: "全部分类"
+								}), groups.map((group) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", { children: group.title }, group.title))]
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+								role: "status",
+								children: [
+									count,
+									" / ",
+									all.length
+								]
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-icon-library-layout",
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							className: "dsh-icon-library-results",
+							children: [visible.map((group) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
+								className: "dsh-icon-library-group",
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("h2", { children: [group.title, /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: group.icons.length })] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+									className: "dsh-icon-library-grid",
+									children: group.icons.map((item) => {
+										const Icon = item.icon;
+										return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
+											type: "button",
+											className: "dsh-icon-tile",
+											"aria-pressed": selectedName === item.name,
+											title: item.name,
+											onClick: () => {
+												setSelectedName(item.name);
+												setCopyState("");
+											},
+											children: [
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+													className: "dsh-icon-tile-glyph",
+													children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Icon, { size: item.size })
+												}),
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: item.label }),
+												/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("small", { children: [item.name === "IconTreeCorner8x10" ? "8 × 10" : item.size, "px"] })
+											]
+										}, item.name);
+									})
+								})]
+							}, group.title)), !count && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+								className: "dsh-icon-empty",
+								children: [
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconSearchOutline16, {}),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "没有匹配的图标" }),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+										variant: "outline",
+										size: "sm",
+										onClick: () => {
+											setQuery("");
+											setCategory("all");
+										},
+										children: "清除筛选"
+									})
+								]
+							})]
+						}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("aside", {
+							className: "dsh-icon-inspector",
+							"aria-label": "图标详情",
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: selected.label }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: selected.name })] }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+									className: "dsh-icon-inspector-preview",
+									children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(SelectedIcon, { size: selected.size * 4 })
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+									className: "dsh-icon-specimens",
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SelectedIcon, { size: selected.size }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [
+										"原尺寸 ",
+										selected.name === "IconTreeCorner8x10" ? "8 × 10" : selected.size,
+										"px"
+									] })] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+										className: "dsh-icon-inverse",
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SelectedIcon, { size: selected.size }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "反色" })]
+									})]
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("dl", { children: [
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "导出名称" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: selected.name })] }),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "产品用途" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: selected.usage })] }),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "颜色" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: "currentColor" })] }),
+									selected.name === "IconAgentPresetOutline16" && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "实际尺寸" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: "会话标签 14px / 设置导航 16px" })] })
+								] }),
+								selected.name === "IconAgentPresetOutline16" && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+									className: "dsh-icon-contexts",
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SelectedIcon, { size: 14 }),
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "DeepSeek Harness" }),
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "会话标签" })
+									] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SelectedIcon, { size: 16 }),
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "Agent 预设" }),
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "设置导航" })
+									] })]
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("pre", { children: snippet }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+									variant: "outline",
+									size: "sm",
+									icon: copyState === "已复制" ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCheckOutline16, {}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCopyOutline16, {}),
+									onClick: () => {
+										copy();
+									},
+									children: "复制调用"
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+									className: "dsh-icon-copy-status",
+									role: "status",
+									children: copyState
+								})
+							]
+						})]
+					})
+				]
+			});
+		}
+		//#endregion
+		//#region src/client/GallerySpecimen.tsx
+		function IconAction({ label, children, onClick }) {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Tooltip, {
+				label,
+				side: "top",
+				children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+					className: "dsh-cg-icon-anchor",
+					children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+						size: "sm",
+						"aria-label": label,
+						onClick,
+						children
+					})
+				})
+			});
+		}
+		function Specimen({ name, title, metrics, sample, children, notify }) {
+			const [codeOpen, setCodeOpen] = (0, react.useState)(false);
+			const id = (0, react.useId)();
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
+				className: "dsh-cg-section",
+				"aria-labelledby": id,
+				children: [
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
+						className: "dsh-cg-section-head",
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("h2", {
+							id,
+							children: [
+								title,
+								" ",
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: name })
+							]
+						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+							className: "dsh-cg-metrics",
+							children: metrics.map((metric) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: metric }, metric))
+						})] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							className: "dsh-cg-actions",
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(IconAction, {
+								label: "复制 " + name + " 实例",
+								onClick: () => {
+									(0, _deepseek_ai_dsh_client_ui_primitives.writeClipboard)(sample).then((ok) => notify(ok ? "实例已复制" : "无法访问剪贴板", !ok));
+								},
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCopyOutline16, {})
+							}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Tooltip, {
+								label: "实例代码",
+								side: "top",
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+									className: "dsh-cg-icon-anchor",
+									children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+										size: "sm",
+										"aria-label": name + " 实例代码",
+										"aria-expanded": codeOpen,
+										"aria-controls": id + "-code",
+										onClick: () => setCodeOpen((value) => !value),
+										children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCodeOutline16, {})
+									})
+								})
+							})]
+						})]
+					}),
+					children,
+					codeOpen && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						className: "dsh-cg-code",
+						id: id + "-code",
+						children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.CodeBlock, {
+							code: sample,
+							lang: "tsx",
+							copyLabel: "复制代码",
+							copiedLabel: "已复制"
+						})
+					})
+				]
+			});
+		}
+		//#endregion
+		//#region src/client/NativeSpecimens.tsx
+		const SelectableCard = _deepseek_ai_dsh_client_ui_primitives.SelectableCard;
+		const CollectionAddButton = _deepseek_ai_dsh_client_ui_primitives.CollectionAddButton;
+		function PresetCardSpecimen({ notify }) {
+			const [selected, setSelected] = (0, react.useState)("general");
+			const entries = [
+				{
+					id: "general",
+					title: "通用助手",
+					description: "通用任务与日常问答。",
+					badge: "内置"
+				},
+				{
+					id: "coding",
+					title: "编码助手",
+					description: "代码分析、实现与验证。",
+					badge: "内置"
+				},
+				{
+					id: "review",
+					title: "代码审阅",
+					description: "检查行为回归、接口约束和测试覆盖。",
+					badge: "自定义"
+				}
+			];
+			const footer = (title) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Tooltip, {
+				label: "查看 " + title,
+				children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+					size: "sm",
+					"aria-label": "查看 " + title,
+					onClick: () => notify(title + " · 查看示例"),
+					children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconBrowseOutline16, {})
+				}) })
+			}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Tooltip, {
+				label: "复制 " + title,
+				children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+					size: "sm",
+					"aria-label": "复制 " + title,
+					onClick: () => notify(title + " · 复制示例"),
+					children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCopyOutline16, {})
+				}) })
+			})] });
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(Specimen, {
+				title: "实体选择卡片",
+				name: "SelectableCard",
+				metrics: [
+					"AgentPresetSection",
+					"主区选择 / 底部独立操作",
+					"pressed / disabled / broken",
+					"r20 · 原生规格"
+				],
+				notify,
+				sample: `import { SelectableCard, Button } from "@deepseek-ai/dsh-client-ui-primitives"
+
+<SelectableCard title={name} description={description} metadata={id}
+  pressed={isDefault} disabled={isDefault} broken={Boolean(error)}
+  mainButtonProps={{ "aria-label": "设为默认: " + name, onClick: makeDefault }}
+  footer={<Button onClick={copyPreset}>复制</Button>} />`,
+				children: [!SelectableCard ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+					className: "dsh-cg-unavailable",
+					role: "status",
+					children: "宿主未提供 SelectableCard"
+				}) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-native-label",
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "单项选择" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "已选主区禁用 · 底部操作独立" })]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						className: "dsh-native-card-grid",
+						children: entries.map((item) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)(SelectableCard, {
+							title: item.title,
+							description: item.description,
+							metadata: item.id,
+							badges: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Pill, { children: item.badge }),
+							pressed: selected === item.id,
+							disabled: selected === item.id,
+							mainButtonProps: {
+								"aria-label": (selected === item.id ? "当前预设: " : "设为默认: ") + item.title,
+								onClick: () => setSelected(item.id)
+							},
+							footer: footer(item.title)
+						}, item.id))
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-cg-result",
+						role: "status",
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "当前示例" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: entries.find((item) => item.id === selected)?.title })]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-native-card-grid dsh-native-card-states",
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "不可用 / 保持键盘可达" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(SelectableCard, {
+								title: "配置不可用",
+								description: "配置文件缺少必要字段。",
+								metadata: "preset.invalid",
+								broken: true,
+								mainButtonProps: {
+									"aria-label": "不可用预设: 配置不可用",
+									onClick: () => notify("不应触发不可用主区", true)
+								},
+								footer: footer("配置不可用"),
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+									className: "dsh-native-owner-error",
+									role: "alert",
+									children: "缺少模型配置"
+								})
+							})] }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "只读 / 主区禁用" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(SelectableCard, {
+								title: "只读预设",
+								description: "当前环境不允许修改默认预设。",
+								metadata: "preset.readonly",
+								disabled: true,
+								mainButtonProps: { "aria-label": "只读预设" },
+								footer: footer("只读预设")
+							})] }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "长内容 / 描述截断" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(SelectableCard, {
+								title: "多阶段研究与实现",
+								description: "分析需求、核对来源、形成计划、执行验证，并整理可追溯的交付结果。".repeat(8),
+								metadata: "preset.research.with-a-long-identifier",
+								mainButtonProps: {
+									"aria-label": "长内容预设",
+									onClick: () => notify("长内容主区已触发")
+								},
+								footer: footer("长内容预设")
+							})] })
+						]
+					})
+				] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("dl", {
+					className: "dsh-native-contract",
+					children: [
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "语义" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: "选择一个实体，不是导航卡片" })] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "结构" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: "标题 / 标记 / 描述 / 标识 / 独立 footer" })] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "组件负责" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: "边界、截断、选择态、禁用与不可用主区" })] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "页面负责" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: "默认项、业务标记、错误原因、复制与查看" })] })
+					]
+				})]
+			});
+		}
+		function CollectionActionSpecimen({ notify }) {
+			const [adding, setAdding] = (0, react.useState)(null);
+			const [name, setName] = (0, react.useState)("");
+			const [items, setItems] = (0, react.useState)([]);
+			const field = (0, react.useId)();
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(Specimen, {
+				title: "集合扩展入口",
+				name: "CollectionAddButton",
+				metrics: [
+					"44px · r16",
+					"虚线边框",
+					"图标 + 标签",
+					"ui-settings-models / ModelsSection"
+				],
+				notify,
+				sample: "import { CollectionAddButton, IconPlusOutline16 } from \"@deepseek-ai/dsh-client-ui-primitives\"\n\n<CollectionAddButton disabled={!writable} onClick={openProviderForm}>\n  <IconPlusOutline16 size={14} />添加提供方\n</CollectionAddButton>",
+				children: [!CollectionAddButton ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+					className: "dsh-cg-unavailable",
+					role: "status",
+					children: "宿主未提供 CollectionAddButton"
+				}) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-native-label",
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "提供方列表末尾" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "并列入口 · 等宽 · 空间不足时换行" })]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-native-provider-actions",
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)(CollectionAddButton, {
+							onClick: () => {
+								setAdding("known");
+								setName("");
+							},
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconPlusOutline16, { size: 14 }), "添加提供方"]
+						}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(CollectionAddButton, {
+							onClick: () => {
+								setAdding("custom");
+								setName("");
+							},
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconPlusOutline16, { size: 14 }), "添加自定义提供方"]
+						})]
+					}),
+					adding && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("form", {
+						className: "dsh-native-inline-form",
+						onSubmit: (event) => {
+							event.preventDefault();
+							if (!name.trim()) return;
+							setItems((value) => [...value, name.trim()]);
+							setAdding(null);
+							notify("示例提供方已添加");
+						},
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("label", {
+								htmlFor: field,
+								children: adding === "known" ? "提供方名称" : "自定义提供方名称"
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
+								id: field,
+								value: name,
+								onChange: (event) => setName(event.target.value),
+								autoFocus: true,
+								required: true,
+								maxLength: 64
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+								className: "dsh-cg-actions",
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+									size: "sm",
+									variant: "outline",
+									onClick: () => setAdding(null),
+									children: "取消"
+								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+									type: "submit",
+									size: "sm",
+									variant: "primary",
+									disabled: !name.trim(),
+									children: "添加"
+								})]
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-cg-result",
+						role: "status",
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "本地示例" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: items.length ? items.join(" / ") : "尚未添加" })]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-native-state-grid",
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "默认" }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(CollectionAddButton, {
+								onClick: () => notify("默认入口已触发"),
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconPlusOutline16, { size: 14 }), "添加提供方"]
+							})] }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "禁用 / 无可用提供方" }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(CollectionAddButton, {
+								disabled: true,
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconPlusOutline16, { size: 14 }), "添加提供方"]
+							})] }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "长标签" }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(CollectionAddButton, {
+								onClick: () => notify("长标签入口已触发"),
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconPlusOutline16, { size: 14 }), "添加兼容 OpenAI 协议的提供方"]
+							})] })
+						]
+					})
+				] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("dl", {
+					className: "dsh-native-contract",
+					children: [
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "语义" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: "向集合新增一个实体的占位入口" })] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "结构" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: "原生 button / 可选图标 / 标签" })] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "组件负责" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: "边界、尺寸、hover、focus、disabled" })] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("dt", { children: "页面负责" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("dd", { children: "等宽分组、换行、新增表单与业务校验" })] })
+					]
+				})]
+			});
+		}
+		//#endregion
+		//#region src/client/ComponentGallery.tsx
+		const GROUPS = [
+			["actions", "按钮与入口"],
+			["entities", "选择与实体"],
+			["inputs", "输入与表单"],
+			["overlays", "菜单与浮层"],
+			["feedback", "状态与反馈"],
+			["content", "结构化内容"],
+			["all", "全部组件"]
+		];
+		const VARIANTS = [
+			"primary",
+			"ghost",
+			"outline",
+			"toolbar"
+		];
+		const STATES = [
+			["done", "已完成"],
+			["warning", "待确认"],
+			["ongoing", "进行中"],
+			["error", "失败"]
+		];
+		const FOLD_LABELS = {
+			copy: "复制",
+			copied: "已复制",
+			collapse: "收起",
+			collapseAria: "收起内容",
+			expand: (count) => "展开 " + count + " 行",
+			expandAria: (count) => "展开隐藏的 " + count + " 行"
+		};
+		const TERMINAL_LABELS = {
+			...FOLD_LABELS,
+			signal: (signal) => "信号 " + signal,
+			exitCode: (code) => "退出码 " + code,
+			running: "运行中",
+			failed: "失败",
+			done: "已完成",
+			noOutput: "无输出"
+		};
+		const JSON_LABELS = {
+			copyValue: "复制值",
+			copyJson: "复制 JSON",
+			copyPath: "复制属性路径",
+			copyPrettyJson: "复制格式化 JSON",
+			copyCompactJson: "复制紧凑 JSON",
+			copied: "已复制",
+			copyFailed: "复制失败",
+			collapseNode: "收起节点",
+			expandNode: "展开节点",
+			copyButtonTitle: (action) => action
+		};
+		function ButtonSpecimen({ notify }) {
+			const [busy, setBusy] = (0, react.useState)(false);
+			const timer = (0, react.useRef)();
+			(0, react.useEffect)(() => () => {
+				clearTimeout(timer.current);
+			}, []);
+			const save = () => {
+				setBusy(true);
+				timer.current = setTimeout(() => {
+					setBusy(false);
+					notify("本地草稿已保存");
+				}, 1200);
+			};
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(Specimen, {
+				name: "Button",
+				title: "通用命令按钮",
+				metrics: [
+					"4 variants",
+					"md 36px / sm 28px",
+					"icon 16px",
+					"native disabled"
+				],
+				notify,
+				sample: "<Button variant=\"primary\" size=\"md\" icon={<IconPlusOutline16 />} onClick={onCreate}>新建项目</Button>\n<Button variant=\"outline\" size=\"sm\" disabled>新建项目</Button>",
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+					className: "dsh-cg-table-scroll",
+					tabIndex: 0,
+					role: "region",
+					"aria-label": "按钮变体尺寸矩阵",
+					children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("table", {
+						className: "dsh-cg-matrix",
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("thead", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("tr", { children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("th", {
+								scope: "col",
+								children: "Variant"
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("th", {
+								scope: "col",
+								children: "md / 36"
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("th", {
+								scope: "col",
+								children: "sm / 28"
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("th", {
+								scope: "col",
+								children: "md / disabled"
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("th", {
+								scope: "col",
+								children: "sm / disabled"
+							})
+						] }) }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("tbody", { children: VARIANTS.map((variant) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("tr", { children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("th", {
+								scope: "row",
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: variant })
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+								variant,
+								icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconPlusOutline16, {}),
+								onClick: () => notify(variant + " · md"),
+								children: "新建项目"
+							}) }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+								variant,
+								size: "sm",
+								icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconPlusOutline16, {}),
+								onClick: () => notify(variant + " · sm"),
+								children: "新建项目"
+							}) }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+								variant,
+								disabled: true,
+								icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconPlusOutline16, {}),
+								children: "新建项目"
+							}) }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("td", { children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+								variant,
+								size: "sm",
+								disabled: true,
+								icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconPlusOutline16, {}),
+								children: "新建项目"
+							}) })
+						] }, variant)) })]
+					})
+				}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					className: "dsh-cg-inline-samples",
+					children: [
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "纯文本" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+							variant: "outline",
+							onClick: () => notify("已取消"),
+							children: "取消"
+						})] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "图标操作" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(IconAction, {
+							label: "复制项目名称",
+							onClick: () => {
+								(0, _deepseek_ai_dsh_client_ui_primitives.writeClipboard)("Design system").then((ok) => notify(ok ? "项目名称已复制" : "复制失败", !ok));
+							},
+							children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCopyOutline16, {})
+						})] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "异步组合 / disabled + icon" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+							variant: "primary",
+							disabled: busy,
+							"aria-busy": busy,
+							icon: busy ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconLoadingOutline16, { className: "dsh-cg-spin" }) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCheckOutline16, {}),
+							onClick: save,
+							children: busy ? "保存中" : "保存草稿"
+						})] })
+					]
+				})]
+			});
+		}
+		function PillSpecimen({ notify }) {
+			const [selected, setSelected] = (0, react.useState)("全部");
+			const [pinned, setPinned] = (0, react.useState)(true);
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Specimen, {
+				name: "Pill",
+				title: "选项与标签",
+				metrics: [
+					"24px",
+					"active",
+					"onClick → button",
+					"无 onClick → span"
+				],
+				notify,
+				sample: "<Pill active={selected === \"all\"} aria-pressed={selected === \"all\"} onClick={() => setSelected(\"all\")}>全部</Pill>\n<Pill>只读标签</Pill>",
+				children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					className: "dsh-cg-inline-samples",
+					children: [
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "单选筛选" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+							className: "dsh-cg-options",
+							role: "group",
+							"aria-label": "项目筛选",
+							children: [
+								"全部",
+								"进行中",
+								"已完成"
+							].map((label) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Pill, {
+								active: selected === label,
+								"aria-pressed": selected === label,
+								onClick: () => setSelected(label),
+								children: label
+							}, label))
+						})] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "独立选中" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Pill, {
+							active: pinned,
+							"aria-pressed": pinned,
+							onClick: () => setPinned((value) => !value),
+							children: "已收藏"
+						})] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "静态标签" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Pill, { children: "只读" })] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "禁用交互" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Pill, {
+							disabled: true,
+							onClick: () => notify("不可达"),
+							children: "已归档"
+						})] })
+					]
+				})
+			});
+		}
+		function InputSpecimen({ notify }) {
+			const id = (0, react.useId)();
+			const [name, setName] = (0, react.useState)("Design system");
+			const [slug, setSlug] = (0, react.useState)("design board");
+			const valid = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Specimen, {
+				name: "Input",
+				title: "单行输入",
+				metrics: [
+					"32px",
+					"icon 16px",
+					"native input attributes",
+					"校验反馈由表单持有"
+				],
+				notify,
+				sample: "<label htmlFor=\"project-name\">项目名称</label>\n<Input id=\"project-name\" value={name} onChange={e => setName(e.currentTarget.value)} />\n<Input aria-invalid={!valid} aria-describedby=\"validation\" value={slug} onChange={e => setSlug(e.currentTarget.value)} />",
+				children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					className: "dsh-cg-fields",
+					children: [
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+							className: "dsh-cg-field",
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "空值 / placeholder" }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, { placeholder: "输入项目名称" }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "默认状态" })
+							]
+						}),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+							className: "dsh-cg-field",
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "已填写 / controlled" }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
+									value: name,
+									onChange: (event) => setName(event.currentTarget.value)
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("small", { children: [name.length, " 个字符"] })
+							]
+						}),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+							className: "dsh-cg-field",
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "前置图标 / search" }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
+									type: "search",
+									icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconSearchOutline16, {}),
+									placeholder: "搜索模型"
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "icon slot 16px" })
+							]
+						}),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+							className: "dsh-cg-field",
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "只读 / readOnly" }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
+									readOnly: true,
+									value: "workspace/design-system"
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "可选择与复制" })
+							]
+						}),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+							className: "dsh-cg-field",
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "禁用 / disabled" }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
+									disabled: true,
+									value: "已归档项目"
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "原生禁用" })
+							]
+						}),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+							className: "dsh-cg-field",
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "项目标识 / validation" }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
+									value: slug,
+									"aria-invalid": !valid,
+									"aria-describedby": id + "-validation",
+									onChange: (event) => setSlug(event.currentTarget.value)
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("small", {
+									id: id + "-validation",
+									className: valid ? "dsh-cg-success" : "dsh-cg-error",
+									children: [valid ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCheckOutline16, {}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconWarningOutline16, {}), valid ? "标识可用" : "仅限小写字母、数字和单连字符"]
+								})
+							]
+						})
+					]
+				})
+			});
+		}
+		const MENU_ITEMS = [
+			{
+				type: "label",
+				id: "heading",
+				text: "项目操作"
+			},
+			{
+				id: "rename",
+				label: "重命名",
+				icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEditOutline16, {})
+			},
+			{
+				id: "duplicate",
+				label: "复制项目",
+				icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCopyOutline16, {})
+			},
+			{
+				id: "move",
+				label: "移动到",
+				icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconFolderOpen16, {}),
+				submenu: [{
+					id: "personal",
+					label: "个人工作区"
+				}, {
+					id: "team",
+					label: "团队工作区"
+				}]
+			},
+			{
+				id: "archive",
+				label: "归档",
+				disabled: true
+			},
+			{
+				type: "separator",
+				id: "separator"
+			},
+			{
+				id: "remove",
+				label: "移除项目",
+				danger: true,
+				icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconTrashOutline16, {})
+			}
+		];
+		function MenuSpecimen({ notify }) {
+			const [open, setOpen] = (0, react.useState)(null);
+			const [selection, setSelection] = (0, react.useState)("rename");
+			const [result, setResult] = (0, react.useState)("尚未选择");
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(Specimen, {
+				name: "Menu",
+				title: "操作菜单",
+				metrics: [
+					"portal",
+					"label / separator / danger",
+					"selectedId / disabled / submenu"
+				],
+				notify,
+				sample: "<Menu open={open} portal selectedId={selectedId} items={items}\n  anchor={<Button aria-haspopup=\"menu\" aria-expanded={open} onClick={() => setOpen(!open)}>项目操作</Button>}\n  onSelect={id => { setSelectedId(id); setOpen(false) }} onClose={() => setOpen(false)} />",
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+					className: "dsh-cg-inline-samples",
+					children: [
+						["default", "标准"],
+						["dense", "Dense"],
+						["compact", "Compact"]
+					].map(([key, label]) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: label }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Menu, {
+						open: open === key,
+						portal: true,
+						dense: key === "dense",
+						compact: key === "compact",
+						items: MENU_ITEMS,
+						selectedId: selection,
+						anchor: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+							variant: "outline",
+							icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEllipsisOutline16, {}),
+							"aria-haspopup": "menu",
+							"aria-expanded": open === key,
+							onClick: () => setOpen((value) => value === key ? null : key),
+							children: ["项目操作", /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconChevronDownOutline14, {})]
+						}),
+						onSelect: (id) => {
+							setSelection(id);
+							setResult(id);
+							setOpen(null);
+							notify("已选择：" + id);
+						},
+						onClose: () => setOpen(null)
+					})] }, key))
+				}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("output", {
+					className: "dsh-cg-result",
+					children: ["onSelect ", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: result })]
+				})]
+			});
+		}
+		function useDialogFocus(open, title) {
+			(0, react.useLayoutEffect)(() => {
+				if (!open) return;
+				const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+				const dialog = [...document.querySelectorAll("[role=\"dialog\"]")].find((element) => element.getAttribute("aria-label") === title);
+				if (!dialog) return;
+				const controls = () => [...dialog.querySelectorAll("button:not(:disabled), input:not(:disabled), [tabindex=\"0\"]")].filter((element) => element.getClientRects().length > 0);
+				(dialog.querySelector("input:not(:disabled)") ?? controls()[0])?.focus();
+				const containFocus = (event) => {
+					if (event.target instanceof Node && !dialog.contains(event.target)) (controls()[0] ?? dialog).focus();
+				};
+				const trapTab = (event) => {
+					if (event.key !== "Tab") return;
+					const items = controls();
+					const first = items[0];
+					const last = items[items.length - 1];
+					if (!first || !last) return;
+					if (event.shiftKey && document.activeElement === first) {
+						event.preventDefault();
+						last.focus();
+					} else if (!event.shiftKey && document.activeElement === last) {
+						event.preventDefault();
+						first.focus();
+					}
+				};
+				document.addEventListener("focusin", containFocus);
+				dialog.addEventListener("keydown", trapTab);
+				return () => {
+					document.removeEventListener("focusin", containFocus);
+					dialog.removeEventListener("keydown", trapTab);
+					if (previous?.isConnected) previous.focus();
+				};
+			}, [open, title]);
+		}
+		function OverlaySpecimen({ notify }) {
+			const [dialog, setDialog] = (0, react.useState)(null);
+			const [name, setName] = (0, react.useState)("Design system");
+			const [draft, setDraft] = (0, react.useState)(name);
+			const [acknowledged, setAcknowledged] = (0, react.useState)(false);
+			const unique = (0, react.useId)();
+			const editTitle = "编辑项目";
+			const riskTitle = "移除示例项目？";
+			useDialogFocus(dialog === "edit", editTitle);
+			useDialogFocus(dialog === "risk", riskTitle);
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(Specimen, {
+				name: "Modal / RiskConfirmation / Tooltip / HoverCard",
+				title: "浮层与确认",
+				metrics: [
+					"受控 open",
+					"body portal",
+					"显式确认",
+					"hover / focus"
+				],
+				notify,
+				sample: "<Modal open={open} onClose={() => setOpen(false)} title=\"编辑项目\" closeLabel=\"关闭\"\n  footer={<Button variant=\"primary\" onClick={save}>保存</Button>}>\n  <Input aria-label=\"项目名称\" value={name} onChange={e => setName(e.currentTarget.value)} />\n</Modal>",
+				children: [
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-cg-inline-samples",
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "编辑 / Modal" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+								variant: "outline",
+								icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEditOutline16, {}),
+								onClick: () => {
+									setDraft(name);
+									setDialog("edit");
+								},
+								children: "编辑项目"
+							})] }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "风险确认 / checkbox" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+								variant: "outline",
+								icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconTrashOutline16, {}),
+								onClick: () => {
+									setAcknowledged(false);
+									setDialog("risk");
+								},
+								children: "移除示例项目"
+							})] }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "Tooltip / top" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(IconAction, {
+								label: "刷新项目",
+								onClick: () => notify("项目已刷新"),
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconRefreshOutline16, {})
+							})] }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "HoverCard / copyText" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.HoverCard, {
+								copyLabel: "复制路径",
+								copiedLabel: "路径已复制",
+								copyText: "/workspace/design-system",
+								anchor: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+									size: "sm",
+									variant: "ghost",
+									icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconFolderOpen16, {}),
+									children: "项目路径"
+								}),
+								content: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+									className: "dsh-cg-hover-content",
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: name }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: "/workspace/design-system" })]
+								})
+							})] })
+						]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("output", {
+						className: "dsh-cg-result",
+						children: ["项目名称 ", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: name })]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Modal, {
+						open: dialog === "edit",
+						title: editTitle,
+						closeLabel: "关闭编辑",
+						onClose: () => setDialog(null),
+						footer: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+							variant: "outline",
+							onClick: () => setDialog(null),
+							children: "取消"
+						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+							variant: "primary",
+							disabled: !draft.trim(),
+							onClick: () => {
+								setName(draft.trim());
+								setDialog(null);
+								notify("项目名称已更新");
+							},
+							children: "保存"
+						})] }),
+						children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+							className: "dsh-cg-field",
+							htmlFor: unique,
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "项目名称" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
+								id: unique,
+								value: draft,
+								maxLength: 64,
+								onChange: (event) => setDraft(event.currentTarget.value)
+							})]
+						})
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.RiskConfirmation, {
+						open: dialog === "risk",
+						title: riskTitle,
+						description: "此操作仅重置当前陈列的示例项目名称，不会删除工作区或文件。",
+						acknowledgeLabel: "我确认重置示例项目",
+						cancelLabel: "取消",
+						closeLabel: "关闭确认",
+						confirmLabel: "确认移除",
+						acknowledged,
+						onAcknowledgedChange: setAcknowledged,
+						onCancel: () => setDialog(null),
+						onConfirm: () => {
+							setName("未命名项目");
+							setDialog(null);
+							notify("示例项目已重置");
+						}
+					})
+				]
+			});
+		}
+		function FeedbackSpecimen({ notify }) {
+			const [open, setOpen] = (0, react.useState)(true);
+			const [state, setState] = (0, react.useState)("ongoing");
+			const [connection, setConnection] = (0, react.useState)("disconnected");
+			const timer = (0, react.useRef)();
+			(0, react.useEffect)(() => () => {
+				clearTimeout(timer.current);
+			}, []);
+			const reconnect = () => {
+				clearTimeout(timer.current);
+				setConnection("connecting");
+				timer.current = setTimeout(() => {
+					setConnection("recovered");
+				}, 1400);
+			};
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(Specimen, {
+				name: "StateDot / DisclosureRow / ConnectionIndicator / Toast",
+				title: "状态与反馈",
+				metrics: [
+					"4 states",
+					"StateDot 10px",
+					"DisclosureRow 24px",
+					"持久反馈 / 短暂反馈"
+				],
+				notify,
+				sample: "<DisclosureRow icon={<StateDot state=\"ongoing\" />} title=\"检查项目\" open={open}\n  expandable expandOnRowClick onToggle={() => setOpen(!open)} collapsedContent=\"3 个文件\">\n  <p>正在检查组件属性。</p>\n</DisclosureRow>",
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+					className: "dsh-cg-status-matrix",
+					children: STATES.map(([value, label]) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
+						/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.StateDot, { state: value }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: label }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: value })
+					] }, value))
+				}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					className: "dsh-cg-two-col",
+					children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-cg-subsection",
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h3", { children: "DisclosureRow" }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+								className: "dsh-cg-options",
+								role: "group",
+								"aria-label": "任务状态",
+								children: STATES.map(([value, label]) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Pill, {
+									active: state === value,
+									"aria-pressed": state === value,
+									onClick: () => setState(value),
+									children: label
+								}, value))
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+								className: "dsh-cg-disclosure",
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.DisclosureRow, {
+									icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.StateDot, { state }),
+									title: "检查项目",
+									open,
+									expandable: true,
+									expandOnRowClick: true,
+									keepContentWhenOpen: true,
+									onToggle: () => setOpen((value) => !value),
+									collapsedContent: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+										className: "dsh-cg-muted",
+										children: "3 个文件"
+									}),
+									children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+										className: "dsh-cg-disclosure-body",
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.StateDot, { state }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [STATES.find(([value]) => value === state)?.[1], " · Button.tsx / Input.tsx / Menu.tsx"] })]
+									})
+								})
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.DisclosureRow, {
+								icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.StateDot, { state: "done" }),
+								title: "资源已就绪",
+								open: false,
+								expandable: false,
+								onToggle: () => {},
+								collapsedContent: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+									className: "dsh-cg-muted",
+									children: "不可展开"
+								})
+							})
+						]
+					}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-cg-subsection",
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h3", { children: "ConnectionIndicator" }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+								className: "dsh-cg-options",
+								role: "group",
+								"aria-label": "连接状态",
+								children: [
+									"disconnected",
+									"connecting",
+									"recovered"
+								].map((value, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Pill, {
+									active: connection === value,
+									"aria-pressed": connection === value,
+									onClick: () => {
+										clearTimeout(timer.current);
+										setConnection(value);
+									},
+									children: [
+										"已断开",
+										"连接中",
+										"已恢复"
+									][index]
+								}, value))
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+								className: "dsh-cg-connection",
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.ConnectionIndicator, {
+									state: connection,
+									disconnectedLabel: "连接已断开",
+									reconnectLabel: "重新连接",
+									connectingLabel: "正在重连",
+									recoveredLabel: "连接已恢复",
+									reconnectActionLabel: "重新连接示例",
+									restartActionLabel: "重新开始连接示例",
+									onReconnect: reconnect
+								})
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+								className: "dsh-cg-actions",
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+									size: "sm",
+									icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCheckOutline16, {}),
+									onClick: () => notify("所有更改已保存"),
+									children: "成功反馈"
+								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+									size: "sm",
+									icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconWarningOutline16, {}),
+									onClick: () => notify("示例请求未完成，请重试", true),
+									children: "失败反馈"
+								})]
+							})
+						]
+					})]
+				})]
+			});
+		}
+		function ContentSpecimen({ notify }) {
+			const [terminalState, setTerminalState] = (0, react.useState)("done");
+			const output = terminalState === "error" ? "Error: Missing project name\nValidation failed." : terminalState === "empty" ? "" : "Resolving project...\nReading Button.tsx\nReading Input.tsx\nReading Menu.tsx\nChecking semantic tokens\nChecking component props\nChecking keyboard actions\nChecking disabled states\nChecking responsive layout\n12 checks passed";
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Specimen, {
+				name: "TerminalBlock / ReadBlock / DiffBlock / JsonTree / CodeBlock",
+				title: "结构化内容",
+				metrics: [
+					"原生复制",
+					"折叠 / 展开",
+					"行号 / 差异 / 树",
+					"maxLines = 6"
+				],
+				notify,
+				sample: "<TerminalBlock command=\"pnpm check\" output={output} exitCode={0} maxLines={6} labels={labels} />\n<ReadBlock label=\"Button.tsx\" lines={lines} totalLines={12} lang=\"tsx\" labels={labels} />\n<JsonTree data={data} label=\"项目配置\" labels={jsonLabels} />",
+				children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					className: "dsh-cg-two-col dsh-cg-content-grid",
+					children: [
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							className: "dsh-cg-subsection",
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h3", { children: "TerminalBlock" }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+									className: "dsh-cg-options",
+									role: "group",
+									"aria-label": "终端状态",
+									children: [
+										"done",
+										"running",
+										"error",
+										"empty"
+									].map((value, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Pill, {
+										active: terminalState === value,
+										"aria-pressed": terminalState === value,
+										onClick: () => setTerminalState(value),
+										children: [
+											"完成",
+											"运行中",
+											"失败",
+											"无输出"
+										][index]
+									}, value))
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.TerminalBlock, {
+									command: "pnpm check",
+									cwd: "/workspace/design-system",
+									output,
+									running: terminalState === "running",
+									exitCode: terminalState === "error" ? 1 : 0,
+									maxLines: 6,
+									labels: TERMINAL_LABELS
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							className: "dsh-cg-subsection",
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h3", { children: "ReadBlock" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.ReadBlock, {
+								label: "src/actions.tsx",
+								lang: "tsx",
+								maxLines: 6,
+								totalLines: 12,
+								lines: [
+									"import { Button } from \"@deepseek-ai/dsh-client-ui-primitives\"",
+									"",
+									"export function Actions() {",
+									"  return (",
+									"    <Button",
+									"      variant=\"primary\"",
+									"      size=\"sm\"",
+									"      onClick={save}",
+									"    >",
+									"      保存",
+									"    </Button>",
+									"  )}"
+								].map((text, index) => ({
+									number: index + 1,
+									text
+								})),
+								labels: {
+									...FOLD_LABELS,
+									window: (shown, total) => shown + " / " + total + " 行"
+								}
+							})]
+						}),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							className: "dsh-cg-subsection",
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h3", { children: "DiffBlock" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.DiffBlock, {
+								maxLines: 6,
+								diffs: [{
+									path: "src/actions.tsx",
+									oldText: "<Button variant=\"ghost\">保存</Button>",
+									newText: "<Button variant=\"primary\">保存</Button>"
+								}],
+								labels: {
+									...FOLD_LABELS,
+									files: (count) => count + " 个文件"
+								}
+							})]
+						}),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							className: "dsh-cg-subsection",
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h3", { children: "JsonTree" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.JsonTree, {
+								label: "项目配置",
+								data: {
+									project: "Design system",
+									theme: {
+										mode: "system",
+										density: "compact"
+									},
+									components: [
+										"Button",
+										"Input",
+										"Menu"
+									],
+									published: false,
+									revision: 12
+								},
+								labels: JSON_LABELS
+							})]
+						})
+					]
+				})
+			});
+		}
+		const AddButton = _deepseek_ai_dsh_client_ui_primitives.AddButton;
+		function AddActionSpecimen({ notify }) {
+			const [count, setCount] = (0, react.useState)(0);
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Specimen, {
+				name: "AddButton",
+				title: "列表内添加命令",
+				metrics: [
+					"模型设置 / 两处原生消费",
+					"28px",
+					"disabled / focus-visible",
+					AddButton ? "已公共化" : "宿主未提供"
+				],
+				notify,
+				sample: "import { AddButton, IconPlusOutline16 } from \"@deepseek-ai/dsh-client-ui-primitives\"\n\n<AddButton onClick={onAdd}>添加模型</AddButton>\n<AddButton disabled={busy} onClick={onAdd}><IconPlusOutline16 size={14} />添加模型</AddButton>",
+				children: AddButton ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					className: "dsh-cg-inline-samples",
+					children: [
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "模型列表 / 纯文字" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(AddButton, {
+							onClick: () => setCount((value) => value + 1),
+							children: "添加模型"
+						})] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "DeepSeek 模型 / 图标 14px" }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(AddButton, {
+							onClick: () => setCount((value) => value + 1),
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconPlusOutline16, { size: 14 }), "添加模型"]
+						})] }),
+						/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: "禁用" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(AddButton, {
+							disabled: true,
+							children: "添加模型"
+						})] })
+					]
+				}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					className: "dsh-cg-result",
+					role: "status",
+					children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "本地新增" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: count })]
+				})] }) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+					className: "dsh-cg-result",
+					children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "需要包含 AddButton 导出的 DSH 版本" })
+				})
+			});
+		}
+		const SECTIONS$1 = [
+			{
+				key: "collection-add",
+				group: "actions",
+				terms: "CollectionAddButton 添加提供方 添加自定义提供方 虚线 集合 扩展 按钮",
+				component: CollectionActionSpecimen
+			},
+			{
+				key: "preset-card",
+				group: "entities",
+				terms: "SelectableCard Agent 预设 卡片 选择 实体 默认 不可用 区块",
+				component: PresetCardSpecimen
+			},
+			{
+				key: "buttons",
+				group: "actions",
+				terms: "Button 按钮 尺寸 变体 禁用 loading",
+				component: ButtonSpecimen
+			},
+			{
+				key: "add-action",
+				group: "actions",
+				terms: "AddButton 添加模型 列表 添加入口 产品模式",
+				component: AddActionSpecimen
+			},
+			{
+				key: "pills",
+				group: "entities",
+				terms: "Pill 标签 选择 筛选",
+				component: PillSpecimen
+			},
+			{
+				key: "inputs",
+				group: "inputs",
+				terms: "Input 输入 搜索 校验 表单 只读 禁用",
+				component: InputSpecimen
+			},
+			{
+				key: "menus",
+				group: "overlays",
+				terms: "Menu 菜单 选择 子菜单",
+				component: MenuSpecimen
+			},
+			{
+				key: "overlays",
+				group: "overlays",
+				terms: "Modal RiskConfirmation Tooltip HoverCard 弹窗 浮层 对话框 确认 dialog",
+				component: OverlaySpecimen
+			},
+			{
+				key: "feedback",
+				group: "feedback",
+				terms: "StateDot DisclosureRow ConnectionIndicator Toast 状态 反馈 展开 连接",
+				component: FeedbackSpecimen
+			},
+			{
+				key: "content",
+				group: "content",
+				terms: "TerminalBlock ReadBlock DiffBlock JsonTree CodeBlock 终端 内容 代码 JSON 差异",
+				component: ContentSpecimen
+			}
+		];
+		function ComponentGallery() {
+			const [group, setGroup] = (0, react.useState)("actions");
+			const [query, setQuery] = (0, react.useState)("");
+			const [resetKey, setResetKey] = (0, react.useState)(0);
+			const [toast, setToast] = (0, react.useState)(null);
+			const sequence = (0, react.useRef)(0);
+			const notify = (0, react.useCallback)((text, error = false) => {
+				setToast({
+					id: ++sequence.current,
+					text,
+					error
+				});
+			}, []);
+			const clearToast = (0, react.useCallback)(() => setToast(null), []);
+			const search = query.trim().toLowerCase();
+			const visible = SECTIONS$1.filter((section) => search ? section.terms.toLowerCase().includes(search) : group === "all" || section.group === group);
+			const activeLabel = search ? "搜索结果" : GROUPS.find(([key]) => key === group)?.[1];
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+				className: "dsh-cg",
+				children: [
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
+						className: "dsh-cg-heading",
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+								className: "dsh-cg-eyebrow",
+								children: "DSH / COMPONENT LIBRARY"
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h1", { children: "基础组件" }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: "@deepseek-ai/dsh-client-ui-primitives" })
+						] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+							className: "dsh-cg-scope",
+							children: "原生组件与组合模式"
+						})]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("nav", {
+						className: "dsh-cg-families",
+						"aria-label": "组件族",
+						children: GROUPS.map(([value, label]) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
+							type: "button",
+							"aria-pressed": !search && group === value,
+							onClick: () => {
+								setGroup(value);
+								setQuery("");
+							},
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: label }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: SECTIONS$1.filter((section) => value === "all" || section.group === value).length })]
+						}, value))
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-cg-toolbar",
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
+								className: "dsh-cg-search",
+								icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconSearchOutline16, {}),
+								type: "search",
+								"aria-label": "搜索基础组件",
+								placeholder: "搜索组件",
+								value: query,
+								onChange: (event) => setQuery(event.currentTarget.value)
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+								className: "dsh-cg-result-count",
+								role: "status",
+								children: [
+									activeLabel,
+									" · ",
+									visible.length,
+									" 组"
+								]
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(IconAction, {
+								label: "重置全部示例",
+								onClick: () => {
+									setResetKey((value) => value + 1);
+									setGroup("actions");
+									setQuery("");
+									clearToast();
+								},
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconRefreshOutline16, {})
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						className: "dsh-cg-list",
+						children: visible.map(({ key, component: Component }) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Component, { notify }, key))
+					}, resetKey),
+					visible.length === 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: "dsh-cg-empty",
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconSearchOutline16, {}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "没有匹配的组件" }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Button, {
+								size: "sm",
+								variant: "outline",
+								onClick: () => {
+									setQuery("");
+									setGroup("all");
+								},
+								children: "清除筛选"
+							})
+						]
+					}),
+					toast && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Toast, {
+						text: toast.text,
+						icon: toast.error ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconWarningOutline16, {}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCheckOutline16, {}),
+						onDone: clearToast
+					}, toast.id)
+				]
+			});
+		}
+		//#endregion
 		//#region src/client/DesignBoard.tsx
 		const SECTION_GROUPS = [
 			{
@@ -1100,212 +2693,540 @@ window.__ModuleLoader__.load({
 				"没有源码级全局总开关；每个拥有动画的组件分别停止位移、静态化或保留必要的无位移淡出。"
 			]
 		];
-		const ICON_RULES = [
-			[
-				"图标本体",
-				"默认 16px；思考、插件等紧凑状态可以使用源码提供的 14px 版本。",
-				"图标尺寸不等于按钮点击区域。"
-			],
-			[
-				"按钮容器",
-				"标题栏图标按钮 28×28；rail 图标按钮 36×36；同一变体保持圆形。",
-				"容器负责 hover、active、focus-visible 和 disabled。"
-			],
-			[
-				"颜色继承",
-				"图标使用 currentColor，由控件的 label alias 或状态 alias 提供颜色。",
-				"不要在图标 SVG 内固定产品颜色。"
-			],
-			[
-				"命名复用",
-				"使用 ui-primitives 导出的真实图标组件和 canonical name。",
-				"不复制 SVG、不发明相似图标、不用文字字符替代图标。"
-			],
-			[
-				"动作语义",
-				"图标表达对象或动作；页面通过按钮、行或状态组件补齐上下文。",
-				"同一图标在不同区域不自动变成不同视觉变体。"
-			],
-			[
-				"可访问名称",
-				"图标按钮必须有 aria-label；带可见文字的按钮由文字提供名称。",
-				"禁用和状态信息不能只靠图标颜色传达。"
-			]
-		];
 		const ICON_GROUPS = [
 			{
-				title: "导航与工作区",
+				title: "导航、工作区与设置",
 				icons: [
 					{
 						label: "新建会话",
 						name: "IconNewChatOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconNewChatOutline16,
+						size: 16,
 						usage: "侧边栏和对话标题栏的新会话入口"
 					},
 					{
 						label: "搜索",
 						name: "IconSearchOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconSearchOutline16,
+						size: 16,
 						usage: "工作区筛选和搜索入口"
 					},
 					{
 						label: "视图选项",
 						name: "IconPersonalizationOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconPersonalizationOutline16,
+						size: 16,
 						usage: "工作区标题栏的视图选项"
 					},
 					{
 						label: "添加工作区",
 						name: "IconProjectAddOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconProjectAddOutline16,
+						size: 16,
 						usage: "工作区标题栏添加工作区"
 					},
 					{
 						label: "更多操作",
 						name: "IconEllipsisOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconEllipsisOutline16,
+						size: 16,
 						usage: "列表行操作菜单触发"
 					},
 					{
 						label: "侧栏",
 						name: "IconPanelLeftOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconPanelLeftOutline16,
+						size: 16,
 						usage: "应用框架收起和展开侧栏"
+					},
+					{
+						label: "网络",
+						name: "IconGlobeOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconGlobeOutline14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "设置（紧凑）",
+						name: "IconSettingsOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconSettingsOutline14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "设置",
+						name: "IconSettingsOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconSettingsOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "完成",
+						name: "IconCheckOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconCheckOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "完成（紧凑）",
+						name: "IconCheckOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconCheckOutline14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "分支",
+						name: "IconBranchOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconBranchOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "向下",
+						name: "IconChevronDownOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconChevronDownOutline14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "向左",
+						name: "IconChevronLeftOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconChevronLeftOutline14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "向右",
+						name: "IconChevronRightOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconChevronRightOutline14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "展开",
+						name: "IconTriangleRightFill14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconTriangleRightFill14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "向上",
+						name: "IconChevronUpOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconChevronUpOutline14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "关闭",
+						name: "IconCloseOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconCloseOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "关闭（填充）",
+						name: "IconCloseFill14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconCloseFill14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "刷新",
+						name: "IconRefreshOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconRefreshOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "刷新（紧凑）",
+						name: "IconRefreshOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconRefreshOutline14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "分享",
+						name: "IconShareOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconShareOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "编辑",
+						name: "IconEditOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconEditOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "浏览",
+						name: "IconBrowseOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconBrowseOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "链接（紧凑）",
+						name: "IconLinkOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconLinkOutline14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "链接",
+						name: "IconLinkOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconLinkOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "外部链接（紧凑）",
+						name: "IconRightUpOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconRightUpOutline14,
+						size: 14,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "外部链接",
+						name: "IconRightUpOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconRightUpOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "增强",
+						name: "IconEnhanceOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconEnhanceOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "轮廓文件夹",
+						name: "IconFolderOpenOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconFolderOpenOutline16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "打开文件夹",
+						name: "IconFolderOpen16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconFolderOpen16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "关闭文件夹",
+						name: "IconFolderClose16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconFolderClose16,
+						size: 16,
+						usage: "导航、工作区、设置和浮层动作"
+					},
+					{
+						label: "树节点连接",
+						name: "IconTreeCorner8x10",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconTreeCorner8x10,
+						size: 10,
+						usage: "导航、工作区、设置和浮层动作"
 					}
 				]
 			},
 			{
-				title: "对话与反馈",
+				title: "对话、反馈与运行状态",
 				icons: [
 					{
 						label: "添加内容",
 						name: "IconPlusOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconPlusOutline16,
+						size: 16,
 						usage: "Composer 添加附件、任务或上下文"
 					},
 					{
 						label: "发送",
 						name: "IconSendOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconSendOutline16,
+						size: 16,
 						usage: "Composer 发送消息"
+					},
+					{
+						label: "发送（紧凑）",
+						name: "IconSendOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconSendOutline14,
+						size: 14,
+						usage: "对话流、Composer 和反馈动作"
 					},
 					{
 						label: "复制",
 						name: "IconCopyOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconCopyOutline16,
+						size: 16,
 						usage: "助手消息复制操作"
 					},
 					{
 						label: "赞同",
 						name: "IconLikeOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconLikeOutline16,
+						size: 16,
 						usage: "助手消息正向反馈"
+					},
+					{
+						label: "赞同（填充）",
+						name: "IconLikeFill16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconLikeFill16,
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
 					},
 					{
 						label: "不赞同",
 						name: "IconDislikeOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconDislikeOutline16,
+						size: 16,
 						usage: "助手消息负向反馈"
+					},
+					{
+						label: "不赞同（填充）",
+						name: "IconDislikeFill16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconDislikeFill16,
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
 					},
 					{
 						label: "思考",
 						name: "IconThinkOutline14",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconThinkOutline14,
+						size: 14,
 						usage: "思考状态的紧凑 leading icon"
+					},
+					{
+						label: "思考（16px）",
+						name: "IconThinkOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconThinkOutline16,
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
+					},
+					{
+						label: "用户",
+						name: "IconUserOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconUserOutline16,
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
+					},
+					{
+						label: "上下文注入",
+						name: "IconContextInjectionOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconContextInjectionOutline16,
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
+					},
+					{
+						label: "附件",
+						name: "IconPaperclipOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconPaperclipOutline16,
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
+					},
+					{
+						label: "停止",
+						name: "IconStopFill16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconStopFill16,
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
 					},
 					{
 						label: "加载",
 						name: "IconLoadingOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconLoadingOutline16,
+						size: 16,
 						usage: "加载或等待状态"
 					},
 					{
 						label: "警告",
 						name: "IconWarningOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconWarningOutline16,
-						usage: "错误、风险或阻断状态"
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
+					},
+					{
+						label: "下载",
+						name: "IconDownloadOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconDownloadOutline16,
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
+					},
+					{
+						label: "播放",
+						name: "IconPlayOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconPlayOutline16,
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
+					},
+					{
+						label: "暂停",
+						name: "IconPauseOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconPauseOutline16,
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
+					},
+					{
+						label: "全屏",
+						name: "IconFullscreenOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconFullscreenOutline16,
+						size: 16,
+						usage: "对话流、Composer 和反馈动作"
 					}
 				]
 			},
 			{
-				title: "能力与主题",
+				title: "能力、主题、数据与任务",
 				icons: [
 					{
 						label: "工具代码",
 						name: "IconCodeOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconCodeOutline16,
+						size: 16,
 						usage: "工具行和代码结果的 leading icon"
+					},
+					{
+						label: "Agent 预设",
+						name: "IconAgentPresetOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconAgentPresetOutline16,
+						size: 16,
+						usage: "设置、会话标题栏和预设选择"
 					},
 					{
 						label: "插件",
 						name: "IconCordisPluginOutline14",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconCordisPluginOutline14,
+						size: 14,
 						usage: "设置中的插件入口或插件状态"
+					},
+					{
+						label: "API",
+						name: "IconApiOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconApiOutline14,
+						size: 14,
+						usage: "设置、能力、任务和轨迹"
 					},
 					{
 						label: "目标",
 						name: "IconGoalOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconGoalOutline16,
+						size: 16,
 						usage: "Goal 面板入口"
 					},
 					{
 						label: "技能",
 						name: "IconSkillOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconSkillOutline16,
+						size: 16,
 						usage: "Skill 面板入口"
 					},
 					{
 						label: "浅色",
 						name: "IconLightOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconLightOutline16,
+						size: 16,
 						usage: "主题设置的浅色选项"
 					},
 					{
 						label: "深色",
 						name: "IconDarkOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconDarkOutline16,
+						size: 16,
 						usage: "主题设置的深色选项"
+					},
+					{
+						label: "跟随系统",
+						name: "IconFollowsystemOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconFollowsystemOutline16,
+						size: 16,
+						usage: "设置、能力、任务和轨迹"
 					},
 					{
 						label: "删除",
 						name: "IconTrashOutline16",
 						icon: _deepseek_ai_dsh_client_ui_primitives.IconTrashOutline16,
+						size: 16,
 						usage: "删除工作区等破坏性动作"
+					},
+					{
+						label: "数据",
+						name: "IconDataOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconDataOutline16,
+						size: 16,
+						usage: "设置、能力、任务和轨迹"
+					},
+					{
+						label: "数据库",
+						name: "IconDatabaseOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconDatabaseOutline16,
+						size: 16,
+						usage: "设置、能力、任务和轨迹"
+					},
+					{
+						label: "时间",
+						name: "IconClockOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconClockOutline16,
+						size: 16,
+						usage: "设置、能力、任务和轨迹"
+					},
+					{
+						label: "队列",
+						name: "IconQueueOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconQueueOutline14,
+						size: 14,
+						usage: "设置、能力、任务和轨迹"
+					},
+					{
+						label: "清单",
+						name: "IconChecklistOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconChecklistOutline14,
+						size: 14,
+						usage: "设置、能力、任务和轨迹"
+					},
+					{
+						label: "列表",
+						name: "IconListPenOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconListPenOutline16,
+						size: 16,
+						usage: "设置、能力、任务和轨迹"
+					},
+					{
+						label: "智能增强",
+						name: "IconSparkle16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconSparkle16,
+						size: 16,
+						usage: "设置、能力、任务和轨迹"
+					},
+					{
+						label: "检查",
+						name: "IconInspectOutline12",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconInspectOutline12,
+						size: 12,
+						usage: "设置、能力、任务和轨迹"
+					},
+					{
+						label: "帮助",
+						name: "IconQuestionOutline14",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconQuestionOutline14,
+						size: 14,
+						usage: "设置、能力、任务和轨迹"
+					},
+					{
+						label: "定时",
+						name: "IconAlarmClockOutline16",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconAlarmClockOutline16,
+						size: 16,
+						usage: "设置、能力、任务和轨迹"
+					},
+					{
+						label: "归档",
+						name: "IconArchiveOutline20",
+						icon: _deepseek_ai_dsh_client_ui_primitives.IconArchiveOutline20,
+						size: 20,
+						usage: "设置、能力、任务和轨迹"
 					}
 				]
 			}
-		];
-		const PRIMITIVE_RULES = [
-			[
-				"Button",
-				"用于明确动作；md 36px / r18 / 14·22，sm 28px / r14 / 12·18。",
-				"primary、ghost、outline、toolbar 是命名变体；页面不能局部改写胶囊几何。"
-			],
-			[
-				"Icon button",
-				"用于单一图标动作；标题栏 28×28，rail 36×36。",
-				"必须补 aria-label；按钮状态由容器表达。"
-			],
-			[
-				"Input",
-				"设置、搜索和单行表单使用 32px / r8 / 16px icon slot。",
-				"它只有单行输入责任，不承载任务、附件、队列或发送。"
-			],
-			[
-				"DisclosureRow",
-				"用于工具、文件和结果摘要的展开/收起。",
-				"摘要行和展开内容分开；状态点、菜单触发和内容区不能互相冒充。"
-			],
-			[
-				"Overlay primitives",
-				"Menu、Tooltip、HoverCard、Modal、Toast 各自拥有触发、层级和收束方式。",
-				"相似的浮层不合并为一个通用卡片。"
-			],
-			[
-				"页面组合",
-				"Composer、工具行、设置字段和工作区行由产品页面组合原子资源。",
-				"组合可以拥有自己的布局，但不重复定义原子的字体、状态和基础几何。"
-			]
 		];
 		const A11Y_CHECKS = [
 			[
@@ -1790,6 +3711,10 @@ window.__ModuleLoader__.load({
 				children: [
 					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: path }),
 					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h1", { children: title }),
+					path.startsWith("产品页面") && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						className: "dsh-board-specimen-kind",
+						children: "静态组合参考"
+					}),
 					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children })
 				]
 			});
@@ -2099,8 +4024,10 @@ window.__ModuleLoader__.load({
 							children: FOUNDATION_LAYERS.map(([title, scope, resources, detail]) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
 								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: title }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: scope }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: resources }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: detail })
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+									className: "dsh-foundation-layer-detail",
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: resources }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: detail })]
+								})
 							] }, title))
 						})]
 					}),
@@ -2223,304 +4150,6 @@ window.__ModuleLoader__.load({
 								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: value }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: detail })
 							] }, title))
-						})]
-					})
-				]
-			});
-		}
-		function Icons() {
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-				className: "dsh-specimen-content",
-				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(BoardIntro, {
-						path: "基础资源 / 图标",
-						title: "图标",
-						children: "图标本体、按钮容器和可访问名称是三个不同层次。先按下面的规则选择真实图标，再到产品页面决定它所在的行、工具栏或状态组合。"
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-						className: "dsh-specimen-band",
-						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SectionHeading, {
-							title: "使用规则",
-							detail: "图标只提供对象或动作的视觉线索；尺寸、颜色、交互和语义名称由承载它的控件完成。"
-						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
-							className: "dsh-icon-rule-grid",
-							children: ICON_RULES.map(([title, detail, note]) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: title }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: detail }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: note })
-							] }, title))
-						})]
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-						className: "dsh-specimen-band",
-						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SectionHeading, {
-							title: "尺寸与容器",
-							detail: "同一图标在不同点击密度中只改变命名的容器变体，不改变 glyph 画法。"
-						}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-							className: "dsh-icon-geometry-grid",
-							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										className: "dsh-icon-button-28",
-										"aria-label": "添加工作区",
-										children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconProjectAddOutline16, {})
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "标题栏图标按钮" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: "glyph 16 · button 28×28 · r14" })
-								] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										className: "dsh-icon-button-36",
-										"aria-label": "打开侧栏",
-										children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconPanelLeftOutline16, {})
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "rail 图标按钮" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: "glyph 16 · button 36×36 · r18" })
-								] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
-										className: "dsh-icon-status-14",
-										children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconThinkOutline14, {})
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "紧凑状态图标" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: "glyph 14 · 不承担点击动作" })
-								] })
-							]
-						})]
-					}),
-					ICON_GROUPS.map((group) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-						className: "dsh-specimen-band",
-						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SectionHeading, {
-							title: group.title,
-							detail: "这里的 canonical name 来自真实图标导出；使用时保留命名和尺寸后缀。"
-						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
-							className: "dsh-specimen-icon-grid",
-							children: group.icons.map((item) => {
-								const Icon = item.icon;
-								return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-									className: "dsh-specimen-icon-item",
-									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
-										className: "dsh-specimen-icon-box",
-										children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Icon, { size: item.name.endsWith("14") ? 14 : 16 })
-									}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: item.label }),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: item.name }),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: item.usage })
-									] })]
-								}, item.name);
-							})
-						})]
-					}, group.title)),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-						className: "dsh-specimen-band",
-						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SectionHeading, {
-							title: "图标状态",
-							detail: "默认、悬停、选中、禁用是控件状态，不是另一套图标。"
-						}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-							className: "dsh-specimen-icon-states",
-							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
-									type: "button",
-									"aria-label": "搜索，默认",
-									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconSearchOutline16, {}), "默认"]
-								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
-									type: "button",
-									"data-state": "hover",
-									"aria-label": "搜索，悬停",
-									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconSearchOutline16, {}), "悬停"]
-								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
-									type: "button",
-									"data-state": "selected",
-									"aria-label": "搜索，选中",
-									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconSearchOutline16, {}), "选中"]
-								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
-									type: "button",
-									disabled: true,
-									"aria-label": "搜索，禁用",
-									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconSearchOutline16, {}), "禁用"]
-								})
-							]
-						})]
-					})
-				]
-			});
-		}
-		function Primitives() {
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-				className: "dsh-specimen-content",
-				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(BoardIntro, {
-						path: "基础资源 / 基础组件",
-						title: "基础组件",
-						children: "这些是可被多个产品页面复用的原子控件。它们持有自己的几何和基础状态；完整的对话、侧栏、设置和轨迹组合到产品页面查看。"
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-						className: "dsh-specimen-band",
-						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SectionHeading, {
-							title: "责任边界",
-							detail: "先判断需求是原子控件还是产品组合，再选择对应页面；不要用相似的基础控件替代真实组合。"
-						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
-							className: "dsh-primitive-rule-grid",
-							children: PRIMITIVE_RULES.map(([title, detail, note]) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: title }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: detail }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: note })
-							] }, title))
-						})]
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-						className: "dsh-specimen-band",
-						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SectionHeading, {
-								title: "按钮的不同用法",
-								source: "ui-primitives/Button.tsx + Button.module.css",
-								detail: "Button 有主要、幽灵、描边和工具栏四种用法，也提供适合紧凑列表的尺寸。宽侧栏的新会话按钮是页面里的特殊组合。"
-							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-								className: "dsh-primitive-button-row",
-								children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
-										type: "button",
-										className: "dsh-primitive-button is-primary",
-										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCheckOutline16, {}), "Primary"]
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										className: "dsh-primitive-button is-ghost",
-										children: "Ghost"
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										className: "dsh-primitive-button is-outline",
-										children: "Outline"
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
-										type: "button",
-										className: "dsh-primitive-button is-toolbar",
-										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCodeOutline16, {}), "Toolbar"]
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										className: "dsh-primitive-button is-small",
-										children: "Compact"
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										className: "dsh-primitive-button",
-										disabled: true,
-										children: "Disabled"
-									})
-								]
-							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-								className: "dsh-board-spec-grid",
-								children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "md: 36px / r18 / 14px·22px" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "sm: 28px / r14 / 12px·18px" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "icon slot: 16px / gap 4px" })
-								]
-							})
-						]
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-						className: "dsh-specimen-band",
-						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SectionHeading, {
-								title: "单行输入框",
-								source: "ui-primitives/Input.tsx + Input.module.css",
-								detail: "这是设置、搜索和单行表单使用的 32px Input；对话 Composer 不使用这个组件。"
-							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-								className: "dsh-primitive-input-row",
-								children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["带图标", /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
-										className: "dsh-primitive-input",
-										icon: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconSearchOutline16, {}),
-										defaultValue: "搜索模型"
-									})] }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["空状态", /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
-										className: "dsh-primitive-input",
-										placeholder: "输入名称"
-									})] }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["禁用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.Input, {
-										className: "dsh-primitive-input",
-										disabled: true,
-										placeholder: "不可编辑"
-									})] })
-								]
-							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-								className: "dsh-board-note",
-								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconWarningOutline16, {}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "责任边界：`ui-primitives/Input` 是单行原子；`ui-conversation/InputBar` 是多行文本层、Composer card、toolbar 和 send action 的产品组合。" })]
-							})
-						]
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-						className: "dsh-specimen-band",
-						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SectionHeading, {
-							title: "可展开行与状态点",
-							source: "ui-primitives/DisclosureRow.tsx + StateDot.tsx",
-							detail: "工具摘要和状态行共享 24px 行高，但展开内容和状态文案由各自模块提供。"
-						}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-							className: "dsh-primitive-disclosure",
-							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
-										className: "dsh-primitive-leading",
-										children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconCodeOutline16, {})
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "读取" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { className: "dsh-primitive-separator" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "WorkspaceBrowser.module.css" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEllipsisOutline16, {})
-								] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-									"data-open": "true",
-									children: [
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
-											className: "dsh-primitive-leading",
-											children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconLoadingOutline16, {})
-										}),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "运行中" }),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { className: "dsh-primitive-separator" }),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "pnpm run check" }),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEllipsisOutline16, {})
-									]
-								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
-										className: "dsh-primitive-leading",
-										children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconWarningOutline16, {})
-									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "失败" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { className: "dsh-primitive-separator" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "需要重新读取文件" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.IconEllipsisOutline16, {})
-								] })
-							]
-						})]
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
-						className: "dsh-specimen-band",
-						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SectionHeading, {
-							title: "组件目录",
-							source: "ui-primitives/src/index.ts",
-							detail: "这是当前 DSH 可复用组件的完整分类。具体的页面组合请到“产品页面”查看。"
-						}), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-							className: "dsh-primitive-catalog",
-							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "操作与选择" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "Button · Pill · Input · Menu · Tooltip · HoverCard · Modal · RiskConfirmation" })] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "状态与反馈" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "StateDot · DisclosureRow · Toast · ConnectionBanner · OnboardingSurface" })] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "结构化结果" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "JsonTree · TerminalBlock · ReadBlock · DiffBlock · SearchBlock · WebBlock" })] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "文本内容" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "MarkdownText · MessageText · CodeBlock · JsonBlock" })] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "品牌资源" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "FishLogo · BrandWordmark · icons" })] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "页面层的补充组件" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "Tabs · Tree rows · Composer · ToolRow · Settings fields" })] })
-							]
 						})]
 					})
 				]
@@ -4337,7 +5966,7 @@ window.__ModuleLoader__.load({
 				]
 			});
 		}
-		function DesignBoardSidebar({ instance, updateConfig }) {
+		function DesignBoardSidebar({ instance, updateConfig, reportError }) {
 			const active = sectionFor(instance.config.section);
 			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("nav", {
 				className: "dsh-specimen-sidebar",
@@ -4361,8 +5990,11 @@ window.__ModuleLoader__.load({
 									type: "button",
 									className: "dsh-specimen-sidebar-link",
 									"data-active": active === section.id,
+									"aria-current": active === section.id ? "page" : void 0,
 									onClick: () => {
-										updateConfig({ section: section.id });
+										updateConfig({ section: section.id }).catch((error) => {
+											reportError(error instanceof Error ? error.message : String(error));
+										});
 									},
 									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Icon, { size: 16 }), section.label]
 								}, section.id);
@@ -4391,8 +6023,8 @@ window.__ModuleLoader__.load({
 					section === "trajectory" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Trajectory, {}),
 					section === "overlays" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Overlays, {}),
 					section === "foundations" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Foundations, {}),
-					section === "icons" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Icons, {}),
-					section === "primitives" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Primitives, {}),
+					section === "icons" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(IconGallery, { groups: ICON_GROUPS }),
+					section === "primitives" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(ComponentGallery, {}),
 					section === "states" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(States, {}),
 					section === "accessibility" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Accessibility, {}),
 					section === "governance" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Governance, {})
@@ -4418,7 +6050,9 @@ window.__ModuleLoader__.load({
 .dsh-specimen-sidebar-footer strong { color: var(--dsw-alias-label-secondary); font: var(--dsw-font-xxxs-strong-11); }
 .dsh-specimen-content { width: min(100%, 1080px); margin: 0 auto; padding: 40px 48px 64px; }
 .dsh-specimen-intro { padding-bottom: 28px; border-bottom: 1px solid var(--dsw-alias-border-l1); }
-.dsh-specimen-intro > span { color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxxs-strong-11); letter-spacing: .08em; }
+.dsh-specimen-intro > span { color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxxs-strong-11); letter-spacing: 0; }
+.dsh-board-specimen-kind { display: inline-block; margin: 0 0 10px; color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxs-12); }
+.dsh-specimen-sidebar-link:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 1px; }
 .dsh-specimen-intro h1 { margin: 8px 0; color: var(--dsw-alias-label-primary); font: var(--dsw-font-xl-24); }
 .dsh-specimen-intro p { max-width: 760px; margin: 0; color: var(--dsw-alias-label-secondary); font: var(--dsw-font-s-14); }
 .dsh-specimen-band { padding: 28px 0; border-bottom: 1px solid var(--dsw-alias-border-l1); }
@@ -4427,13 +6061,14 @@ window.__ModuleLoader__.load({
 .dsh-specimen-heading p { max-width: 660px; margin: 4px 0 0; color: var(--dsw-alias-label-secondary); font: var(--dsw-font-xs-13); }
 .dsh-specimen-source { flex: none; max-width: 42%; overflow: hidden; color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-markdown-code-block-small); overflow-wrap: anywhere; }
 .dsh-foundation-layer-table, .dsh-foundation-theme-table, .dsh-foundation-font-table { border-top: 1px solid var(--dsw-alias-border-l1); }
-.dsh-foundation-layer-table > div { display: grid; grid-template-columns: 150px 220px minmax(0, 1fr); grid-template-rows: auto auto; gap: 4px 16px; align-items: center; min-height: 68px; border-bottom: 1px solid var(--dsw-alias-border-l1); }
-.dsh-foundation-layer-table strong { grid-row: span 2; font: var(--dsw-font-xs-strong-13); }
+.dsh-foundation-layer-table > div { display: grid; grid-template-columns: 150px 220px minmax(0, 1fr); gap: 4px 16px; align-items: start; min-height: 68px; padding: 14px 0; border-bottom: 1px solid var(--dsw-alias-border-l1); }
+.dsh-foundation-layer-table strong { padding-top: 2px; font: var(--dsw-font-xs-strong-13); }
 .dsh-foundation-layer-table code, .dsh-foundation-theme-table code, .dsh-foundation-font-table code { min-width: 0; color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-markdown-code-block-small); overflow-wrap: anywhere; }
 .dsh-foundation-layer-table span, .dsh-foundation-layer-table small, .dsh-foundation-font-table span { color: var(--dsw-alias-label-secondary); font: var(--dsw-font-xs-13); }
-.dsh-foundation-layer-table small { grid-column: 3; color: var(--dsw-alias-label-tertiary); }
+.dsh-foundation-layer-detail { display: grid; min-width: 0; gap: 4px; }
+.dsh-foundation-layer-table small { color: var(--dsw-alias-label-tertiary); }
 .dsh-foundation-rule-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--dsw-alias-border-l1); background: var(--dsw-alias-border-l1); }
-.dsh-foundation-rule-grid > div { display: grid; gap: 6px; min-height: 92px; padding: 16px; background: var(--dsw-alias-bg-base); }
+.dsh-foundation-rule-grid > div { display: grid; align-content: start; gap: 6px; min-height: 92px; padding: 16px; background: var(--dsw-alias-bg-base); }
 .dsh-foundation-rule-grid strong { font: var(--dsw-font-xs-strong-13); }
 .dsh-foundation-rule-grid span { color: var(--dsw-alias-label-secondary); font: var(--dsw-font-xs-13); }
 .dsh-foundation-theme-table > div, .dsh-foundation-font-table > div { display: grid; grid-template-columns: 150px minmax(280px, 1fr) minmax(0, 1fr); gap: 16px; align-items: center; min-height: 62px; border-bottom: 1px solid var(--dsw-alias-border-l1); }
@@ -4500,12 +6135,12 @@ window.__ModuleLoader__.load({
 .dsh-settings-recipe-grid span { color: var(--dsw-alias-label-secondary); font: var(--dsw-font-xs-13); }
 .dsh-settings-recipe-grid code { grid-column: 2; }
 .dsh-icon-rule-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--dsw-alias-border-l1); background: var(--dsw-alias-border-l1); }
-.dsh-icon-rule-grid > div { display: grid; gap: 5px; min-height: 94px; padding: 16px; background: var(--dsw-alias-bg-base); }
+.dsh-icon-rule-grid > div { display: grid; align-content: start; gap: 5px; min-height: 94px; padding: 16px; background: var(--dsw-alias-bg-base); }
 .dsh-icon-rule-grid strong { font: var(--dsw-font-xs-strong-13); }
 .dsh-icon-rule-grid span { color: var(--dsw-alias-label-secondary); font: var(--dsw-font-xs-13); }
 .dsh-icon-rule-grid small { color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxs-12); }
 .dsh-icon-geometry-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--dsw-alias-border-l1); background: var(--dsw-alias-border-l1); }
-.dsh-icon-geometry-grid > div { display: grid; grid-template-columns: 42px minmax(0, 1fr); grid-template-rows: auto auto; gap: 3px 10px; align-items: center; min-height: 86px; padding: 16px; background: var(--dsw-alias-bg-layer-1); }
+.dsh-icon-geometry-grid > div { display: grid; grid-template-columns: 42px minmax(0, 1fr); grid-template-rows: auto auto; gap: 3px 10px; align-content: start; align-items: start; min-height: 86px; padding: 16px; background: var(--dsw-alias-bg-layer-1); }
 .dsh-icon-geometry-grid > div > button, .dsh-icon-status-14 { grid-row: span 2; display: inline-flex; align-items: center; justify-content: center; color: var(--dsw-alias-label-secondary); background: transparent; }
 .dsh-icon-button-28 { width: 28px; height: 28px; border: 0; border-radius: 50%; }
 .dsh-icon-button-36 { width: 36px; height: 36px; border: 0; border-radius: 50%; }
@@ -4987,6 +6622,120 @@ window.__ModuleLoader__.load({
 }
 `;
 		//#endregion
+		//#region src/client/componentGalleryStyles.ts
+		const COMPONENT_GALLERY_STYLE = `
+
+.dsh-cg { width: min(100%, 1120px); margin: 0 auto; padding: 32px 36px 64px; color: var(--dsw-alias-label-primary); font: var(--dsw-font-xs-13); letter-spacing: 0; }
+.dsh-cg *, .dsh-cg *::before, .dsh-cg *::after { box-sizing: border-box; }
+.dsh-cg-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-bottom: 24px; }
+.dsh-cg-heading > div { min-width: 0; }
+.dsh-cg-eyebrow { color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxxs-strong-11); }
+.dsh-cg-heading h1 { margin: 7px 0 8px; font: var(--dsw-font-xl-24); }
+.dsh-cg-heading > div > code { color: var(--dsw-alias-label-secondary); font: var(--dsw-font-markdown-code-block-small); overflow-wrap: anywhere; }
+.dsh-cg-heading > span { flex: none; }
+.dsh-cg-scope { color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxs-12); }
+.dsh-cg-families { display: flex; flex-wrap: wrap; gap: 0 20px; border-top: 1px solid var(--dsw-alias-border-l1); }
+.dsh-cg-families button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 6px 0; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--dsw-alias-label-secondary); font: var(--dsw-font-xs-13); cursor: pointer; }
+.dsh-cg-families button small { color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxxs-11); }
+.dsh-cg-families button[aria-pressed=true] { color: var(--dsw-alias-label-primary); border-bottom-color: var(--dsw-alias-state-business-primary); font-weight: 600; }
+.dsh-cg-families button:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 2px; }
+.dsh-cg-result-count { flex: 1; font: var(--dsw-font-xxs-12); color: var(--dsw-alias-label-tertiary); }
+.dsh-native-label { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 12px; }
+.dsh-native-label strong { font: var(--dsw-font-xs-strong-13); }
+.dsh-native-label span, .dsh-native-state-grid small, .dsh-native-card-states small { font: var(--dsw-font-xxs-12); color: var(--dsw-alias-label-tertiary); }
+.dsh-native-provider-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.dsh-native-provider-actions > button { flex: 1 1 0; min-width: min(180px, 100%); }
+.dsh-native-state-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px; margin-top: 22px; }
+.dsh-native-state-grid > div { display: flex; align-items: flex-start; flex-direction: column; gap: 10px; min-width: 0; }
+.dsh-native-state-grid > div:last-child { grid-column: 1 / -1; }
+.dsh-native-state-grid button { max-width: 100%; }
+.dsh-native-contract { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; margin: 24px 0 0; padding: 16px 0 0; border-top: 1px solid var(--dsw-alias-border-l1); }
+.dsh-native-contract > div { min-width: 0; }
+.dsh-native-contract dt { font: var(--dsw-font-xxxs-11); color: var(--dsw-alias-label-tertiary); }
+.dsh-native-contract dd { margin: 4px 0 0; font: var(--dsw-font-xxs-12); overflow-wrap: anywhere; }
+.dsh-native-inline-form { display: grid; gap: 10px; max-width: 420px; margin: 16px 0; padding: 12px 0; }
+.dsh-native-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 16px; align-items: stretch; }
+.dsh-native-card-states { margin-top: 24px; }
+.dsh-native-card-states > div { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.dsh-native-card-states > div > div { flex: 1; }
+.dsh-native-owner-error { display: block; padding: 10px 16px; color: var(--dsw-alias-state-error-primary); font: var(--dsw-font-xxs-12); }
+.dsh-cg-unavailable { padding: 16px 0; color: var(--dsw-alias-label-tertiary); }
+@container (max-width: 520px) { .dsh-native-contract, .dsh-native-state-grid { grid-template-columns: minmax(0, 1fr); } .dsh-cg-families { gap: 0 16px; } }
+
+.dsh-cg-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 0; border-top: 1px solid var(--dsw-alias-border-l1); border-bottom: 1px solid var(--dsw-alias-border-l1); }
+.dsh-cg-search { width: 192px; min-width: 0; }
+.dsh-cg-toolbar > .dsh-cg-options { flex: 1; }
+.dsh-cg-options, .dsh-cg-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.dsh-cg-icon-anchor { display: inline-flex; flex: none; align-items: center; justify-content: center; }
+.dsh-cg-section { min-width: 0; padding: 26px 0; border-bottom: 1px solid var(--dsw-alias-border-l1); }
+.dsh-cg-section-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
+.dsh-cg-section-head > div:first-child { min-width: 0; }
+.dsh-cg-section-head > .dsh-cg-actions { flex: none; flex-wrap: nowrap; }
+.dsh-cg-section-head h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 5px 12px; margin: 0; font: var(--dsw-font-base-strong-16); }
+.dsh-cg-section-head h2 code { min-width: 0; color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-markdown-code-block-small); overflow-wrap: anywhere; }
+.dsh-cg-metrics { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 7px; color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxs-12); }
+.dsh-cg-table-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
+.dsh-cg-matrix { width: 100%; min-width: 660px; table-layout: fixed; border-collapse: collapse; }
+.dsh-cg-matrix th, .dsh-cg-matrix td { height: 62px; padding: 8px 12px; border-bottom: 1px solid var(--dsw-alias-border-l1); text-align: left; vertical-align: middle; }
+.dsh-cg-matrix thead th { height: 32px; background: var(--dsw-alias-bg-layer-1); color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxxs-strong-11); }
+.dsh-cg-matrix th:first-child { width: 108px; }
+.dsh-cg-matrix tbody th { color: var(--dsw-alias-label-secondary); font: var(--dsw-font-markdown-code-block-small); }
+.dsh-cg-matrix button { white-space: nowrap; }
+.dsh-cg-inline-samples { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px 36px; padding: 8px 0; }
+.dsh-cg-table-scroll + .dsh-cg-inline-samples { margin-top: 16px; }
+.dsh-cg-inline-samples > div { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; min-width: 0; }
+.dsh-cg-inline-samples > div > small { color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxs-12); }
+.dsh-cg-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 20px; }
+.dsh-cg-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; color: var(--dsw-alias-label-primary); font: var(--dsw-font-xs-13); }
+.dsh-cg-field > span:first-child { font: var(--dsw-font-xs-strong-13); }
+.dsh-cg-field > span { min-width: 0; }
+.dsh-cg-field > small { display: flex; align-items: flex-start; gap: 4px; min-height: 18px; color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxs-12); }
+.dsh-cg-field > small > svg { flex: none; }
+.dsh-cg-field > small.dsh-cg-error { color: var(--dsw-alias-state-error-primary); }
+.dsh-cg-field > small.dsh-cg-success { color: var(--dsw-alias-state-success-primary); }
+.dsh-cg-result { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; min-height: 32px; margin-top: 16px; padding-top: 12px; color: var(--dsw-alias-label-tertiary); border-top: 1px solid var(--dsw-alias-border-l1); font: var(--dsw-font-xxs-12); }
+.dsh-cg-result code, .dsh-cg-result strong { color: var(--dsw-alias-label-primary); overflow-wrap: anywhere; }
+.dsh-cg-hover-content { display: grid; gap: 7px; min-width: 0; color: var(--dsw-alias-label-primary-foreground); }
+body[data-ds-dark-theme] .dsh-cg-hover-content { color: var(--dsw-alias-label-primary); }
+.dsh-cg-hover-content code { overflow-wrap: anywhere; color: inherit; }
+.dsh-cg-status-matrix { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--dsw-alias-border-l1); border-bottom: 1px solid var(--dsw-alias-border-l1); margin-bottom: 24px; }
+.dsh-cg-status-matrix > div { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 46px; padding: 8px; }
+.dsh-cg-status-matrix code { color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-markdown-code-block-small); }
+.dsh-cg-two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.dsh-cg-subsection { display: flex; flex-direction: column; align-items: stretch; gap: 12px; min-width: 0; }
+.dsh-cg-subsection h3 { margin: 0; color: var(--dsw-alias-label-secondary); font: var(--dsw-font-xs-strong-13); }
+.dsh-cg-disclosure { padding: 4px 0; }
+.dsh-cg-disclosure-body { display: flex; align-items: flex-start; gap: 8px; padding: 12px 0 10px 24px; overflow-wrap: anywhere; color: var(--dsw-alias-label-secondary); font: var(--dsw-font-xxs-12); }
+.dsh-cg-disclosure-body > :first-child { flex: none; margin-top: 4px; }
+.dsh-cg-muted { min-width: 0; color: var(--dsw-alias-label-tertiary); font: var(--dsw-font-xxs-12); }
+.dsh-cg-connection { display: flex; align-items: center; min-height: 36px; }
+.dsh-cg-content-grid { row-gap: 28px; }
+.dsh-cg-code { margin-top: 18px; min-width: 0; }
+.dsh-cg-empty { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 64px 20px; color: var(--dsw-alias-label-tertiary); }
+.dsh-cg-spin { animation: dsh-cg-spin 1s linear infinite; }
+@keyframes dsh-cg-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .dsh-cg-spin { animation: none; } }
+@container (max-width: 900px) {
+  .dsh-cg { padding: 24px; }
+  .dsh-cg-toolbar > .dsh-cg-options { order: 3; flex-basis: 100%; }
+  .dsh-cg-search { flex: 1; }
+  .dsh-cg-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dsh-cg-status-matrix { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@container (max-width: 600px) {
+  .dsh-cg { padding: 20px 16px 40px; }
+  .dsh-cg-heading { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .dsh-cg-heading h1 { font: var(--dsw-font-l-20, 600 20px/28px sans-serif); }
+  .dsh-cg-section-head { gap: 8px; }
+  .dsh-cg-section-head h2 { flex-direction: column; align-items: flex-start; font: var(--dsw-font-s-strong-14); }
+  .dsh-cg-two-col, .dsh-cg-fields { grid-template-columns: minmax(0, 1fr); }
+  .dsh-cg-inline-samples { gap: 22px 24px; }
+  .dsh-cg-section { padding: 22px 0; }
+  .dsh-cg-metrics { gap: 3px 10px; }
+}
+
+`;
+		//#endregion
 		//#region src/client/index.ts
 		const inject = ["workbench"];
 		/** Registers the reference DSH frontend design board with the workbench host. */
@@ -4995,17 +6744,27 @@ window.__ModuleLoader__.load({
 			ctx.effect(() => {
 				const style = document.createElement("style");
 				style.setAttribute("data-dsh-workbench-design-board-style", "");
-				style.textContent = DESIGN_BOARD_STYLE;
+				style.textContent = DESIGN_BOARD_STYLE + COMPONENT_GALLERY_STYLE;
 				document.head.appendChild(style);
 				return () => {
 					style.remove();
 				};
 			}, "dsh-workbench-design-board: styles");
-			const legacyDefault = workbench.getSnapshot().instances.find((instance) => instance.instanceId === "dsh-design-board-default");
-			if (legacyDefault?.title === "DSH 设计看板") workbench.renameInstance(legacyDefault.instanceId, "DSH UI 样式看板");
 			ctx.effect(() => workbench.registerApp({
 				protocolVersion: 1,
 				appId: "dsh-design-board",
+				source: {
+					packageName: "dsh-workbench-design-board",
+					version: "0.2.0",
+					repository: "https://github.com/bill9109/dsh-workbench"
+				},
+				config: {
+					version: 1,
+					defaults: () => ({ section: "primitives" }),
+					validate(config) {
+						if (typeof config.section !== "string") throw new Error("Design board section must be a string");
+					}
+				},
 				title: "DSH UI 样式看板",
 				description: "按基础系统与真实产品模块组织的 DSH Web 样式看板",
 				allowMultiple: true,
@@ -5017,7 +6776,7 @@ window.__ModuleLoader__.load({
 				defaultInstance: {
 					instanceId: "dsh-design-board-default",
 					title: "DSH UI 样式看板",
-					config: { section: "overview" }
+					config: { section: "primitives" }
 				},
 				renderMain: DesignBoard,
 				renderSecondary: DesignBoardSidebar
@@ -5025,11 +6784,11 @@ window.__ModuleLoader__.load({
 			ctx.effect(() => workbench.registerTemplate({
 				templateId: "dsh-design-board:reference",
 				title: "DSH UI 样式看板",
-				description: "创建一份从系统总览开始的 DSH 设计规范参考实例",
+				description: "创建一份从真实组件陈列开始的 DSH 设计参考实例",
 				kind: "instance",
 				appId: "dsh-design-board",
 				defaultTitle: "DSH UI 样式看板",
-				defaultConfig: { section: "overview" }
+				defaultConfig: { section: "primitives" }
 			}), "dsh-workbench-design-board: template registration");
 		}
 		//#endregion

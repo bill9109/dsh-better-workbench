@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type DragEvent } from 'react'
 import {
+  Button,
   IconCloseFill14,
   IconEditOutline16,
   IconEllipsisOutline16,
   IconPersonalizationOutline16,
   IconProjectAddOutline16,
   IconSearchOutline16,
+  IconTrashOutline16,
   Menu,
+  Modal,
   Tooltip,
 } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { WorkbenchInstance, WorkbenchService } from './types.ts'
@@ -114,8 +117,13 @@ function WorkbenchRow({
   active,
   draggable,
   dropPosition,
+  busy,
+  canMoveUp,
+  canMoveDown,
+  onMove,
   onOpen,
   onRename,
+  onDelete,
   onDragStart,
   onDragOver,
   onDrop,
@@ -126,27 +134,19 @@ function WorkbenchRow({
   active: boolean
   draggable: boolean
   dropPosition: 'before' | 'after' | null
+  busy: boolean
+  canMoveUp: boolean
+  canMoveDown: boolean
+  onMove: (direction: -1 | 1) => void
   onOpen: () => void
-  onRename: (title: string) => void
+  onRename: () => void
+  onDelete: () => void
   onDragStart: (event: DragEvent<HTMLDivElement>) => void
   onDragOver: (event: DragEvent<HTMLDivElement>) => void
   onDrop: (event: DragEvent<HTMLDivElement>) => void
   onDragEnd: () => void
 }): JSX.Element {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [renaming, setRenaming] = useState(false)
-  const [renameDraft, setRenameDraft] = useState(instance.title)
-  const input = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (renaming) input.current?.focus()
-  }, [renaming])
-
-  const commitRename = (): void => {
-    const next = renameDraft.trim()
-    if (next !== '' && next !== instance.title) onRename(next)
-    setRenaming(false)
-  }
 
   return (
     <div
@@ -156,10 +156,10 @@ function WorkbenchRow({
       data-drop-position={dropPosition ?? undefined}
       role="button"
       tabIndex={compact ? -1 : 0}
-      draggable={draggable && !renaming}
+      draggable={draggable}
       onClick={onOpen}
       onKeyDown={event => {
-        if (event.key === 'Enter' || event.key === ' ') {
+        if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) {
           event.preventDefault()
           onOpen()
         }
@@ -170,35 +170,24 @@ function WorkbenchRow({
       onDragEnd={onDragEnd}
     >
       {compact && <IconPersonalizationOutline16 className="dsh-workbench-sidebar-rail-icon" />}
-      {renaming ? (
-        <input
-          ref={input}
-          className="dsh-workbench-sidebar-rename"
-          value={renameDraft}
-          aria-label="工作台名称"
-          onChange={event => { setRenameDraft(event.target.value) }}
-          onClick={event => { event.stopPropagation() }}
-          onBlur={commitRename}
-          onKeyDown={event => {
-            if (event.key === 'Enter') commitRename()
-            if (event.key === 'Escape') setRenaming(false)
-          }}
-        />
-      ) : (
-        <span className="dsh-workbench-sidebar-row-label">{instance.title}</span>
-      )}
-      {!compact && !renaming && (
+      <span className="dsh-workbench-sidebar-row-label">{instance.title}</span>
+      {!compact && (
         <span className="dsh-workbench-sidebar-row-actions">
           <Menu
             open={menuOpen}
             onClose={() => { setMenuOpen(false) }}
-            items={[{ id: 'rename', label: '重命名', icon: <IconEditOutline16 /> }]}
+            items={[
+              { id: 'rename', label: '重命名', icon: <IconEditOutline16 />, disabled: busy },
+              { id: 'move-up', label: '上移', disabled: !canMoveUp },
+              { id: 'move-down', label: '下移', disabled: !canMoveDown },
+              { id: 'delete', label: '删除', icon: <IconTrashOutline16 />, danger: true, disabled: busy },
+            ]}
             onSelect={id => {
               setMenuOpen(false)
-              if (id === 'rename') {
-                setRenameDraft(instance.title)
-                setRenaming(true)
-              }
+              if (id === 'rename') onRename()
+              if (id === 'delete') onDelete()
+              if (id === 'move-up' && canMoveUp) onMove(-1)
+              if (id === 'move-down' && canMoveDown) onMove(1)
             }}
             dense
             portal
@@ -209,6 +198,7 @@ function WorkbenchRow({
                 className="dsh-workbench-sidebar-row-action"
                 aria-label={`工作台“${instance.title}”的操作`}
                 title="更多操作"
+                disabled={busy}
                 onClick={event => { event.stopPropagation(); setMenuOpen(value => !value) }}
               >
                 <IconEllipsisOutline16 />
@@ -227,13 +217,38 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
   const section = useRef<HTMLElement>(null)
   const searchRoot = useRef<HTMLDivElement>(null)
   const searchInput = useRef<HTMLInputElement>(null)
+  const composingRef = useRef(false)
   const [compact, setCompact] = useState(false)
   const [searchExpanded, setSearchExpanded] = useState(false)
   const [query, setQuery] = useState('')
   const [orderBy, setOrderBy] = useState<OrderBy>('manual')
   const [draggedId, setDraggedId] = useState<string | null>(null)
   const [dropTarget, setDropTarget] = useState<{ id: string; position: 'before' | 'after' } | null>(null)
+  const [renameTarget, setRenameTarget] = useState<{ instanceId: string; currentTitle: string } | null>(null)
+  const [renameDraft, setRenameDraft] = useState('')
+  const [renaming, setRenaming] = useState(false)
+  const [renameError, setRenameError] = useState<string | null>(null)
+  const [deleteTarget, setDeleteTarget] = useState<{ instanceId: string; title: string } | null>(null)
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
+  const [reordering, setReordering] = useState(false)
+  const [reorderError, setReorderError] = useState<string | null>(null)
+  const mutation = useRef(false)
+  const lifecycle = useRef({ active: true })
+  useEffect(() => {
+    const current = { active: true }
+    lifecycle.current = current
+    mutation.current = false
+    setRenaming(false)
+    setDeleting(false)
+    setReordering(false)
+    return () => { current.active = false }
+  }, [service])
+  const busy = snapshot.loading || snapshot.creation.status === 'creating' || renaming || deleting || reordering
+  const renameTrimmed = renameDraft.trim()
+  const renameBlocked = busy || renameTrimmed === '' || renameTarget === null
   const normalizedQuery = normalize(query)
+  const canReorder = orderBy === 'manual' && normalizedQuery === '' && !busy
 
   useEffect(() => {
     const element = section.current
@@ -265,8 +280,42 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
     return [...filtered].sort((a, b) => orderBy === 'updated' ? b.updatedAt - a.updatedAt : a.order - b.order)
   }, [normalizedQuery, orderBy, snapshot.instances])
 
+  const persistOrder = async (ids: string[]): Promise<void> => {
+    if (!canReorder || mutation.current) return
+    const current = lifecycle.current
+    mutation.current = true
+    setReordering(true)
+    setReorderError(null)
+    try {
+      await service.reorderInstances(ids)
+    } catch (reason: unknown) {
+      if (current.active) setReorderError(reason instanceof Error ? reason.message : String(reason))
+    } finally {
+      if (current.active) {
+        mutation.current = false
+        setReordering(false)
+      }
+    }
+  }
+
+  const moveInstance = (instanceId: string, direction: -1 | 1): void => {
+    if (!canReorder) return
+    const ids = instances.map(instance => instance.instanceId)
+    const index = ids.indexOf(instanceId)
+    const nextIndex = index + direction
+    if (index < 0 || nextIndex < 0 || nextIndex >= ids.length) return
+    ids.splice(index, 1)
+    ids.splice(nextIndex, 0, instanceId)
+    void persistOrder(ids)
+  }
+
   const handleDrop = (targetId: string, event: DragEvent<HTMLDivElement>): void => {
     event.preventDefault()
+    if (!canReorder) {
+      setDraggedId(null)
+      setDropTarget(null)
+      return
+    }
     const sourceId = draggedId ?? event.dataTransfer.getData('text/plain')
     if (sourceId === '' || sourceId === targetId) {
       setDropTarget(null)
@@ -279,21 +328,144 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
     const nextVisible = instances.map(instance => instance.instanceId).filter(id => id !== sourceId)
     const insertAt = nextVisible.indexOf(targetId) + (position === 'after' ? 1 : 0)
     nextVisible.splice(insertAt, 0, sourceId)
-    const hidden = snapshot.instances.map(instance => instance.instanceId).filter(id => !nextVisible.includes(id))
-    service.reorderInstances([...nextVisible, ...hidden])
+    void persistOrder(nextVisible)
     setDraggedId(null)
     setDropTarget(null)
   }
 
+  const closeRename = (): void => {
+    if (renaming || mutation.current) return
+    setRenameTarget(null)
+    setRenameError(null)
+  }
+
+  const confirmRename = async (): Promise<void> => {
+    if (renameBlocked || renameTarget === null || mutation.current) return
+    const current = lifecycle.current
+    mutation.current = true
+    setRenaming(true)
+    setRenameError(null)
+    try {
+      await service.renameInstance(renameTarget.instanceId, renameTrimmed)
+      if (current.active) setRenameTarget(null)
+    } catch (reason: unknown) {
+      if (current.active) setRenameError(reason instanceof Error ? reason.message : String(reason))
+    } finally {
+      if (current.active) {
+        mutation.current = false
+        setRenaming(false)
+      }
+    }
+  }
+
+  const requestRename = (instance: WorkbenchInstance): void => {
+    if (busy || mutation.current) return
+    setRenameTarget({ instanceId: instance.instanceId, currentTitle: instance.title })
+    setRenameDraft(instance.title)
+    setRenameError(null)
+  }
+
+  const closeDelete = (): void => {
+    if (deleting || mutation.current) return
+    setDeleteTarget(null)
+    setDeleteError(null)
+  }
+
+  const confirmDelete = async (): Promise<void> => {
+    if (busy || deleteTarget === null || mutation.current) return
+    const current = lifecycle.current
+    mutation.current = true
+    setDeleting(true)
+    setDeleteError(null)
+    try {
+      await service.deleteInstance(deleteTarget.instanceId)
+      if (current.active) setDeleteTarget(null)
+    } catch (reason: unknown) {
+      if (current.active) setDeleteError(reason instanceof Error ? reason.message : String(reason))
+    } finally {
+      if (current.active) {
+        mutation.current = false
+        setDeleting(false)
+      }
+    }
+  }
+
+  const requestDelete = (instance: WorkbenchInstance): void => {
+    if (busy || mutation.current) return
+    setDeleteTarget({ instanceId: instance.instanceId, title: instance.title })
+    setDeleteError(null)
+  }
+
+  const renameDialog = (
+    <Modal
+      open={renameTarget !== null}
+      onClose={closeRename}
+      closeLabel="关闭"
+      title="重命名工作台"
+      footer={(
+        <>
+          <Button variant="outline" disabled={renaming} onClick={closeRename}>取消</Button>
+          <Button variant="primary" disabled={renameBlocked} onClick={confirmRename}>重命名</Button>
+        </>
+      )}
+    >
+      <input
+        className="dsh-workbench-rename-input"
+        value={renameDraft}
+        aria-label="工作台名称"
+        autoFocus
+        disabled={renaming}
+        onFocus={event => { event.target.select() }}
+        onChange={event => { setRenameDraft(event.target.value); setRenameError(null) }}
+        onCompositionStart={() => { composingRef.current = true }}
+        onCompositionEnd={() => { composingRef.current = false }}
+        onKeyDown={event => {
+          if (event.key === 'Enter' && !composingRef.current) {
+            event.preventDefault()
+            event.stopPropagation()
+            confirmRename()
+          }
+        }}
+      />
+      {renaming && <div role="status">正在重命名...</div>}
+      {renameError !== null && <div className="dsh-workbench-rename-error" role="alert">{renameError}</div>}
+    </Modal>
+  )
+
+  const deleteDialog = (
+    <Modal
+      open={deleteTarget !== null}
+      onClose={closeDelete}
+      closeLabel="关闭"
+      title="删除工作台？"
+      {...deleteTarget === null
+        ? {}
+        : { description: '删除“' + deleteTarget.title + '”？只移除工作台入口和配置，不会删除应用源码或项目文件。' }}
+      footer={(
+        <>
+          <Button variant="outline" disabled={deleting} onClick={closeDelete}>取消</Button>
+          <Button variant="outline" className="dsh-workbench-delete-action" disabled={deleting} onClick={confirmDelete}>
+            <IconTrashOutline16 size={16} />删除
+          </Button>
+        </>
+      )}
+    >
+      {deleting && <div role="status">正在删除...</div>}
+      {deleteError !== null && <div className="dsh-workbench-delete-error" role="alert">{deleteError}</div>}
+    </Modal>
+  )
+
   if (compact) {
     return (
       <section ref={section} className="dsh-workbench-sidebar-section" aria-label="工作台" data-compact="true">
+        {renameDialog}
+        {deleteDialog}
       </section>
     )
   }
 
   return (
-    <section ref={section} className="dsh-workbench-sidebar-section" aria-label="工作台">
+    <section ref={section} className="dsh-workbench-sidebar-section" aria-label="工作台" aria-busy={busy}>
       <div className="dsh-workbench-sidebar-heading">
         <span className={`dsh-workbench-sidebar-heading-label${searchExpanded && !compact ? ' is-hidden' : ''}`}>工作台</span>
         <div ref={searchRoot} className={`dsh-workbench-sidebar-search-slot${searchExpanded ? ' is-expanded' : ''}`}>
@@ -350,9 +522,10 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
               type="button"
               className="dsh-workbench-sidebar-icon-button dsh-workbench-sidebar-add"
               aria-label="创建工作台"
+              disabled={busy}
               onClick={() => {
                 setSearchExpanded(false)
-                service.openHome()
+                service.openHome(true)
               }}
             >
               <IconProjectAddOutline16 size={16} />
@@ -382,23 +555,29 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
 
       <div className="dsh-workbench-sidebar-list" aria-label="工作台列表">
         <WorkbenchHomeRow active={snapshot.route.kind === 'workbench-home'} onOpen={() => { service.openHome() }} />
-        {instances.map(instance => (
+        {instances.map((instance, index) => (
           <WorkbenchRow
             key={instance.instanceId}
             instance={instance}
             compact={compact}
             active={snapshot.route.kind === 'workbench-instance' && snapshot.route.instanceId === instance.instanceId}
-            draggable={orderBy === 'manual'}
+            draggable={canReorder}
+            busy={busy}
+            canMoveUp={canReorder && index > 0}
+            canMoveDown={canReorder && index < instances.length - 1}
+            onMove={direction => { moveInstance(instance.instanceId, direction) }}
             dropPosition={dropTarget?.id === instance.instanceId ? dropTarget.position : null}
             onOpen={() => { service.open(instance.instanceId) }}
-            onRename={title => { service.renameInstance(instance.instanceId, title) }}
+            onRename={() => { requestRename(instance) }}
+            onDelete={() => { requestDelete(instance) }}
             onDragStart={event => {
+              if (!canReorder) { event.preventDefault(); return }
               setDraggedId(instance.instanceId)
               event.dataTransfer.effectAllowed = 'move'
               event.dataTransfer.setData('text/plain', instance.instanceId)
             }}
             onDragOver={event => {
-              if (draggedId === null || draggedId === instance.instanceId) return
+              if (!canReorder || draggedId === null || draggedId === instance.instanceId) return
               event.preventDefault()
               const rect = event.currentTarget.getBoundingClientRect()
               setDropTarget({ id: instance.instanceId, position: event.clientY < rect.top + rect.height / 2 ? 'before' : 'after' })
@@ -408,9 +587,14 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
           />
         ))}
       </div>
-      {instances.length === 0 && (
+      {snapshot.loading && <div className="dsh-workbench-sidebar-empty" role="status">正在加载工作台...</div>}
+      {reordering && <div className="dsh-workbench-sidebar-empty" role="status">正在保存排序...</div>}
+      {(reorderError ?? snapshot.error) && <div className="dsh-workbench-rename-error" role="alert">{reorderError ?? snapshot.error}</div>}
+      {!snapshot.loading && instances.length === 0 && (
         <div className="dsh-workbench-sidebar-empty">{normalizedQuery === '' ? '从首页创建实例。' : '无匹配工作台'}</div>
       )}
+      {renameDialog}
+      {deleteDialog}
     </section>
   )
 }

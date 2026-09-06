@@ -28,13 +28,16 @@
       "types": "./lib/types/invariant.d.ts",
       "default": "./lib/invariant.js"
     },
+    "./build/client-bundle": "./scripts/client-bundle.mjs",
     "./src/*": "./src/*",
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
   "files": [
     "lib/*.js",
-    "lib/types",
+    "lib/*.js.map",
+    "lib/types/**/*.d.ts",
+    "scripts/client-bundle.mjs",
     "src",
     "docs",
     "cordis.patch.yml",
@@ -68,6 +71,8 @@
     "@types/node": "^24.0.0",
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.1",
+    "fake-indexeddb": "^6.2.5",
+    "jsdom": "^30.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tsdown": "^0.22.2",
@@ -75,10 +80,13 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
+    "build:dry-run": "node scripts/build.mjs --dry-run",
+    "build:verify": "node scripts/build.mjs --verify",
+    "test:build": "node --test tests/build.mjs tests/starter-build.mjs",
     "build:example": "pnpm --dir examples/design-board run build",
     "check": "tsc -p tsconfig.json --noEmit --pretty false",
     "check:example": "pnpm --dir examples/design-board run check",
-    "test": "node tests/service.mjs",
+    "test": "node --test tests/service.mjs tests/storage.mjs tests/dom-adapter.mjs tests/ui.mjs tests/build.mjs tests/starter-build.mjs",
     "verify:i18n": "node scripts/verify-i18n.mjs"
   },
   "dsh": {

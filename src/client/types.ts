@@ -3,6 +3,15 @@ import type { ComponentType } from 'react'
 
 /** JSON object used by a workbench instance configuration. */
 export type WorkbenchConfig = Record<string, unknown>
+export interface WorkbenchConfigDefinition {
+  version: number
+  defaults(): WorkbenchConfig
+  validate(config: WorkbenchConfig): void
+  migrate?(config: WorkbenchConfig, fromVersion: number, context: { signal: AbortSignal }): WorkbenchConfig | Promise<WorkbenchConfig>
+}
+/** Publisher metadata; not an authenticated installation identity. */
+export interface WorkbenchSource { packageName: string; version: string; repository?: string }
+export type WorkbenchCreationResult = { instanceId: string } | { sessionId: string }
 
 /** Presentation semantics understood by the workbench host. */
 export type WorkbenchPresentation =
@@ -18,7 +27,7 @@ export type WorkbenchPresentation =
     }
   | {
       kind: 'capsule'
-      placement: 'conversation' | 'floating'
+      placement: 'floating'
       conversation: 'resident'
     }
 
@@ -33,12 +42,18 @@ export interface WorkbenchInstance {
   order: number
   available: boolean
   updatedAt: number
+  createdAt: number
+  lastOpenedAt: number
+  revision: number
+  configVersion: number
+  status: 'ready' | 'unavailable' | 'preparing' | 'incompatible' | 'migration-error'
+  error?: string
 }
 
 /** Explicit center navigation owned by the workbench host. */
 export type WorkbenchRoute =
   | { kind: 'conversation' }
-  | { kind: 'workbench-home' }
+  | { kind: 'workbench-home'; creating?: boolean }
   | {
       kind: 'workbench-instance'
       instanceId: string
@@ -73,14 +88,18 @@ export type WorkbenchTemplateSummary = WorkbenchTemplateDefinition & { available
 /** Runtime creator capability, normally supplied by a separate Host/Client plugin. */
 export interface WorkbenchCreatorDefinition {
   creatorId: string
-  start(template: Extract<WorkbenchTemplateDefinition, { kind: 'agent' }>): void
+  start(template: Extract<WorkbenchTemplateDefinition, { kind: 'agent' }>, context: { signal: AbortSignal; requestId: string }): Promise<WorkbenchCreationResult>
 }
 
 /** Props passed to an application main view or secondary sidebar. */
 export interface WorkbenchRenderProps {
   instance: WorkbenchInstance
   presentation: WorkbenchPresentation
-  updateConfig: (patch: WorkbenchConfig) => void
+  /** Pass the revision on which a draft is based; returns the committed revision. */
+  updateConfig: (patch: WorkbenchConfig, expectedRevision?: number) => Promise<number>
+  setDirty: (dirty: boolean) => void
+  reportError: (error: string | null) => void
+  setPresentation: (kind: WorkbenchPresentationKind) => void
   close: () => void
   openHome: () => void
   openConversation: () => void
@@ -89,6 +108,8 @@ export interface WorkbenchRenderProps {
 /** Runtime application definition contributed by an application plugin. */
 export interface WorkbenchAppDefinition {
   protocolVersion: 1
+  config: WorkbenchConfigDefinition
+  source?: WorkbenchSource
   appId: string
   title: string
   icon?: string
@@ -109,6 +130,8 @@ export interface WorkbenchAppDefinition {
 
 /** Serializable application metadata exposed to the launcher and home page. */
 export interface WorkbenchAppSummary {
+  generation: number
+  source?: WorkbenchSource
   appId: string
   title: string
   icon?: string
@@ -124,26 +147,45 @@ export interface WorkbenchSnapshot {
   instances: readonly WorkbenchInstance[]
   templates: readonly WorkbenchTemplateSummary[]
   route: WorkbenchRoute
-  /** Compatibility projection for older consumers. */
+  /** Derived from the tab-local route. */
   currentInstanceId: string | null
+  loading: boolean
+  error: string | null
+  dirtyInstanceIds: readonly string[]
+  recovery?: { sources: Array<{ key: string; raw: string }>; errors: string[] }
+  creation: { status: 'idle' | 'creating' | 'failed' | 'complete' | 'cancelled'; templateId?: string; error?: string; result?: WorkbenchCreationResult }
+}
+
+export interface WorkbenchInstanceExport {
+  instance: Omit<WorkbenchInstance, 'available' | 'status' | 'error'>
+  backups: Array<{ instanceId: string; config: WorkbenchConfig; configVersion: number; revision: number; createdAt: number }>
 }
 
 /** Client service published by the base workbench plugin. */
 export interface WorkbenchService {
+  readonly ready: Promise<void>
+  dispose(): void
+  retry(): Promise<void>
+  prepareInstance(instanceId: string): Promise<void>
+  setDirty(instanceId: string, dirty: boolean): void
+  cancelCreation(): void
+  exportInstance(instanceId: string): Promise<WorkbenchInstanceExport>
+  restoreBackup(instanceId: string, backupRevision: number, expectedRevision: number): Promise<void>
   getSnapshot(): WorkbenchSnapshot
   subscribe(listener: () => void): () => void
-  registerApp(definition: WorkbenchAppDefinition): () => void
+  registerApp(definition: WorkbenchAppDefinition): () => Promise<void>
   getApp(appId: string): WorkbenchAppDefinition | undefined
   registerTemplate(definition: WorkbenchTemplateDefinition): () => void
   getTemplate(templateId: string): WorkbenchTemplateDefinition | undefined
-  registerCreator(definition: WorkbenchCreatorDefinition): () => void
-  createInstance(appId: string, title?: string, config?: WorkbenchConfig): WorkbenchInstance
-  startCreation(templateId: string): WorkbenchInstance | undefined
-  renameInstance(instanceId: string, title: string): void
-  updateInstanceConfig(instanceId: string, patch: WorkbenchConfig): void
-  reorderInstances(instanceIds: readonly string[]): void
+  registerCreator(definition: WorkbenchCreatorDefinition): () => Promise<void>
+  createInstance(appId: string, title?: string, config?: WorkbenchConfig): Promise<WorkbenchInstance>
+  startCreation(templateId: string): Promise<WorkbenchCreationResult>
+  renameInstance(instanceId: string, title: string): Promise<void>
+  deleteInstance(instanceId: string): Promise<void>
+  updateInstanceConfig(instanceId: string, patch: WorkbenchConfig, expectedRevision?: number, generation?: number): Promise<number>
+  reorderInstances(instanceIds: readonly string[]): Promise<void>
   open(instanceId: string, presentation?: WorkbenchPresentationKind): void
-  openHome(): void
+  openHome(creating?: boolean): void
   openConversation(): void
   close(): void
 }

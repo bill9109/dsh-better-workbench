@@ -1,40 +1,81 @@
 import type { ComponentType } from 'react'
+import { IconGallery } from './IconGallery.js'
+import { ComponentGallery } from './ComponentGallery.js'
 import {
   BrandWordmark,
   IconAgentPresetOutline16,
+  IconAlarmClockOutline16,
+  IconApiOutline14,
+  IconArchiveOutline20,
+  IconBranchOutline16,
+  IconBrowseOutline16,
+  IconCheckOutline14,
   IconCheckOutline16,
+  IconChecklistOutline14,
   IconChevronDownOutline14,
+  IconChevronLeftOutline14,
+  IconChevronRightOutline14,
+  IconChevronUpOutline14,
+  IconClockOutline16,
   IconCloseFill14,
+  IconCloseOutline16,
   IconCodeOutline16,
+  IconContextInjectionOutline16,
   IconCopyOutline16,
   IconCordisPluginOutline14,
   IconDarkOutline16,
   IconDataOutline16,
+  IconDatabaseOutline16,
+  IconDislikeFill16,
   IconDislikeOutline16,
   IconDownloadOutline16,
-  IconEllipsisOutline16,
   IconEditOutline16,
+  IconEllipsisOutline16,
+  IconEnhanceOutline16,
+  IconFolderClose16,
   IconFolderOpen16,
+  IconFolderOpenOutline16,
+  IconFollowsystemOutline16,
+  IconFullscreenOutline16,
+  IconGlobeOutline14,
   IconGoalOutline16,
   IconInspectOutline12,
   IconLightOutline16,
+  IconLikeFill16,
   IconLikeOutline16,
+  IconLinkOutline14,
+  IconLinkOutline16,
   IconListPenOutline16,
   IconLoadingOutline16,
   IconNewChatOutline16,
   IconPanelLeftOutline16,
+  IconPaperclipOutline16,
+  IconPauseOutline16,
   IconPersonalizationOutline16,
-  IconPlusOutline16,
   IconPlayOutline16,
+  IconPlusOutline16,
   IconProjectAddOutline16,
+  IconQuestionOutline14,
+  IconQueueOutline14,
+  IconRefreshOutline14,
   IconRefreshOutline16,
+  IconRightUpOutline14,
+  IconRightUpOutline16,
   IconSearchOutline16,
+  IconSendOutline14,
   IconSendOutline16,
+  IconSettingsOutline14,
   IconSettingsOutline16,
+  IconShareOutline16,
   IconSkillOutline16,
+  IconSparkle16,
   IconStopFill16,
-  IconTrashOutline16,
   IconThinkOutline14,
+  IconThinkOutline16,
+  IconTrashOutline16,
+  IconTreeCorner8x10,
+  IconTriangleRightFill14,
+  IconUserOutline16,
   IconWarningOutline16,
   Input,
 } from '@deepseek-ai/dsh-client-ui-primitives'
@@ -325,41 +366,94 @@ const ICON_RULES = [
   ['可访问名称', '图标按钮必须有 aria-label；带可见文字的按钮由文字提供名称。', '禁用和状态信息不能只靠图标颜色传达。'],
 ] as const
 
-const ICON_GROUPS: ReadonlyArray<{ title: string; icons: ReadonlyArray<{ label: string; name: string; icon: BoardIcon; usage: string }> }> = [
+const ICON_GROUPS: ReadonlyArray<{ title: string; icons: ReadonlyArray<{ label: string; name: string; icon: BoardIcon; size: number; usage: string }> }> = [
   {
-    title: '导航与工作区',
+    title: '导航、工作区与设置',
     icons: [
-      { label: '新建会话', name: 'IconNewChatOutline16', icon: IconNewChatOutline16, usage: '侧边栏和对话标题栏的新会话入口' },
-      { label: '搜索', name: 'IconSearchOutline16', icon: IconSearchOutline16, usage: '工作区筛选和搜索入口' },
-      { label: '视图选项', name: 'IconPersonalizationOutline16', icon: IconPersonalizationOutline16, usage: '工作区标题栏的视图选项' },
-      { label: '添加工作区', name: 'IconProjectAddOutline16', icon: IconProjectAddOutline16, usage: '工作区标题栏添加工作区' },
-      { label: '更多操作', name: 'IconEllipsisOutline16', icon: IconEllipsisOutline16, usage: '列表行操作菜单触发' },
-      { label: '侧栏', name: 'IconPanelLeftOutline16', icon: IconPanelLeftOutline16, usage: '应用框架收起和展开侧栏' },
+      { label: '新建会话', name: 'IconNewChatOutline16', icon: IconNewChatOutline16, size: 16, usage: '侧边栏和对话标题栏的新会话入口' },
+      { label: '搜索', name: 'IconSearchOutline16', icon: IconSearchOutline16, size: 16, usage: '工作区筛选和搜索入口' },
+      { label: '视图选项', name: 'IconPersonalizationOutline16', icon: IconPersonalizationOutline16, size: 16, usage: '工作区标题栏的视图选项' },
+      { label: '添加工作区', name: 'IconProjectAddOutline16', icon: IconProjectAddOutline16, size: 16, usage: '工作区标题栏添加工作区' },
+      { label: '更多操作', name: 'IconEllipsisOutline16', icon: IconEllipsisOutline16, size: 16, usage: '列表行操作菜单触发' },
+      { label: '侧栏', name: 'IconPanelLeftOutline16', icon: IconPanelLeftOutline16, size: 16, usage: '应用框架收起和展开侧栏' },
+      { label: '网络', name: 'IconGlobeOutline14', icon: IconGlobeOutline14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '设置（紧凑）', name: 'IconSettingsOutline14', icon: IconSettingsOutline14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '设置', name: 'IconSettingsOutline16', icon: IconSettingsOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '完成', name: 'IconCheckOutline16', icon: IconCheckOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '完成（紧凑）', name: 'IconCheckOutline14', icon: IconCheckOutline14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '分支', name: 'IconBranchOutline16', icon: IconBranchOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '向下', name: 'IconChevronDownOutline14', icon: IconChevronDownOutline14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '向左', name: 'IconChevronLeftOutline14', icon: IconChevronLeftOutline14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '向右', name: 'IconChevronRightOutline14', icon: IconChevronRightOutline14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '展开', name: 'IconTriangleRightFill14', icon: IconTriangleRightFill14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '向上', name: 'IconChevronUpOutline14', icon: IconChevronUpOutline14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '关闭', name: 'IconCloseOutline16', icon: IconCloseOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '关闭（填充）', name: 'IconCloseFill14', icon: IconCloseFill14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '刷新', name: 'IconRefreshOutline16', icon: IconRefreshOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '刷新（紧凑）', name: 'IconRefreshOutline14', icon: IconRefreshOutline14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '分享', name: 'IconShareOutline16', icon: IconShareOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '编辑', name: 'IconEditOutline16', icon: IconEditOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '浏览', name: 'IconBrowseOutline16', icon: IconBrowseOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '链接（紧凑）', name: 'IconLinkOutline14', icon: IconLinkOutline14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '链接', name: 'IconLinkOutline16', icon: IconLinkOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '外部链接（紧凑）', name: 'IconRightUpOutline14', icon: IconRightUpOutline14, size: 14, usage: '导航、工作区、设置和浮层动作' },
+      { label: '外部链接', name: 'IconRightUpOutline16', icon: IconRightUpOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '增强', name: 'IconEnhanceOutline16', icon: IconEnhanceOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '轮廓文件夹', name: 'IconFolderOpenOutline16', icon: IconFolderOpenOutline16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '打开文件夹', name: 'IconFolderOpen16', icon: IconFolderOpen16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '关闭文件夹', name: 'IconFolderClose16', icon: IconFolderClose16, size: 16, usage: '导航、工作区、设置和浮层动作' },
+      { label: '树节点连接', name: 'IconTreeCorner8x10', icon: IconTreeCorner8x10, size: 10, usage: '导航、工作区、设置和浮层动作' },
     ],
   },
   {
-    title: '对话与反馈',
+    title: '对话、反馈与运行状态',
     icons: [
-      { label: '添加内容', name: 'IconPlusOutline16', icon: IconPlusOutline16, usage: 'Composer 添加附件、任务或上下文' },
-      { label: '发送', name: 'IconSendOutline16', icon: IconSendOutline16, usage: 'Composer 发送消息' },
-      { label: '复制', name: 'IconCopyOutline16', icon: IconCopyOutline16, usage: '助手消息复制操作' },
-      { label: '赞同', name: 'IconLikeOutline16', icon: IconLikeOutline16, usage: '助手消息正向反馈' },
-      { label: '不赞同', name: 'IconDislikeOutline16', icon: IconDislikeOutline16, usage: '助手消息负向反馈' },
-      { label: '思考', name: 'IconThinkOutline14', icon: IconThinkOutline14, usage: '思考状态的紧凑 leading icon' },
-      { label: '加载', name: 'IconLoadingOutline16', icon: IconLoadingOutline16, usage: '加载或等待状态' },
-      { label: '警告', name: 'IconWarningOutline16', icon: IconWarningOutline16, usage: '错误、风险或阻断状态' },
+      { label: '添加内容', name: 'IconPlusOutline16', icon: IconPlusOutline16, size: 16, usage: 'Composer 添加附件、任务或上下文' },
+      { label: '发送', name: 'IconSendOutline16', icon: IconSendOutline16, size: 16, usage: 'Composer 发送消息' },
+      { label: '发送（紧凑）', name: 'IconSendOutline14', icon: IconSendOutline14, size: 14, usage: '对话流、Composer 和反馈动作' },
+      { label: '复制', name: 'IconCopyOutline16', icon: IconCopyOutline16, size: 16, usage: '助手消息复制操作' },
+      { label: '赞同', name: 'IconLikeOutline16', icon: IconLikeOutline16, size: 16, usage: '助手消息正向反馈' },
+      { label: '赞同（填充）', name: 'IconLikeFill16', icon: IconLikeFill16, size: 16, usage: '对话流、Composer 和反馈动作' },
+      { label: '不赞同', name: 'IconDislikeOutline16', icon: IconDislikeOutline16, size: 16, usage: '助手消息负向反馈' },
+      { label: '不赞同（填充）', name: 'IconDislikeFill16', icon: IconDislikeFill16, size: 16, usage: '对话流、Composer 和反馈动作' },
+      { label: '思考', name: 'IconThinkOutline14', icon: IconThinkOutline14, size: 14, usage: '思考状态的紧凑 leading icon' },
+      { label: '思考（16px）', name: 'IconThinkOutline16', icon: IconThinkOutline16, size: 16, usage: '对话流、Composer 和反馈动作' },
+      { label: '用户', name: 'IconUserOutline16', icon: IconUserOutline16, size: 16, usage: '对话流、Composer 和反馈动作' },
+      { label: '上下文注入', name: 'IconContextInjectionOutline16', icon: IconContextInjectionOutline16, size: 16, usage: '对话流、Composer 和反馈动作' },
+      { label: '附件', name: 'IconPaperclipOutline16', icon: IconPaperclipOutline16, size: 16, usage: '对话流、Composer 和反馈动作' },
+      { label: '停止', name: 'IconStopFill16', icon: IconStopFill16, size: 16, usage: '对话流、Composer 和反馈动作' },
+      { label: '加载', name: 'IconLoadingOutline16', icon: IconLoadingOutline16, size: 16, usage: '加载或等待状态' },
+      { label: '警告', name: 'IconWarningOutline16', icon: IconWarningOutline16, size: 16, usage: '对话流、Composer 和反馈动作' },
+      { label: '下载', name: 'IconDownloadOutline16', icon: IconDownloadOutline16, size: 16, usage: '对话流、Composer 和反馈动作' },
+      { label: '播放', name: 'IconPlayOutline16', icon: IconPlayOutline16, size: 16, usage: '对话流、Composer 和反馈动作' },
+      { label: '暂停', name: 'IconPauseOutline16', icon: IconPauseOutline16, size: 16, usage: '对话流、Composer 和反馈动作' },
+      { label: '全屏', name: 'IconFullscreenOutline16', icon: IconFullscreenOutline16, size: 16, usage: '对话流、Composer 和反馈动作' },
     ],
   },
   {
-    title: '能力与主题',
+    title: '能力、主题、数据与任务',
     icons: [
-      { label: '工具代码', name: 'IconCodeOutline16', icon: IconCodeOutline16, usage: '工具行和代码结果的 leading icon' },
-      { label: '插件', name: 'IconCordisPluginOutline14', icon: IconCordisPluginOutline14, usage: '设置中的插件入口或插件状态' },
-      { label: '目标', name: 'IconGoalOutline16', icon: IconGoalOutline16, usage: 'Goal 面板入口' },
-      { label: '技能', name: 'IconSkillOutline16', icon: IconSkillOutline16, usage: 'Skill 面板入口' },
-      { label: '浅色', name: 'IconLightOutline16', icon: IconLightOutline16, usage: '主题设置的浅色选项' },
-      { label: '深色', name: 'IconDarkOutline16', icon: IconDarkOutline16, usage: '主题设置的深色选项' },
-      { label: '删除', name: 'IconTrashOutline16', icon: IconTrashOutline16, usage: '删除工作区等破坏性动作' },
+      { label: '工具代码', name: 'IconCodeOutline16', icon: IconCodeOutline16, size: 16, usage: '工具行和代码结果的 leading icon' },
+      { label: 'Agent 预设', name: 'IconAgentPresetOutline16', icon: IconAgentPresetOutline16, size: 16, usage: '设置、会话标题栏和预设选择' },
+      { label: '插件', name: 'IconCordisPluginOutline14', icon: IconCordisPluginOutline14, size: 14, usage: '设置中的插件入口或插件状态' },
+      { label: 'API', name: 'IconApiOutline14', icon: IconApiOutline14, size: 14, usage: '设置、能力、任务和轨迹' },
+      { label: '目标', name: 'IconGoalOutline16', icon: IconGoalOutline16, size: 16, usage: 'Goal 面板入口' },
+      { label: '技能', name: 'IconSkillOutline16', icon: IconSkillOutline16, size: 16, usage: 'Skill 面板入口' },
+      { label: '浅色', name: 'IconLightOutline16', icon: IconLightOutline16, size: 16, usage: '主题设置的浅色选项' },
+      { label: '深色', name: 'IconDarkOutline16', icon: IconDarkOutline16, size: 16, usage: '主题设置的深色选项' },
+      { label: '跟随系统', name: 'IconFollowsystemOutline16', icon: IconFollowsystemOutline16, size: 16, usage: '设置、能力、任务和轨迹' },
+      { label: '删除', name: 'IconTrashOutline16', icon: IconTrashOutline16, size: 16, usage: '删除工作区等破坏性动作' },
+      { label: '数据', name: 'IconDataOutline16', icon: IconDataOutline16, size: 16, usage: '设置、能力、任务和轨迹' },
+      { label: '数据库', name: 'IconDatabaseOutline16', icon: IconDatabaseOutline16, size: 16, usage: '设置、能力、任务和轨迹' },
+      { label: '时间', name: 'IconClockOutline16', icon: IconClockOutline16, size: 16, usage: '设置、能力、任务和轨迹' },
+      { label: '队列', name: 'IconQueueOutline14', icon: IconQueueOutline14, size: 14, usage: '设置、能力、任务和轨迹' },
+      { label: '清单', name: 'IconChecklistOutline14', icon: IconChecklistOutline14, size: 14, usage: '设置、能力、任务和轨迹' },
+      { label: '列表', name: 'IconListPenOutline16', icon: IconListPenOutline16, size: 16, usage: '设置、能力、任务和轨迹' },
+      { label: '智能增强', name: 'IconSparkle16', icon: IconSparkle16, size: 16, usage: '设置、能力、任务和轨迹' },
+      { label: '检查', name: 'IconInspectOutline12', icon: IconInspectOutline12, size: 12, usage: '设置、能力、任务和轨迹' },
+      { label: '帮助', name: 'IconQuestionOutline14', icon: IconQuestionOutline14, size: 14, usage: '设置、能力、任务和轨迹' },
+      { label: '定时', name: 'IconAlarmClockOutline16', icon: IconAlarmClockOutline16, size: 16, usage: '设置、能力、任务和轨迹' },
+      { label: '归档', name: 'IconArchiveOutline20', icon: IconArchiveOutline20, size: 20, usage: '设置、能力、任务和轨迹' },
     ],
   },
 ]
@@ -508,7 +602,7 @@ function SectionHeading({ title, detail, source }: { title: string; detail: stri
 }
 
 function BoardIntro({ path, title, children }: { path: string; title: string; children: string }): JSX.Element {
-  return <div className="dsh-specimen-intro"><span>{path}</span><h1>{title}</h1><p>{children}</p></div>
+  return <div className="dsh-specimen-intro"><span>{path}</span><h1>{title}</h1>{path.startsWith('产品页面') && <div className="dsh-board-specimen-kind">静态组合参考</div>}<p>{children}</p></div>
 }
 
 const TOKEN_LABEL_ZH: Readonly<Record<string, string>> = {
@@ -555,7 +649,7 @@ function Overview(): JSX.Element {
 function Foundations(): JSX.Element {
   return <div className="dsh-specimen-content">
     <BoardIntro path="基础资源 / 颜色与字体" title="颜色与字体">这里定义所有 DSH 页面共同使用的语义颜色、字体角色、层级和动效。先从本页选择资源与度量，再到产品页面确定它们如何组合。</BoardIntro>
-    <section className="dsh-specimen-band"><SectionHeading title="资源分层" detail="新页面从下往上使用资源：底层基元只提供基线，组件优先使用语义变量，产品专用变量只服务命名的产品表面。" /><div className="dsh-foundation-layer-table">{FOUNDATION_LAYERS.map(([title, scope, resources, detail]) => <div key={title}><strong>{title}</strong><code>{scope}</code><span>{resources}</span><small>{detail}</small></div>)}</div></section>
+    <section className="dsh-specimen-band"><SectionHeading title="资源分层" detail="新页面从下往上使用资源：底层基元只提供基线，组件优先使用语义变量，产品专用变量只服务命名的产品表面。" /><div className="dsh-foundation-layer-table">{FOUNDATION_LAYERS.map(([title, scope, resources, detail]) => <div key={title}><strong>{title}</strong><code>{scope}</code><div className="dsh-foundation-layer-detail"><span>{resources}</span><small>{detail}</small></div></div>)}</div></section>
     <section className="dsh-specimen-band"><SectionHeading title="使用规则" detail="这些规则用于阻止页面出现局部猜测出来的字号、边距、圆角或颜色。" /><div className="dsh-foundation-rule-grid">{FOUNDATION_RULES.map(([title, detail]) => <div key={title}><strong>{title}</strong><span>{detail}</span></div>)}</div></section>
     <section className="dsh-specimen-band"><SectionHeading title="明暗主题对照" detail="主题层替换 token 的值，组件只保留语义引用。下面是选择资源时必须知道的跨主题行为。" /><div className="dsh-foundation-theme-table">{FOUNDATION_THEME_RULES.map(([title, value, detail]) => <div key={title}><strong>{title}</strong><code>{value}</code><span>{detail}</span></div>)}</div></section>
     <section className="dsh-specimen-band"><SectionHeading title="原始色阶" detail="完整原始色阶仅供主题映射和特殊专项使用；产品组件不要直接消费原始 token。`neutral-bluish-60` 是当前源码中唯一发现浅色与深色值不同的原始名称。" /><StaticRamp /></section>
@@ -564,20 +658,6 @@ function Foundations(): JSX.Element {
     <section className="dsh-specimen-band"><SectionHeading title="字体角色" detail="字号、行高和字重必须作为一个角色一起使用。示例文字用于比较实际密度，不代表额外的页面标题样式。" /><div className="dsh-specimen-type-head"><span>角色</span><span>示例</span><span>字号 / 行高 / 字重</span><span>令牌</span><span>使用情况</span></div><div className="dsh-specimen-type-table">{TYPE_ROWS.map(row => <div className="dsh-specimen-type-row" key={row.token}><span>{TYPE_LABEL_ZH[row.label] ?? row.label}</span><strong style={{ font: `var(${row.token})` }}>{row.specimen}</strong><small>{row.metric}</small><code>{row.token}</code><em data-status={row.status}>{row.status}</em></div>)}</div></section>
     <section className="dsh-specimen-band"><SectionHeading title="页面度量" detail="这些数值约束几何，不单独决定行为；实现仍需同时遵循对应产品页面的状态、交互、无障碍和源码例外。新增设计优先复用已验证的度量。" /><div className="dsh-foundation-metric-table">{FOUNDATION_METRICS.map(([title, value, detail]) => <div key={title}><strong>{title}</strong><code>{value}</code><span>{detail}</span></div>)}</div></section>
     <section className="dsh-specimen-band"><SectionHeading title="阴影与动效" detail="阴影值、模糊、过渡基线和已验证的组件动效都写在表中；页面仍必须按所属组件的触发、完成和减少动效行为实现。" /><div className="dsh-foundation-motion-table">{FOUNDATION_MOTION.map(([title, value, detail]) => <div key={title}><strong>{title}</strong><code>{value}</code><span>{detail}</span></div>)}</div></section>
-  </div>
-}
-
-function Icons(): JSX.Element {
-  return <div className="dsh-specimen-content"><BoardIntro path="基础资源 / 图标" title="图标">图标本体、按钮容器和可访问名称是三个不同层次。先按下面的规则选择真实图标，再到产品页面决定它所在的行、工具栏或状态组合。</BoardIntro><section className="dsh-specimen-band"><SectionHeading title="使用规则" detail="图标只提供对象或动作的视觉线索；尺寸、颜色、交互和语义名称由承载它的控件完成。" /><div className="dsh-icon-rule-grid">{ICON_RULES.map(([title, detail, note]) => <div key={title}><strong>{title}</strong><span>{detail}</span><small>{note}</small></div>)}</div></section><section className="dsh-specimen-band"><SectionHeading title="尺寸与容器" detail="同一图标在不同点击密度中只改变命名的容器变体，不改变 glyph 画法。" /><div className="dsh-icon-geometry-grid"><div><button type="button" className="dsh-icon-button-28" aria-label="添加工作区"><IconProjectAddOutline16 /></button><strong>标题栏图标按钮</strong><code>glyph 16 · button 28×28 · r14</code></div><div><button type="button" className="dsh-icon-button-36" aria-label="打开侧栏"><IconPanelLeftOutline16 /></button><strong>rail 图标按钮</strong><code>glyph 16 · button 36×36 · r18</code></div><div><span className="dsh-icon-status-14"><IconThinkOutline14 /></span><strong>紧凑状态图标</strong><code>glyph 14 · 不承担点击动作</code></div></div></section>{ICON_GROUPS.map(group => <section className="dsh-specimen-band" key={group.title}><SectionHeading title={group.title} detail="这里的 canonical name 来自真实图标导出；使用时保留命名和尺寸后缀。" /><div className="dsh-specimen-icon-grid">{group.icons.map(item => { const Icon = item.icon; return <div className="dsh-specimen-icon-item" key={item.name}><span className="dsh-specimen-icon-box"><Icon size={item.name.endsWith('14') ? 14 : 16} /></span><div><strong>{item.label}</strong><code>{item.name}</code><span>{item.usage}</span></div></div> })}</div></section>)}<section className="dsh-specimen-band"><SectionHeading title="图标状态" detail="默认、悬停、选中、禁用是控件状态，不是另一套图标。" /><div className="dsh-specimen-icon-states"><button type="button" aria-label="搜索，默认"><IconSearchOutline16 />默认</button><button type="button" data-state="hover" aria-label="搜索，悬停"><IconSearchOutline16 />悬停</button><button type="button" data-state="selected" aria-label="搜索，选中"><IconSearchOutline16 />选中</button><button type="button" disabled aria-label="搜索，禁用"><IconSearchOutline16 />禁用</button></div></section></div>
-}
-
-function Primitives(): JSX.Element {
-  return <div className="dsh-specimen-content"><BoardIntro path="基础资源 / 基础组件" title="基础组件">这些是可被多个产品页面复用的原子控件。它们持有自己的几何和基础状态；完整的对话、侧栏、设置和轨迹组合到产品页面查看。</BoardIntro>
-    <section className="dsh-specimen-band"><SectionHeading title="责任边界" detail="先判断需求是原子控件还是产品组合，再选择对应页面；不要用相似的基础控件替代真实组合。" /><div className="dsh-primitive-rule-grid">{PRIMITIVE_RULES.map(([title, detail, note]) => <div key={title}><strong>{title}</strong><span>{detail}</span><small>{note}</small></div>)}</div></section>
-    <section className="dsh-specimen-band"><SectionHeading title="按钮的不同用法" source="ui-primitives/Button.tsx + Button.module.css" detail="Button 有主要、幽灵、描边和工具栏四种用法，也提供适合紧凑列表的尺寸。宽侧栏的新会话按钮是页面里的特殊组合。" /><div className="dsh-primitive-button-row"><button type="button" className="dsh-primitive-button is-primary"><IconCheckOutline16 />Primary</button><button type="button" className="dsh-primitive-button is-ghost">Ghost</button><button type="button" className="dsh-primitive-button is-outline">Outline</button><button type="button" className="dsh-primitive-button is-toolbar"><IconCodeOutline16 />Toolbar</button><button type="button" className="dsh-primitive-button is-small">Compact</button><button type="button" className="dsh-primitive-button" disabled>Disabled</button></div><div className="dsh-board-spec-grid"><span>md: 36px / r18 / 14px·22px</span><span>sm: 28px / r14 / 12px·18px</span><span>icon slot: 16px / gap 4px</span></div></section>
-    <section className="dsh-specimen-band"><SectionHeading title="单行输入框" source="ui-primitives/Input.tsx + Input.module.css" detail="这是设置、搜索和单行表单使用的 32px Input；对话 Composer 不使用这个组件。" /><div className="dsh-primitive-input-row"><label>带图标<Input className="dsh-primitive-input" icon={<IconSearchOutline16 />} defaultValue="搜索模型" /></label><label>空状态<Input className="dsh-primitive-input" placeholder="输入名称" /></label><label>禁用<Input className="dsh-primitive-input" disabled placeholder="不可编辑" /></label></div><div className="dsh-board-note"><IconWarningOutline16 /><span>责任边界：`ui-primitives/Input` 是单行原子；`ui-conversation/InputBar` 是多行文本层、Composer card、toolbar 和 send action 的产品组合。</span></div></section>
-    <section className="dsh-specimen-band"><SectionHeading title="可展开行与状态点" source="ui-primitives/DisclosureRow.tsx + StateDot.tsx" detail="工具摘要和状态行共享 24px 行高，但展开内容和状态文案由各自模块提供。" /><div className="dsh-primitive-disclosure"><div><span className="dsh-primitive-leading"><IconCodeOutline16 /></span><strong>读取</strong><span className="dsh-primitive-separator" /><span>WorkspaceBrowser.module.css</span><IconEllipsisOutline16 /></div><div data-open="true"><span className="dsh-primitive-leading"><IconLoadingOutline16 /></span><strong>运行中</strong><span className="dsh-primitive-separator" /><span>pnpm run check</span><IconEllipsisOutline16 /></div><div><span className="dsh-primitive-leading"><IconWarningOutline16 /></span><strong>失败</strong><span className="dsh-primitive-separator" /><span>需要重新读取文件</span><IconEllipsisOutline16 /></div></div></section>
-    <section className="dsh-specimen-band"><SectionHeading title="组件目录" source="ui-primitives/src/index.ts" detail="这是当前 DSH 可复用组件的完整分类。具体的页面组合请到“产品页面”查看。" /><div className="dsh-primitive-catalog"><div><strong>操作与选择</strong><span>Button · Pill · Input · Menu · Tooltip · HoverCard · Modal · RiskConfirmation</span></div><div><strong>状态与反馈</strong><span>StateDot · DisclosureRow · Toast · ConnectionBanner · OnboardingSurface</span></div><div><strong>结构化结果</strong><span>JsonTree · TerminalBlock · ReadBlock · DiffBlock · SearchBlock · WebBlock</span></div><div><strong>文本内容</strong><span>MarkdownText · MessageText · CodeBlock · JsonBlock</span></div><div><strong>品牌资源</strong><span>FishLogo · BrandWordmark · icons</span></div><div><strong>页面层的补充组件</strong><span>Tabs · Tree rows · Composer · ToolRow · Settings fields</span></div></div></section>
   </div>
 }
 
@@ -649,12 +729,12 @@ function Governance(): JSX.Element {
   return <div className="dsh-specimen-content"><BoardIntro path="实现记录" title="实现记录">这里集中记录每个样本对应的页面、组件、尺寸、状态和实现位置，方便后续更新时保持一致。外观相似的内容也不自动合并。</BoardIntro><section className="dsh-specimen-band"><SectionHeading title="实现信息" source="样式看板维护规则" detail="新增或修改样本时，至少记录页面区域、所属模块、挂载位置、尺寸约束、状态触发、源码依据和是否为局部例外。" /><div className="dsh-traceability-table"><div className="dsh-board-table-head"><span>样本标识</span><span>所属模块</span><span>挂载位置 / DOM 根</span><span>尺寸约束</span><span>状态 / 源码</span></div><div className="dsh-board-table-row"><strong>shell.frame</strong><span>ui-layout + ui-sidebar</span><code>root → sidebar | conversation | details | shell.overlay</code><span>280 / 56 / 300–520 / hit 8</span><code>宽屏、收起栏、详情打开 · AppFrame.tsx</code></div><div className="dsh-board-table-row"><strong>conversation.header</strong><span>ui-conversation</span><code>conversation.session.header → actions | utilities | conversation.view</code><span>top 12 / left 20 / right 28 / active 2</span><code>路径、能力、页签 · ConversationSession.tsx</code></div><div className="dsh-board-table-row"><strong>conversation.chat</strong><span>ui-conversation/chat + ui-tool</span><code>conversation.view → conversation.chat.node → tool.call.toolview</code><span>748 / gap 16 / bubble 525</span><code>流式、错误、重试、历史 · ChatView.tsx</code></div><div className="dsh-board-table-row"><strong>conversation.composer</strong><span>ui-conversation</span><code>conversation.composer.bar → card[data-composer-card]</code><span>748 / 780 / r22 / 34</span><code>初始、活动、运行 · InputBar.tsx</code></div><div className="dsh-board-table-row"><strong>settings.panel</strong><span>ui-settings-general</span><code>settings → nav + section + item</code><span>800 / 188 / header 54 / r24</span><code>打开、切换、关闭 · SettingsRoot.tsx</code></div><div className="dsh-board-table-row"><strong>settings.input</strong><span>ui-primitives + ui-settings-general</span><code>Input.wrap → settings options</code><span>32 / r8 / 16 icon slot</span><code>焦点、禁用 · Input.module.css</code></div><div className="dsh-board-table-row"><strong>trajectory.view</strong><span>ui-trajectory</span><code>conversation.view → toolbar + timeline + table + inspector</code><span>32 / 50 / 122 / 320–440</span><code>搜索、折叠、选中、调整 · TrajectoryView.tsx</code></div><div className="dsh-board-table-row"><strong>tool.row</strong><span>ui-tool</span><code>tool.call.toolview → DisclosureRow</code><span>24 / 16 leading</span><code>进行中、错误、展开 · ToolRow</code></div><div className="dsh-board-table-row"><strong>workspace.row</strong><span>ui-workspace</span><code>sidebar.workspaces → treeitem</code><span>34 / 32 / r8</span><code>选中、拖拽、菜单 · Rows</code></div></div></section><section className="dsh-specimen-band"><SectionHeading title="资源采用状态" detail="只把已验证且实际消费的资源称为规范；源码声明、受控例外和禁止采用项必须保持不同状态。" /><div className="dsh-foundation-theme-table">{IMPLEMENTATION_AUDIT_ROWS.map(([title, status, detail]) => <div key={title}><strong>{title}</strong><code>{status}</code><span>{detail}</span></div>)}</div></section><section className="dsh-specimen-band"><SectionHeading title="变更验收门槛" detail="新增或改动样本必须同时通过下面七项；缺少任何一项时继续查源码或回到所属产品页，不能靠相似外观补齐。" /><div className="dsh-foundation-rule-grid">{IMPLEMENTATION_GATES.map(([title, detail]) => <div key={title}><strong>{title}</strong><span>{detail}</span></div>)}</div></section><section className="dsh-specimen-band"><SectionHeading title="模块归属" detail="每个页面样本都必须能回答由哪个模块拥有、挂载到哪里、有哪些状态，以及哪份源码是依据。" /><div className="dsh-board-module-table"><div className="dsh-board-table-head"><span>模块层</span><span>所属模块</span><span>挂载位置</span><span>DOM 结构</span><span>状态 / 源码</span></div>{MODULE_ROWS.map(row => <div className="dsh-board-table-row" key={row.layer}><strong>{row.layer}</strong><span>{row.owner}</span><code>{row.slot}</code><span>{row.dom}</span><code>{row.states} · {row.source}</code></div>)}</div></section><section className="dsh-specimen-band"><SectionHeading title="特殊情况" source="当前组件样式中的局部例外" detail="这些特殊处理只保留在实际使用它们的页面中，不提升为全局颜色或组件。" /><div className="dsh-exception-list"><div><IconWarningOutline16 /><strong>悬浮卡</strong><span>固定深色背景与白色文字，为复制路径的对比度例外。</span><code>ui-primitives/HoverCard.module.css</code></div><div><IconWarningOutline16 /><strong>引用标签</strong><span>用户引用标签使用局部 rgba 蓝色，属于 MessageItem 产品特例。</span><code>ui-conversation/MessageItem.module.css</code></div><div><IconWarningOutline16 /><strong>发送图标</strong><span>发送箭头为白色 currentColor，配合信息按钮填充，不是普通文字变量。</span><code>ui-conversation/InputBar.module.css</code></div><div><IconWarningOutline16 /><strong>未定义变量</strong><span>模型设置中的历史未定义变量不得复制进基础页。</span><code>ui-settings-models/ModelsSection.module.css</code></div></div></section></div>
 }
 
-export function DesignBoardSidebar({ instance, updateConfig }: WorkbenchRenderProps): JSX.Element {
+export function DesignBoardSidebar({ instance, updateConfig, reportError }: WorkbenchRenderProps): JSX.Element {
   const active = sectionFor(instance.config.section)
-  return <nav className="dsh-specimen-sidebar" aria-label="DSH UI 样式看板导航"><div className="dsh-specimen-sidebar-title">DSH UI</div><p>从基础资源与规范进入产品页面</p><div className="dsh-specimen-sidebar-nav">{SECTION_GROUPS.map(group => <div className="dsh-specimen-sidebar-group" key={group.label}><div className="dsh-specimen-sidebar-group-label">{group.label}</div>{group.sections.map(section => { const Icon = section.icon; return <button type="button" className="dsh-specimen-sidebar-link" data-active={active === section.id} key={section.id} onClick={() => { updateConfig({ section: section.id }) }}><Icon size={16} />{section.label}</button> })}</div>)}</div><div className="dsh-specimen-sidebar-footer"><span>系统范围</span><strong>DSH Web UI</strong></div></nav>
+  return <nav className="dsh-specimen-sidebar" aria-label="DSH UI 样式看板导航"><div className="dsh-specimen-sidebar-title">DSH UI</div><p>从基础资源与规范进入产品页面</p><div className="dsh-specimen-sidebar-nav">{SECTION_GROUPS.map(group => <div className="dsh-specimen-sidebar-group" key={group.label}><div className="dsh-specimen-sidebar-group-label">{group.label}</div>{group.sections.map(section => { const Icon = section.icon; return <button type="button" className="dsh-specimen-sidebar-link" data-active={active === section.id} aria-current={active === section.id ? 'page' : undefined} key={section.id} onClick={() => { void updateConfig({ section: section.id }).catch(error => { reportError(error instanceof Error ? error.message : String(error)) }) }}><Icon size={16} />{section.label}</button> })}</div>)}</div><div className="dsh-specimen-sidebar-footer"><span>系统范围</span><strong>DSH Web UI</strong></div></nav>
 }
 
 export function DesignBoard({ instance }: WorkbenchRenderProps): JSX.Element {
   const section = sectionFor(instance.config.section)
-  return <div className="dsh-specimen-board">{section === 'overview' && <Overview />}{section === 'shell' && <Shell />}{section === 'sidebar' && <Sidebar />}{section === 'settings' && <Settings />}{section === 'session' && <Session />}{section === 'chat' && <Conversation />}{section === 'composer' && <Composer />}{section === 'trajectory' && <Trajectory />}{section === 'overlays' && <Overlays />}{section === 'foundations' && <Foundations />}{section === 'icons' && <Icons />}{section === 'primitives' && <Primitives />}{section === 'states' && <States />}{section === 'accessibility' && <Accessibility />}{section === 'governance' && <Governance />}</div>
+  return <div className="dsh-specimen-board">{section === 'overview' && <Overview />}{section === 'shell' && <Shell />}{section === 'sidebar' && <Sidebar />}{section === 'settings' && <Settings />}{section === 'session' && <Session />}{section === 'chat' && <Conversation />}{section === 'composer' && <Composer />}{section === 'trajectory' && <Trajectory />}{section === 'overlays' && <Overlays />}{section === 'foundations' && <Foundations />}{section === 'icons' && <IconGallery groups={ICON_GROUPS} />}{section === 'primitives' && <ComponentGallery />}{section === 'states' && <States />}{section === 'accessibility' && <Accessibility />}{section === 'governance' && <Governance />}</div>
 }

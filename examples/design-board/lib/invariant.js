@@ -1,4 +1,4 @@
-//#region lib/types/invariant.js
+//#region src/invariant.ts
 /**
 * The design board contributes a browser renderer; its runtime relationship is
 * checked by the workbench host's application registry.

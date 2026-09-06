@@ -1,11 +1,13 @@
 import type { Context as ClientContext } from '@deepseek-ai/cordis';
 import type { WorkbenchService } from './types.ts';
-export type { WorkbenchAppDefinition, WorkbenchAppSummary, WorkbenchClientContext, WorkbenchConfig, WorkbenchCreatorDefinition, WorkbenchInstance, WorkbenchPresentation, WorkbenchPresentationKind, WorkbenchRenderProps, WorkbenchRoute, WorkbenchService, WorkbenchSnapshot, WorkbenchTemplateDefinition, WorkbenchTemplateSummary, } from './types.ts';
+export type * from './types.ts';
+export { resolveActivePresentation, resolvePresentationLayout } from './presentation.ts';
+export type { WorkbenchPresentationLayout } from './presentation.ts';
 /** Client service supplied to all workbench application plugins. */
 declare module '@deepseek-ai/cordis' {
     interface Context {
         workbench: WorkbenchService;
     }
 }
-/** Mounts the base workbench service, launcher, and center surface. */
+/** Mount the service and reversible compatibility surfaces in this Cordis lifetime. */
 export declare function apply(ctx: ClientContext): void;

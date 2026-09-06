@@ -82,16 +82,26 @@ Workbench 基座会将参考实例保留为不可用状态，直至重新安装�
 
 ## 开发与验证
 
-在仓库根目录运行：
+仓库自带 build helper，不需要 DSH checkout 或 `DSH_CHECKOUT`。构建工具要求 Node `^22.18.0 || >=24.11.0`。在仓库根目录运行以下命令验证，不覆盖已提交的 `lib` 产物：
 
 ```sh
 pnpm install
-DSH_CHECKOUT=/path/to/dsh pnpm run build
-DSH_CHECKOUT=/path/to/dsh pnpm run build:example
+pnpm run check
 pnpm run check:example
+pnpm run build:verify
+pnpm --dir examples/design-board run build:verify
 ```
 
-示例构建会在本地链接根目录 Workbench 包来完成类型检查和 bundling。DSH Web 重启并刷新后，在实际应用中验证；只有对应 DSH Client watcher 正在重建 client bundle 时，纯浏览器源码才支持自动替换。
+示例构建会在临时目录编译当前根 Workbench 声明，不修改 node_modules，也不依赖预先构建的根声明产物。设计板仍是仓库内参考；独立复制的应用包应使用[独立 starter](../starter)，通过公开 build helper 构建。
+
+发布或安装变更源码前，必须显式重建基座与示例产物：
+
+```sh
+pnpm run build
+pnpm run build:example
+```
+
+仅修改源码或运行临时验证不会安装本次未发布协议变更。DSH Web 重启并刷新后，在实际应用中验证；只有对应 DSH Client watcher 正在重建 client bundle 时，纯浏览器源码才支持自动替换。
 
 ## License
 
