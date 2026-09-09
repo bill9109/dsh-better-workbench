@@ -4,6 +4,8 @@ All notable user-facing changes to dsh-better-workbench and its bundled examples
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-09-10
+
 ### Fixed
 
 - Mount the centre surface on the `main` slot. DSH Web replaced the root-scoped `conversation` slot with the keyed `main` panel slot (`conversation` became an entry key inside it), so `[data-slot="conversation"]` no longer exists and the workbench silently failed to mount: the home and instance routes changed without any surface appearing. This requires a DSH Web that exposes the `main` slot; older hosts that still render `conversation` are no longer supported.
