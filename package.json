@@ -53,12 +53,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bill9109/dsh-workbench.git"
+    "url": "git+https://github.com/omdsh-dev/dsh-workbench.git"
   },
   "bugs": {
-    "url": "https://github.com/bill9109/dsh-workbench/issues"
+    "url": "https://github.com/omdsh-dev/dsh-workbench/issues"
   },
-  "homepage": "https://github.com/bill9109/dsh-workbench#readme",
+  "homepage": "https://github.com/omdsh-dev/dsh-workbench#readme",
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
     "@deepseek-ai/dsh-client-ui-primitives": "^0.1.2-alpha.5",

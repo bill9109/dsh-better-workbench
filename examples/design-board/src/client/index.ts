@@ -22,7 +22,7 @@ export function apply(ctx: WorkbenchClientContext): void {
     source: {
       packageName: 'dsh-workbench-design-board',
       version: '0.2.0',
-      repository: 'https://github.com/bill9109/dsh-workbench',
+      repository: 'https://github.com/omdsh-dev/dsh-workbench',
     },
     config: {
       version: 1,

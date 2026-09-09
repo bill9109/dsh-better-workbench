@@ -6,7 +6,7 @@ Focused fixes, tests, documentation changes, and protocol-compatible Workbench i
 
 1. Read [README.md](README.md) for installation, usage, lifecycle, and troubleshooting.
 2. Read [docs/application-authoring/SKILL.md](docs/application-authoring/SKILL.md) before changing the application protocol or the reference application.
-3. Search existing [issues](https://github.com/bill9109/dsh-workbench/issues) and pull requests before opening duplicate work.
+3. Search existing [issues](https://github.com/omdsh-dev/dsh-workbench/issues) and pull requests before opening duplicate work.
 4. Open an issue before changing persistence, routes, presentation semantics, application identity, or bundle manifests.
 5. Keep each change narrowly scoped; do not mix behavior changes with unrelated refactoring or generated-output churn.
 

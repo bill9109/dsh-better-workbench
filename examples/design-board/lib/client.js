@@ -6756,7 +6756,7 @@ body[data-ds-dark-theme] .dsh-cg-hover-content { color: var(--dsw-alias-label-pr
 				source: {
 					packageName: "dsh-workbench-design-board",
 					version: "0.2.0",
-					repository: "https://github.com/bill9109/dsh-workbench"
+					repository: "https://github.com/omdsh-dev/dsh-workbench"
 				},
 				config: {
 					version: 1,

@@ -1,11 +1,11 @@
 # dsh-workbench — DeepSeek Harness 可扩展工作台
 
-[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-5B4CF0?style=flat-square)](https://github.com/bill9109/dsh-workbench/releases)
+[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-workbench/releases)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%5E20%20%7C%20%3E%3D22-339933?style=flat-square&logo=nodedotjs&logoColor=white)](package.json)
 [![DSH profile](https://img.shields.io/badge/DSH-Web-5B4CF0?style=flat-square)](cordis.patch.yml)
 
-**安装：** `dsh plugin --profile web add github:bill9109/dsh-workbench`
+**安装：** `dsh plugin --profile web add github:omdsh-dev/dsh-workbench`
 
 **DeepSeek Harness Web UI 插件：提供常驻工作台首页、可持久化的应用实例、模板，以及可供第三方 DSH 应用复用的 `page`、`panel`、`capsule` 呈现宿主。**
 
@@ -49,7 +49,7 @@ DSH 插件可以贡献工具、服务和小型 UI 入口，但完整的浏览器
 仓库根包是 DSH **bundle**（`package.json` 声明 `dsh.bundle` 与 `dsh.client`）。使用标准插件命令安装到 `web` profile，**无需修改 DSH 源码，也无需配置 `config.yaml`**：
 
 ```sh
-dsh plugin --profile web add github:bill9109/dsh-workbench
+dsh plugin --profile web add github:omdsh-dev/dsh-workbench
 # 或使用本地 checkout：
 dsh plugin --profile web add /path/to/dsh-workbench
 ```
@@ -63,7 +63,7 @@ dsh plugin --profile web add /path/to/dsh-workbench
 基础 bundle 不会默认启用参考应用。克隆仓库后，先安装基座，再安装示例包：
 
 ```sh
-git clone https://github.com/bill9109/dsh-workbench.git
+git clone https://github.com/omdsh-dev/dsh-workbench.git
 cd dsh-workbench
 dsh plugin --profile web add "$PWD"
 dsh plugin --profile web add "$PWD/examples/design-board"
@@ -74,7 +74,7 @@ dsh plugin --profile web add "$PWD/examples/design-board"
 ### 升级
 
 ```sh
-dsh plugin --profile web update github:bill9109/dsh-workbench
+dsh plugin --profile web update github:omdsh-dev/dsh-workbench
 ```
 
 本地路径安装时，拉取新的 checkout 后，对根包和已安装的示例包重新执行 `add`。随后重启 DSH Web 并硬刷新。
@@ -208,7 +208,7 @@ pnpm run build:example
 
 ## 社区与关于
 
-- 可复现 bug、聚焦的功能请求和使用问题，请走 [GitHub Issues](https://github.com/bill9109/dsh-workbench/issues)。
+- 可复现 bug、聚焦的功能请求和使用问题，请走 [GitHub Issues](https://github.com/omdsh-dev/dsh-workbench/issues)。
 - 提交变更前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)；安全问题按照 [SECURITY.md](SECURITY.md) 私下报告。
 - 版本与兼容性说明见 [CHANGELOG.md](CHANGELOG.md)。
 

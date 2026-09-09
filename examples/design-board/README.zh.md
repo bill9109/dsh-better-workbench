@@ -1,6 +1,6 @@
 # dsh-workbench-design-board — DSH Web 设计参考
 
-[![Example v0.2.0](https://img.shields.io/badge/example-v0.2.0-5B4CF0?style=flat-square)](https://github.com/bill9109/dsh-workbench/tree/main/examples/design-board)
+[![Example v0.2.0](https://img.shields.io/badge/example-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-workbench/tree/main/examples/design-board)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![DSH Workbench](https://img.shields.io/badge/requires-dsh--workbench-5B4CF0?style=flat-square)](../..)
 
@@ -50,7 +50,7 @@
 先安装 Workbench 基座，再安装本示例：
 
 ```sh
-git clone https://github.com/bill9109/dsh-workbench.git
+git clone https://github.com/omdsh-dev/dsh-workbench.git
 cd dsh-workbench
 dsh plugin --profile web add "$PWD"
 dsh plugin --profile web add "$PWD/examples/design-board"

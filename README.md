@@ -1,11 +1,11 @@
 # dsh-workbench — Extensible workspaces for DeepSeek Harness
 
-[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-5B4CF0?style=flat-square)](https://github.com/bill9109/dsh-workbench/releases)
+[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-workbench/releases)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%5E20%20%7C%20%3E%3D22-339933?style=flat-square&logo=nodedotjs&logoColor=white)](package.json)
 [![DSH profile](https://img.shields.io/badge/DSH-Web-5B4CF0?style=flat-square)](cordis.patch.yml)
 
-**Install:** `dsh plugin --profile web add github:bill9109/dsh-workbench`
+**Install:** `dsh plugin --profile web add github:omdsh-dev/dsh-workbench`
 
 **A DeepSeek Harness Web UI plugin that provides a permanent Workbench home, durable application instances, templates, and reusable `page`, `panel`, and `capsule` presentation hosts for third-party DSH applications.**
 
@@ -49,7 +49,7 @@ The sidebar also provides Workbench search, view options, creation, renaming, de
 This repository's root package is a DSH **bundle** (`package.json` declares `dsh.bundle` and `dsh.client`). Install it into the `web` profile with the standard plugin command. No DSH source changes or `config.yaml` entries are required:
 
 ```sh
-dsh plugin --profile web add github:bill9109/dsh-workbench
+dsh plugin --profile web add github:omdsh-dev/dsh-workbench
 # or from a local checkout:
 dsh plugin --profile web add /path/to/dsh-workbench
 ```
@@ -63,7 +63,7 @@ After installation, restart DSH Web and hard-refresh the browser. The package mu
 The reference application is intentionally not enabled by the base bundle. Clone the repository, install the base first, then install the example package:
 
 ```sh
-git clone https://github.com/bill9109/dsh-workbench.git
+git clone https://github.com/omdsh-dev/dsh-workbench.git
 cd dsh-workbench
 dsh plugin --profile web add "$PWD"
 dsh plugin --profile web add "$PWD/examples/design-board"
@@ -74,7 +74,7 @@ Restart DSH Web and hard-refresh the browser. **DSH UI 样式看板** then appea
 ### Upgrade
 
 ```sh
-dsh plugin --profile web update github:bill9109/dsh-workbench
+dsh plugin --profile web update github:omdsh-dev/dsh-workbench
 ```
 
 For a local-path installation, pull the replacement checkout and run `add` again for the root and any installed example packages. Restart DSH Web and hard-refresh afterward.
@@ -208,7 +208,7 @@ Repository layout:
 
 ## Community and about
 
-- Use [GitHub Issues](https://github.com/bill9109/dsh-workbench/issues) for reproducible bugs, focused feature requests, and usage questions.
+- Use [GitHub Issues](https://github.com/omdsh-dev/dsh-workbench/issues) for reproducible bugs, focused feature requests, and usage questions.
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes; report vulnerabilities privately through [SECURITY.md](SECURITY.md).
 - See [CHANGELOG.md](CHANGELOG.md) for release and compatibility notes.
 
