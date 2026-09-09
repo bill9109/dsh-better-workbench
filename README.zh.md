@@ -1,6 +1,6 @@
 # dsh-better-workbench — DeepSeek Harness 可扩展工作台
 
-[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-better-workbench/releases)
+[![Version v0.3.0](https://img.shields.io/badge/version-v0.3.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-better-workbench/releases)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%5E20%20%7C%20%3E%3D22-339933?style=flat-square&logo=nodedotjs&logoColor=white)](package.json)
 [![DSH profile](https://img.shields.io/badge/DSH-Web-5B4CF0?style=flat-square)](cordis.patch.yml)

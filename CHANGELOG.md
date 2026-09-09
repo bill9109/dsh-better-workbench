@@ -4,6 +4,8 @@ All notable user-facing changes to dsh-better-workbench and its bundled examples
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-09
+
 ### Changed
 
 - Redesign the single `protocolVersion: 1` application contract without a parallel protocol or legacy synchronous API: mandatory config version/defaults/validation, optional async migration, and async instance mutations.

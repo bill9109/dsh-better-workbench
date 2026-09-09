@@ -1,6 +1,6 @@
 {
   "name": "dsh-better-workbench-design-board",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Reference DSH Workbench application for inspecting real DSH Web design tokens, primitives, and product layouts",
   "keywords": [
     "deepseek",
@@ -55,7 +55,7 @@
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
     "@deepseek-ai/dsh-client-ui-primitives": "^0.1.2-alpha.5",
-    "dsh-better-workbench": "^0.2.0",
+    "dsh-better-workbench": "^0.3.0",
     "react": "^18.2.0"
   },
   "devDependencies": {
