@@ -56,7 +56,7 @@ dsh plugin --profile web add /path/to/dsh-workbench
 
 发布版本包含已提交的 `lib/` 产物。当前工作树包含尚未发布的协议重设计：发布或安装变更源码前，必须按下文重建基座与示例产物。仅修改源码不会更新已安装 GUI。
 
-安装后重启 DSH Web，并在浏览器中硬刷新。只有包进入浏览器 boot graph 后，Client 插件才会加载。
+dsh-workbench 作为用户插件行安装进 profile 的 `cordis.patch.yml`，由 DSH 的 `watchUserPatches` watcher 持续热应用，因此**无需重启 `dsh web`**：刷新浏览器（或 dev 模式 HMR）即可加载 Client bundle。仅当你修改包清单、依赖或 profile 的 `dsh.profile.bundles` 集合时才需要重启。
 
 ### 安装设计板示例
 
@@ -69,7 +69,7 @@ dsh plugin --profile web add "$PWD"
 dsh plugin --profile web add "$PWD/examples/design-board"
 ```
 
-重启 DSH Web 并硬刷新后，**DSH UI 样式看板**会作为默认 Workbench 实例出现，同时提供创建模板。
+无需重启 `dsh web`：刷新浏览器后，**DSH UI 样式看板**会作为默认 Workbench 实例出现，同时提供创建模板。
 
 ### 升级
 
@@ -77,7 +77,7 @@ dsh plugin --profile web add "$PWD/examples/design-board"
 dsh plugin --profile web update github:omdsh-dev/dsh-workbench
 ```
 
-本地路径安装时，拉取新的 checkout 后，对根包和已安装的示例包重新执行 `add`。随后重启 DSH Web 并硬刷新。
+本地路径安装时，拉取新的 checkout 后，对根包和已安装的示例包重新执行 `add`。改动会被热应用，随后刷新浏览器即可（仅当修改了包清单或依赖时才需重启）。
 
 ### 卸载
 

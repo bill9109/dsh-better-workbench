@@ -56,7 +56,7 @@ dsh plugin --profile web add /path/to/dsh-workbench
 
 Released revisions include committed `lib/` artifacts. This working tree contains an unreleased protocol redesign: before publishing it or installing changed source, rebuild both the base and example artifacts as described below. A source-only change does not update an installed GUI.
 
-After installation, restart DSH Web and hard-refresh the browser. The package must enter the browser boot graph before its Client plugin can load.
+dsh-workbench installs as a user plugin row in the profile's `cordis.patch.yml` and is live-applied by the DSH `watchUserPatches` watcher, so **no `dsh web` restart is needed**: a browser refresh (or dev-mode HMR) loads the Client bundle. Restart is only required if you change the package's bundle manifest, its dependencies, or the profile's `dsh.profile.bundles` set.
 
 ### Install the design-board example
 
@@ -69,7 +69,7 @@ dsh plugin --profile web add "$PWD"
 dsh plugin --profile web add "$PWD/examples/design-board"
 ```
 
-Restart DSH Web and hard-refresh the browser. **DSH UI 样式看板** then appears as a default Workbench instance and as a creation template.
+No `dsh web` restart is needed: refresh the browser and **DSH UI 样式看板** appears as a default Workbench instance and as a creation template.
 
 ### Upgrade
 
@@ -77,7 +77,7 @@ Restart DSH Web and hard-refresh the browser. **DSH UI 样式看板** then appea
 dsh plugin --profile web update github:omdsh-dev/dsh-workbench
 ```
 
-For a local-path installation, pull the replacement checkout and run `add` again for the root and any installed example packages. Restart DSH Web and hard-refresh afterward.
+For a local-path installation, pull the replacement checkout and run `add` again for the root and any installed example packages. The change is live-applied: refresh the browser afterward (restart only if you changed the bundle manifest or dependencies).
 
 ### Uninstall
 
