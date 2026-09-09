@@ -2,7 +2,7 @@ import { resolveActivePresentation, resolvePresentationLayout } from './presenta
 import type { WorkbenchService } from './types.ts'
 
 const SIDEBAR_SLOT = '[data-slot="sidebar.workspaces"]'
-const CONVERSATION_SLOT = '[data-slot="conversation"]'
+const CONVERSATION_SLOT = '[data-slot="main"]'
 const OWNED = '[data-dsh-better-workbench-sidebar], [data-dsh-better-workbench-center]'
 const PANEL_SIZE = '--workbench-panel-size'
 const CONVERSATION_PROPERTIES = ['visibility', 'pointer-events', 'margin-right', 'margin-bottom'] as const
