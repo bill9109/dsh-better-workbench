@@ -46,11 +46,13 @@ DSH 插件可以贡献工具、服务和小型 UI 入口，但完整的浏览器
 
 ## 安装
 
-仓库根包是 DSH **bundle**（`package.json` 声明 `dsh.bundle` 与 `dsh.client`），无需修改 DSH 源码，也无需配置 `config.yaml`。存在两种受支持的激活方式，请二选一——切勿把同一包同时注册为 bundle 与插件行：否则该插件行的 `id` 会被插入两次，启动时因 duplicate loader entry 失败。
+仓库根包是 DSH **bundle**（`package.json` 声明 `dsh.bundle` 与 `dsh.client`），已发布到 **npm，包名 `dsh-better-workbench`**。无需修改 DSH 源码，也无需配置 `config.yaml`。存在两种受支持的激活方式，请二选一——切勿把同一包同时注册为 bundle 与插件行：否则该插件行的 `id` 会被插入两次，启动时因 duplicate loader entry 失败。
 
 **作为 profile bundle（标准方式，面向使用者）：**
 
 ```sh
+dsh plugin --profile web add dsh-better-workbench
+# 或从 GitHub（源码/预发布）：
 dsh plugin --profile web add github:omdsh-dev/dsh-better-workbench
 # 或使用本地 checkout：
 dsh plugin --profile web add /path/to/dsh-better-workbench
@@ -70,7 +72,7 @@ dsh plugin --profile web add /path/to/dsh-better-workbench
 
 用户插件行由 `watchUserPatches` watcher 持续热应用，所以源码/bundle 内容改动**无需重启 `dsh web`**——刷新浏览器（或 dev 模式 HMR）即可加载 Client bundle。仅当修改 bundle 清单/依赖时才需要重启。使用本方式时，请保持该包**不在** profile 的 `dsh.profile.bundles` 中（运行 `dsh plugin` 时 CLI 可能把声明了 `dsh.bundle` 的包重新加回去）。
 
-发布版本包含已提交的 `lib/` 产物。当前工作树包含尚未发布的协议重设计：发布或安装变更源码前，必须按下文重建基座与示例产物。仅修改源码不会更新已安装 GUI。
+已发布版本包含提交的 `lib/` 产物，并已发布到 npm（`dsh-better-workbench`）。发布或从源码安装前，请重建基座与示例产物：仅修改源码不会更新已安装 GUI。
 
 ### 安装设计板示例
 
@@ -88,6 +90,8 @@ dsh plugin --profile web add "$PWD/examples/design-board"
 ### 升级
 
 ```sh
+dsh plugin --profile web update dsh-better-workbench
+# 或从 GitHub：
 dsh plugin --profile web update github:omdsh-dev/dsh-better-workbench
 ```
 
