@@ -124,7 +124,7 @@ test('copied starter builds with an installed workbench package and no parent he
     const source = await readFile(join(root, file), 'utf8')
     assert.ok(!source.includes('../../../scripts') && !source.includes('../../scripts'))
   }
-  assert.equal(starter.devDependencies['dsh-better-workbench'], '^0.2.0')
+  assert.equal(starter.devDependencies['dsh-better-workbench'], '^0.3.0')
   const result = spawnSync(process.execPath, ['scripts/build.mjs', '--verify'], {
     cwd: root, encoding: 'utf8', env: { ...process.env, DSH_CHECKOUT: '/not-a-checkout' },
   })

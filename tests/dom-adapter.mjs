@@ -9,7 +9,7 @@ const panel = (placement = 'right') => ({ kind: 'panel', placement, behavior: 'p
 const flush = async () => { for (let i = 0; i < 8; i++) await Promise.resolve() }
 
 function fixture(t, { html, presentation = page, ready = true, failCenter = false, failSidebar = false } = {}) {
-  const dom = new JSDOM(html ?? '<aside><div data-slot="sidebar.workspaces"></div></aside><main><div data-slot="conversation"><article style="visibility: visible !important; pointer-events: auto; margin-right: 9px; margin-bottom: 3px">Chat</article></div></main>')
+  const dom = new JSDOM(html ?? '<aside><div data-slot="sidebar.workspaces"></div></aside><main><div data-slot="main"><article style="visibility: visible !important; pointer-events: auto; margin-right: 9px; margin-bottom: 3px">Chat</article></div></main>')
   const { window } = dom
   const doc = window.document
   const intervals = new Map()
@@ -104,7 +104,7 @@ test('waits for React commit and restores original styles and all owned resource
   f.readyCallbacks.center(true)
   assert.equal(chat.style.visibility, 'hidden')
   const extra = f.doc.createElement('article')
-  f.doc.querySelector('[data-slot="conversation"]').append(extra)
+  f.doc.querySelector('[data-slot="main"]').append(extra)
   await flush()
   assert.equal(extra.style.visibility, 'hidden')
   f.dispose()
@@ -154,7 +154,7 @@ test('sidebar failure retries independently while healthy center stays mounted',
 test('late anchors mount independently and removed hosts are replaced', async t => {
   const f = fixture(t, { html: '<aside></aside><main></main>' })
   const slot = f.doc.createElement('div')
-  slot.dataset.slot = 'conversation'
+  slot.dataset.slot = 'main'
   f.main.append(slot)
   await flush()
   assert.deepEqual(f.renders, { sidebar: 0, center: 1 })
