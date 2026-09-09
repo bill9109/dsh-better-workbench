@@ -1,4 +1,4 @@
-# dsh-workbench bundle: the base workbench host.
+# dsh-better-workbench bundle: the base workbench host.
 - insert:
     - id: workbench
-      name: 'dsh-workbench'
+      name: 'dsh-better-workbench'

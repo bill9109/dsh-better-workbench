@@ -1,6 +1,6 @@
 # Changelog
 
-All notable user-facing changes to dsh-workbench and its bundled examples are documented in this file. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and uses semantic version tags.
+All notable user-facing changes to dsh-better-workbench and its bundled examples are documented in this file. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and uses semantic version tags.
 
 ## [Unreleased]
 
@@ -10,7 +10,7 @@ All notable user-facing changes to dsh-workbench and its bundled examples are do
 - Store full repository state atomically in IndexedDB, with revision compare-and-swap, migration backups, generation checks and cross-tab invalidation. Keep routes and presentation preferences in per-tab sessionStorage; retain original localStorage keys during initial legacy-data import.
 - Allocate UUIDs for ordinary instances while preserving explicit default IDs and imported IDs. Treat source package/version/repository as self-reported metadata, not authenticated identity.
 - Share effective, container-bounded panel geometry between Surface and conversation insets; downgrade push to overlay on small containers. Support floating capsules only.
-- Use independent repository-local builds and a public `dsh-workbench/build/client-bundle` helper. Add a standalone starter distinct from the design-board reference. Build tooling requires Node ^22.18 or >=24.11; published runtime compatibility remains separate.
+- Use independent repository-local builds and a public `dsh-better-workbench/build/client-bundle` helper. Add a standalone starter distinct from the design-board reference. Build tooling requires Node ^22.18 or >=24.11; published runtime compatibility remains separate.
 
 ### Added
 

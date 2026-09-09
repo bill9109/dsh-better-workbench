@@ -6,11 +6,11 @@ export function apply(ctx) {
     const workbench = ctx.workbench;
     ctx.effect(() => {
         const style = document.createElement('style');
-        style.setAttribute('data-dsh-workbench-design-board-style', '');
+        style.setAttribute('data-dsh-better-workbench-design-board-style', '');
         style.textContent = DESIGN_BOARD_STYLE;
         document.head.appendChild(style);
         return () => { style.remove(); };
-    }, 'dsh-workbench-design-board: styles');
+    }, 'dsh-better-workbench-design-board: styles');
     const legacyDefault = workbench.getSnapshot().instances.find(instance => instance.instanceId === 'dsh-design-board-default');
     if (legacyDefault?.title === 'DSH 设计看板')
         workbench.renameInstance(legacyDefault.instanceId, 'DSH UI 样式看板');
@@ -29,7 +29,7 @@ export function apply(ctx) {
         },
         renderMain: DesignBoard,
         renderSecondary: DesignBoardSidebar,
-    }), 'dsh-workbench-design-board: app registration');
+    }), 'dsh-better-workbench-design-board: app registration');
     ctx.effect(() => workbench.registerTemplate({
         templateId: 'dsh-design-board:reference',
         title: 'DSH UI 样式看板',
@@ -38,5 +38,5 @@ export function apply(ctx) {
         appId: 'dsh-design-board',
         defaultTitle: 'DSH UI 样式看板',
         defaultConfig: { section: 'overview' },
-    }), 'dsh-workbench-design-board: template registration');
+    }), 'dsh-better-workbench-design-board: template registration');
 }

@@ -1,12 +1,12 @@
 {
-  "name": "dsh-workbench-design-board",
+  "name": "dsh-better-workbench-design-board",
   "version": "0.2.0",
   "description": "Reference DSH Workbench application for inspecting real DSH Web design tokens, primitives, and product layouts",
   "keywords": [
     "deepseek",
     "deepseek-harness",
     "dsh-plugin",
-    "dsh-workbench",
+    "dsh-better-workbench",
     "design-system"
   ],
   "type": "module",
@@ -45,17 +45,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/omdsh-dev/dsh-workbench.git",
+    "url": "git+https://github.com/omdsh-dev/dsh-better-workbench.git",
     "directory": "examples/design-board"
   },
   "bugs": {
-    "url": "https://github.com/omdsh-dev/dsh-workbench/issues"
+    "url": "https://github.com/omdsh-dev/dsh-better-workbench/issues"
   },
-  "homepage": "https://github.com/omdsh-dev/dsh-workbench/tree/main/examples/design-board#readme",
+  "homepage": "https://github.com/omdsh-dev/dsh-better-workbench/tree/main/examples/design-board#readme",
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
     "@deepseek-ai/dsh-client-ui-primitives": "^0.1.2-alpha.5",
-    "dsh-workbench": "^0.2.0",
+    "dsh-better-workbench": "^0.2.0",
     "react": "^18.2.0"
   },
   "devDependencies": {
@@ -63,7 +63,7 @@
     "@deepseek-ai/dsh-client-ui-primitives": "0.1.2-alpha.5",
     "@types/node": "^24.0.0",
     "@types/react": "~18.3.1",
-    "dsh-workbench": "workspace:^",
+    "dsh-better-workbench": "workspace:^",
     "react": "18.2.0",
     "typescript": "^5.6.0"
   },
@@ -80,7 +80,7 @@
     "client": {
       "platform": "web",
       "inject": [
-        "dsh-workbench",
+        "dsh-better-workbench",
         "@deepseek-ai/dsh-client-ui-primitives"
       ]
     }

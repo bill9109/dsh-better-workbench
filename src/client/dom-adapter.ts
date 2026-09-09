@@ -3,7 +3,7 @@ import type { WorkbenchService } from './types.ts'
 
 const SIDEBAR_SLOT = '[data-slot="sidebar.workspaces"]'
 const CONVERSATION_SLOT = '[data-slot="conversation"]'
-const OWNED = '[data-dsh-workbench-sidebar], [data-dsh-workbench-center]'
+const OWNED = '[data-dsh-better-workbench-sidebar], [data-dsh-better-workbench-center]'
 const PANEL_SIZE = '--workbench-panel-size'
 const CONVERSATION_PROPERTIES = ['visibility', 'pointer-events', 'margin-right', 'margin-bottom'] as const
 
@@ -85,7 +85,7 @@ export function mountWorkbenchDom(service: WorkbenchService, options: WorkbenchD
   let navigation: SessionList | undefined
   let unsubscribeNavigation: (() => void) | undefined
   const style = doc.createElement('style')
-  style.setAttribute('data-dsh-workbench-style', '')
+  style.setAttribute('data-dsh-better-workbench-style', '')
   style.textContent = options.style
   doc.head.appendChild(style)
 
@@ -143,7 +143,7 @@ export function mountWorkbenchDom(service: WorkbenchService, options: WorkbenchD
     if (!(anchor instanceof view.HTMLElement) || anchor.parentElement === null) return undefined
     const parent = anchor.parentElement
     const host = doc.createElement('div')
-    host.setAttribute('data-dsh-workbench-' + kind, '')
+    host.setAttribute('data-dsh-better-workbench-' + kind, '')
     const surface: Surface = {
       host, anchor, parent, dispose: () => {}, ready: false, failed: false, originals: new Map(),
       parentStyle: saveStyle(parent, kind === 'center' ? ['position', PANEL_SIZE] : []),

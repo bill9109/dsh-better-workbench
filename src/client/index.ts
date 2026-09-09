@@ -53,7 +53,7 @@ function renderSurface(host: HTMLElement, content: ReactNode, ready: (ready: boo
 /** Mount the service and reversible compatibility surfaces in this Cordis lifetime. */
 export function apply(ctx: ClientContext): void {
   const service = new WorkbenchController()
-  ctx.effect(() => () => service.dispose(), 'dsh-workbench: controller lifetime')
+  ctx.effect(() => () => service.dispose(), 'dsh-better-workbench: controller lifetime')
   ctx.effect(() => {
     const beforeUnload = (event: BeforeUnloadEvent): void => {
       if (service.getSnapshot().dirtyInstanceIds.length === 0) return
@@ -62,12 +62,12 @@ export function apply(ctx: ClientContext): void {
     }
     window.addEventListener('beforeunload', beforeUnload)
     return () => { window.removeEventListener('beforeunload', beforeUnload) }
-  }, 'dsh-workbench: unsaved changes warning')
-  ctx.effect(() => ctx.reflect.provide('workbench', service), 'dsh-workbench: service')
+  }, 'dsh-better-workbench: unsaved changes warning')
+  ctx.effect(() => ctx.reflect.provide('workbench', service), 'dsh-better-workbench: service')
   ctx.effect(() => mountWorkbenchDom(service, {
     style: WORKBENCH_STYLE,
     getSessions: () => ctx.get('sessions'),
     renderSidebar: (host, ready) => renderSurface(host, createElement(WorkbenchSidebar, { service }), ready),
     renderCenter: (host, ready) => renderSurface(host, createElement(WorkbenchSurface, { service }), ready),
-  }), 'dsh-workbench: DOM surfaces')
+  }), 'dsh-better-workbench: DOM surfaces')
 }

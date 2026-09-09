@@ -21,7 +21,7 @@ export async function buildPackage(root, outDir, { workbenchTypes, declarationsO
   const host = ts.createCompilerHost(config.options)
   if (workbenchTypes) {
     host.resolveModuleNames = (names, containingFile) => names.map(name => {
-      if (name === 'dsh-workbench/client') {
+      if (name === 'dsh-better-workbench/client') {
         return { resolvedFileName: join(workbenchTypes, 'client/index.d.ts'), extension: ts.Extension.Dts }
       }
       // Temporary declarations must resolve peer types from the real package install.
@@ -60,7 +60,7 @@ export async function runBuild(root, args = process.argv.slice(2)) {
     }, null, 2))
     return
   }
-  const temporary = await mkdtemp(join(tmpdir(), 'dsh-workbench-build-'))
+  const temporary = await mkdtemp(join(tmpdir(), 'dsh-better-workbench-build-'))
   try {
     let workbenchTypes
     if (example) {

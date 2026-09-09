@@ -1,8 +1,8 @@
 import { IndexedDbRepository, type WorkbenchRepository, type RepositoryState, type StoredInstance, type StoredConfigBackup } from './storage.ts';
 import type { WorkbenchAppDefinition, WorkbenchConfig, WorkbenchCreatorDefinition, WorkbenchCreationResult, WorkbenchInstance, WorkbenchPresentationKind, WorkbenchRoute, WorkbenchService, WorkbenchSnapshot, WorkbenchTemplateDefinition } from './types.ts';
 const ID_PATTERN = new RegExp('^(?:@[a-zA-Z0-9][a-zA-Z0-9._-]*/)?[a-zA-Z0-9][a-zA-Z0-9._:@/-]{0,159}$');
-const ROUTE_KEY = 'dsh-workbench.navigation.v1';
-const PRESENTATIONS_KEY = 'dsh-workbench.presentations.v1';
+const ROUTE_KEY = 'dsh-better-workbench.navigation.v1';
+const PRESENTATIONS_KEY = 'dsh-better-workbench.presentations.v1';
 const message = (error: unknown): string => error instanceof Error ? error.message : String(error);
 const validId = (id: string): void => { if (typeof id !== 'string' || !ID_PATTERN.test(id))
     throw new Error('Invalid workbench identifier: ' + String(id)); };
@@ -211,7 +211,7 @@ export class WorkbenchController implements WorkbenchService {
             Promise.allSettled(tasks).then(() => {}),
             new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error(label + ': asynchronous teardown timed out')), this.teardownTimeoutMs); }),
         ]).finally(() => clearTimeout(timer));
-        void result.catch(error => console.error('[dsh-workbench]', error));
+        void result.catch(error => console.error('[dsh-better-workbench]', error));
         return result;
     }
     private assertActive(): void { if (!this.active)
@@ -711,7 +711,7 @@ export class WorkbenchController implements WorkbenchService {
                 listener();
             }
             catch (error) {
-                console.error('[dsh-workbench] subscriber failed', error);
+                console.error('[dsh-better-workbench] subscriber failed', error);
             }
         }
     }

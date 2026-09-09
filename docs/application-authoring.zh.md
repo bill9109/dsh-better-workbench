@@ -1,5 +1,5 @@
 ---
-name: dsh-workbench-application-authoring
+name: dsh-better-workbench-application-authoring
 description: "开发或审查 DSH Workbench 应用，覆盖配置版本、异步持久化、呈现与 activation 资源所有权。"
 whenToUse: "注册 Workbench 应用、模板或 Creator；迁移配置；验证持久化与卸载。"
 ---
@@ -20,7 +20,7 @@ whenToUse: "注册 Workbench 应用、模板或 Creator；迁移配置；验证�
 
 ```tsx
 import { useState } from 'react'
-import type { WorkbenchClientContext, WorkbenchRenderProps } from 'dsh-workbench/client'
+import type { WorkbenchClientContext, WorkbenchRenderProps } from 'dsh-better-workbench/client'
 
 export const inject = ['workbench']
 
@@ -72,7 +72,7 @@ export function apply(ctx: WorkbenchClientContext): void {
 }
 ```
 
-应用包必须声明 DSH Client 元数据、构建 Client closure bundle，并与基座一起安装到 Web profile。独立包请参考 [examples/starter](../examples/starter)，使用公开 `dsh-workbench/build/client-bundle` helper。它已在复制出的独立布局测试，但未经过全新 registry 安装；从 registry 使用需要先发布本次重设计与 helper。[设计板 package](../examples/design-board/package.json) 是仓库内参考，不是独立 starter。`dsh-workbench/client` 的 type-only import 不产生运行时 import 需求。不要把 TSX 粘贴进未经转换的动态插件函数体。
+应用包必须声明 DSH Client 元数据、构建 Client closure bundle，并与基座一起安装到 Web profile。独立包请参考 [examples/starter](../examples/starter)，使用公开 `dsh-better-workbench/build/client-bundle` helper。它已在复制出的独立布局测试，但未经过全新 registry 安装；从 registry 使用需要先发布本次重设计与 helper。[设计板 package](../examples/design-board/package.json) 是仓库内参考，不是独立 starter。`dsh-better-workbench/client` 的 type-only import 不产生运行时 import 需求。不要把 TSX 粘贴进未经转换的动态插件函数体。
 
 ## 标识与配置
 
@@ -109,7 +109,7 @@ IndexedDB 用一个完整 repository-state 记录保存实例、已撤销默认�
 
 同源标签页共享实例数据；通知只使缓存失效，再读取已提交数据。配置写入采用 revision compare-and-swap，不是盲覆盖或自动合并。`updateConfig(patch, expectedRevision?)` 返回提交后的 revision。草稿必须保留开始编辑时的 revision，不能因收到远端 snapshot 自动更新基准；省略 revision 时，宿主使用首次 setDirty(true) 捕获的基准，否则使用当前渲染 revision。成功后可用返回值推进草稿基准。冲突后先重新读取并协调最新状态，不要循环用旧数据覆盖。重命名、删除也检查 revision；排序是原子的列表更新。保存成功意味着事务完成，而非仅乐观更新了界面。
 
-当前标签页路由单独放在 `sessionStorage` 的 `dsh-workbench.navigation.v1`。每实例呈现偏好放在 `dsh-workbench.presentations.v1`；`open(id)` 优先使用仍被应用支持的已记忆 kind，再回退到默认模式。仓库首次初始化会从 `dsh-workbench.state.v3`、`dsh-workbench.state.v2` 或 `dsh-workbench.instances.v1` 导入可识别记录；保留原 localStorage key，并在 IndexedDB 留存源字符串与导入标记。这是数据导入，不是兼容旧应用 API。浏览器存储受 origin 限制，可能被清理或不可用，不是托管备份服务。
+当前标签页路由单独放在 `sessionStorage` 的 `dsh-better-workbench.navigation.v1`。每实例呈现偏好放在 `dsh-better-workbench.presentations.v1`；`open(id)` 优先使用仍被应用支持的已记忆 kind，再回退到默认模式。仓库首次初始化会从 `dsh-better-workbench.state.v3`、`dsh-better-workbench.state.v2` 或 `dsh-better-workbench.instances.v1` 导入可识别记录；保留原 localStorage key，并在 IndexedDB 留存源字符串与导入标记。这是数据导入，不是兼容旧应用 API。浏览器存储受 origin 限制，可能被清理或不可用，不是托管备份服务。
 
 ## 服务与渲染契约
 

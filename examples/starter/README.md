@@ -2,7 +2,7 @@
 
 This directory is an independent package template, unlike the repository's design-board example. It does not import parent-directory build scripts or use workspace/file dependencies.
 
-Prerequisites: Node ^22.18 or >=24.11 for the build tools; an installed DSH Web runtime with the closure-factory module loader; a dsh-workbench release that exports `dsh-workbench/build/client-bundle` and the versioned application/config contract. These changes must be published before a clean registry install can use this template.
+Prerequisites: Node ^22.18 or >=24.11 for the build tools; an installed DSH Web runtime with the closure-factory module loader; a dsh-better-workbench release that exports `dsh-better-workbench/build/client-bundle` and the versioned application/config contract. These changes must be published before a clean registry install can use this template.
 
 After copying this directory outside the repository, run `npm install`, `npm run check`, and `npm run build`. Use `npm run build:verify` to compile into a temporary directory without overwriting lib. No server or DSH checkout is needed to build. Inside this monorepo, development uses the root workspace's workbench package; registry dependencies remain normal semver ranges when the directory is copied.
 

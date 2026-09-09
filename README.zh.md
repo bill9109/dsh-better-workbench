@@ -1,11 +1,11 @@
-# dsh-workbench — DeepSeek Harness 可扩展工作台
+# dsh-better-workbench — DeepSeek Harness 可扩展工作台
 
-[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-workbench/releases)
+[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-better-workbench/releases)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%5E20%20%7C%20%3E%3D22-339933?style=flat-square&logo=nodedotjs&logoColor=white)](package.json)
 [![DSH profile](https://img.shields.io/badge/DSH-Web-5B4CF0?style=flat-square)](cordis.patch.yml)
 
-**安装：** `dsh plugin --profile web add github:omdsh-dev/dsh-workbench`
+**安装：** `dsh plugin --profile web add github:omdsh-dev/dsh-better-workbench`
 
 **DeepSeek Harness Web UI 插件：提供常驻工作台首页、可持久化的应用实例、模板，以及可供第三方 DSH 应用复用的 `page`、`panel`、`capsule` 呈现宿主。**
 
@@ -15,7 +15,7 @@
 
 DSH 插件可以贡献工具、服务和小型 UI 入口，但完整的浏览器应用仅有组件挂载点还不够。它还需要稳定的导航位置、可持久化实例、刷新后可恢复的路由、与 Conversation 共存的明确规则，以及应用暂时不可用时的恢复机制。
 
-`dsh-workbench` 统一负责这些基础设施。应用向 Workbench Client Service 注册定义；Workbench 渲染其实例，只保存稳定 JSON 状态，并让每项贡献随对应 Cordis fiber 一起撤销。应用仍然负责自己的界面、资源和异步收束。
+`dsh-better-workbench` 统一负责这些基础设施。应用向 Workbench Client Service 注册定义；Workbench 渲染其实例，只保存稳定 JSON 状态，并让每项贡献随对应 Cordis fiber 一起撤销。应用仍然负责自己的界面、资源和异步收束。
 
 即使没有安装任何 Workbench 应用，内置首页也始终可用。
 
@@ -49,22 +49,22 @@ DSH 插件可以贡献工具、服务和小型 UI 入口，但完整的浏览器
 仓库根包是 DSH **bundle**（`package.json` 声明 `dsh.bundle` 与 `dsh.client`）。使用标准插件命令安装到 `web` profile，**无需修改 DSH 源码，也无需配置 `config.yaml`**：
 
 ```sh
-dsh plugin --profile web add github:omdsh-dev/dsh-workbench
+dsh plugin --profile web add github:omdsh-dev/dsh-better-workbench
 # 或使用本地 checkout：
-dsh plugin --profile web add /path/to/dsh-workbench
+dsh plugin --profile web add /path/to/dsh-better-workbench
 ```
 
 发布版本包含已提交的 `lib/` 产物。当前工作树包含尚未发布的协议重设计：发布或安装变更源码前，必须按下文重建基座与示例产物。仅修改源码不会更新已安装 GUI。
 
-dsh-workbench 作为用户插件行安装进 profile 的 `cordis.patch.yml`，由 DSH 的 `watchUserPatches` watcher 持续热应用，因此**无需重启 `dsh web`**：刷新浏览器（或 dev 模式 HMR）即可加载 Client bundle。仅当你修改包清单、依赖或 profile 的 `dsh.profile.bundles` 集合时才需要重启。
+dsh-better-workbench 作为用户插件行安装进 profile 的 `cordis.patch.yml`，由 DSH 的 `watchUserPatches` watcher 持续热应用，因此**无需重启 `dsh web`**：刷新浏览器（或 dev 模式 HMR）即可加载 Client bundle。仅当你修改包清单、依赖或 profile 的 `dsh.profile.bundles` 集合时才需要重启。
 
 ### 安装设计板示例
 
 基础 bundle 不会默认启用参考应用。克隆仓库后，先安装基座，再安装示例包：
 
 ```sh
-git clone https://github.com/omdsh-dev/dsh-workbench.git
-cd dsh-workbench
+git clone https://github.com/omdsh-dev/dsh-better-workbench.git
+cd dsh-better-workbench
 dsh plugin --profile web add "$PWD"
 dsh plugin --profile web add "$PWD/examples/design-board"
 ```
@@ -74,7 +74,7 @@ dsh plugin --profile web add "$PWD/examples/design-board"
 ### 升级
 
 ```sh
-dsh plugin --profile web update github:omdsh-dev/dsh-workbench
+dsh plugin --profile web update github:omdsh-dev/dsh-better-workbench
 ```
 
 本地路径安装时，拉取新的 checkout 后，对根包和已安装的示例包重新执行 `add`。改动会被热应用，随后刷新浏览器即可（仅当修改了包清单或依赖时才需重启）。
@@ -84,8 +84,8 @@ dsh plugin --profile web update github:omdsh-dev/dsh-workbench
 先移除应用，再移除其 Workbench 宿主：
 
 ```sh
-dsh plugin --profile web remove dsh-workbench-design-board
-dsh plugin --profile web remove dsh-workbench
+dsh plugin --profile web remove dsh-better-workbench-design-board
+dsh plugin --profile web remove dsh-better-workbench
 ```
 
 移除应用后，其实例会保留为不可用记录。重新安装具有同一 `appId` 的应用后，这些实例会恢复。
@@ -95,7 +95,7 @@ dsh plugin --profile web remove dsh-workbench
 Workbench 应用是一个 DSH Client 插件：它把 `workbench` Client Service 声明为硬依赖，并在 Cordis effect 内注册贡献：
 
 ```ts
-import type { WorkbenchClientContext } from 'dsh-workbench/client'
+import type { WorkbenchClientContext } from 'dsh-better-workbench/client'
 import { MyWorkbench } from './MyWorkbench.tsx'
 
 export const inject = ['workbench']
@@ -196,7 +196,7 @@ pnpm run build
 pnpm run build:example
 ```
 
-`--dry-run` 只打印计划，不写入；`--check` 和 `--verify` 使用临时产物。[examples/starter](examples/starter) 演示独立包布局如何使用公开的 `dsh-workbench/build/client-bundle` helper，与仓库内设计板示例不同。复制后的独立布局验证不等于全新 registry 安装测试；从 registry 使用前需发布新的 helper 与协议产物。
+`--dry-run` 只打印计划，不写入；`--check` 和 `--verify` 使用临时产物。[examples/starter](examples/starter) 演示独立包布局如何使用公开的 `dsh-better-workbench/build/client-bundle` helper，与仓库内设计板示例不同。复制后的独立布局验证不等于全新 registry 安装测试；从 registry 使用前需发布新的 helper 与协议产物。
 
 仓库结构：
 
@@ -208,7 +208,7 @@ pnpm run build:example
 
 ## 社区与关于
 
-- 可复现 bug、聚焦的功能请求和使用问题，请走 [GitHub Issues](https://github.com/omdsh-dev/dsh-workbench/issues)。
+- 可复现 bug、聚焦的功能请求和使用问题，请走 [GitHub Issues](https://github.com/omdsh-dev/dsh-better-workbench/issues)。
 - 提交变更前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)；安全问题按照 [SECURITY.md](SECURITY.md) 私下报告。
 - 版本与兼容性说明见 [CHANGELOG.md](CHANGELOG.md)。
 

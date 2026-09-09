@@ -1,10 +1,10 @@
-# dsh-workbench-design-board — DSH Web design reference
+# dsh-better-workbench-design-board — DSH Web design reference
 
-[![Example v0.2.0](https://img.shields.io/badge/example-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-workbench/tree/main/examples/design-board)
+[![Example v0.2.0](https://img.shields.io/badge/example-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-better-workbench/tree/main/examples/design-board)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![DSH Workbench](https://img.shields.io/badge/requires-dsh--workbench-5B4CF0?style=flat-square)](../..)
 
-**Install after the base:** `dsh plugin --profile web add /path/to/dsh-workbench/examples/design-board`
+**Install after the base:** `dsh plugin --profile web add /path/to/dsh-better-workbench/examples/design-board`
 
 **A protocol-compliant DSH Workbench reference application that turns real DSH component source into a fixed design-system board for tokens, primitives, product layouts, states, accessibility, and implementation traceability.**
 
@@ -50,8 +50,8 @@ It also records the application shell, sidebar, settings, session header, messag
 Install the base Workbench package before this example:
 
 ```sh
-git clone https://github.com/omdsh-dev/dsh-workbench.git
-cd dsh-workbench
+git clone https://github.com/omdsh-dev/dsh-better-workbench.git
+cd dsh-better-workbench
 dsh plugin --profile web add "$PWD"
 dsh plugin --profile web add "$PWD/examples/design-board"
 ```
@@ -63,7 +63,7 @@ Restart DSH Web and hard-refresh the browser. The sidebar then shows **DSH UI �
 Update the root repository first, then re-add this local example path. To remove it:
 
 ```sh
-dsh plugin --profile web remove dsh-workbench-design-board
+dsh plugin --profile web remove dsh-better-workbench-design-board
 ```
 
 The Workbench base keeps the reference instance as unavailable state until the example is installed again.

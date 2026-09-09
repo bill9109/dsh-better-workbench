@@ -1,5 +1,5 @@
 import { createElement, useEffect, useRef, useState } from 'react'
-import type { WorkbenchClientContext, WorkbenchRenderProps } from 'dsh-workbench/client'
+import type { WorkbenchClientContext, WorkbenchRenderProps } from 'dsh-better-workbench/client'
 
 export const inject = ['workbench']
 
@@ -95,7 +95,7 @@ export function apply(ctx: WorkbenchClientContext): void {
     protocolVersion: 1,
     appId: 'starter-notes',
     title: 'Notes',
-    source: { packageName: 'dsh-workbench-starter', version: '0.1.0' },
+    source: { packageName: 'dsh-better-workbench-starter', version: '0.1.0' },
     config: {
       version: 1,
       defaults: () => ({ text: '' }),

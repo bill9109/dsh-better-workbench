@@ -1,10 +1,10 @@
-# dsh-workbench-design-board — DSH Web 设计参考
+# dsh-better-workbench-design-board — DSH Web 设计参考
 
-[![Example v0.2.0](https://img.shields.io/badge/example-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-workbench/tree/main/examples/design-board)
+[![Example v0.2.0](https://img.shields.io/badge/example-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-better-workbench/tree/main/examples/design-board)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![DSH Workbench](https://img.shields.io/badge/requires-dsh--workbench-5B4CF0?style=flat-square)](../..)
 
-**在基座安装后添加：** `dsh plugin --profile web add /path/to/dsh-workbench/examples/design-board`
+**在基座安装后添加：** `dsh plugin --profile web add /path/to/dsh-better-workbench/examples/design-board`
 
 **符合 Workbench 协议的 DSH 参考应用：将真实 DSH 组件源码整理为固定信息架构的设计系统看板，覆盖 token、基础组件、产品布局、状态、无障碍和实现溯源。**
 
@@ -50,8 +50,8 @@
 先安装 Workbench 基座，再安装本示例：
 
 ```sh
-git clone https://github.com/omdsh-dev/dsh-workbench.git
-cd dsh-workbench
+git clone https://github.com/omdsh-dev/dsh-better-workbench.git
+cd dsh-better-workbench
 dsh plugin --profile web add "$PWD"
 dsh plugin --profile web add "$PWD/examples/design-board"
 ```
@@ -63,7 +63,7 @@ dsh plugin --profile web add "$PWD/examples/design-board"
 先更新根仓库，再重新添加本地示例路径。卸载：
 
 ```sh
-dsh plugin --profile web remove dsh-workbench-design-board
+dsh plugin --profile web remove dsh-better-workbench-design-board
 ```
 
 Workbench 基座会将参考实例保留为不可用状态，直至重新安装此示例。

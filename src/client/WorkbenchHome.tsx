@@ -28,22 +28,22 @@ function WorkbenchCard({
   footer: string
 }): JSX.Element {
   return (
-    <article className="dsh-workbench-home-card" data-disabled={disabled}>
+    <article className="dsh-better-workbench-home-card" data-disabled={disabled}>
       <button
         type="button"
-        className="dsh-workbench-home-card-main"
+        className="dsh-better-workbench-home-card-main"
         aria-label={disabled ? `${title}：${badge}` : title}
         disabled={disabled}
         onClick={onOpen}
       >
-        <span className="dsh-workbench-home-card-head">
-          <span className="dsh-workbench-home-card-name">{title}</span>
-          <span className="dsh-workbench-home-card-badge">{badge}</span>
+        <span className="dsh-better-workbench-home-card-head">
+          <span className="dsh-better-workbench-home-card-name">{title}</span>
+          <span className="dsh-better-workbench-home-card-badge">{badge}</span>
         </span>
-        <span className="dsh-workbench-home-card-description">{description}</span>
-        <code className="dsh-workbench-home-card-id">{id}</code>
+        <span className="dsh-better-workbench-home-card-description">{description}</span>
+        <code className="dsh-better-workbench-home-card-id">{id}</code>
       </button>
-      <div className="dsh-workbench-home-card-foot">
+      <div className="dsh-better-workbench-home-card-foot">
         <span>{footer}</span>
       </div>
     </article>
@@ -226,16 +226,16 @@ export function WorkbenchHome({ service, snapshot }: WorkbenchHomeProps): JSX.El
   }
 
   return (
-    <main className="dsh-workbench-home" aria-busy={busy}>
-      <header className="dsh-workbench-home-header">
+    <main className="dsh-better-workbench-home" aria-busy={busy}>
+      <header className="dsh-better-workbench-home-header">
         <div>
           <span>Workbench</span>
           <h1>工作台</h1>
         </div>
-        <div className="dsh-workbench-home-actions">
+        <div className="dsh-better-workbench-home-actions">
           <button
             type="button"
-            className="dsh-workbench-home-add-button"
+            className="dsh-better-workbench-home-add-button"
             aria-expanded={creating}
             disabled={busy}
             onClick={() => { service.openHome(!creating) }}
@@ -246,7 +246,7 @@ export function WorkbenchHome({ service, snapshot }: WorkbenchHomeProps): JSX.El
         </div>
       </header>
 
-      {snapshot.recovery && <section role="alert" className="dsh-workbench-frame-error">
+      {snapshot.recovery && <section role="alert" className="dsh-better-workbench-frame-error">
         <strong>部分旧数据无法导入，原始内容已保留</strong>
         <ul>{snapshot.recovery.errors.map((error, index) => <li key={index}>{error}</li>)}</ul>
         <a download="workbench-legacy-backup.json" href={'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(snapshot.recovery, null, 2))}>导出原始备份</a>
@@ -254,18 +254,18 @@ export function WorkbenchHome({ service, snapshot }: WorkbenchHomeProps): JSX.El
       {snapshot.loading && <div role="status">正在加载工作台...</div>}
       {pending === 'reload' ? <div role="status">正在重新加载...</div> : (pending !== null || creationPending) && <div role="status">正在创建工作台...</div>}
       {creationPending && <Button variant="outline" size="sm" onClick={cancelWaiting}>取消等待</Button>}
-      {visibleError && <div className="dsh-workbench-rename-error" role="alert">{visibleError}</div>}
+      {visibleError && <div className="dsh-better-workbench-rename-error" role="alert">{visibleError}</div>}
       {snapshot.error !== null && <Button variant="outline" size="sm" disabled={busy} onClick={() => { void retryLoading() }}>重新加载</Button>}
       {!busy && handedOffSessionId !== null && <div role="status">创建已交接，会话：<code>{handedOffSessionId}</code></div>}
 
       {creating && (
-        <section className="dsh-workbench-home-section" aria-label="创建工作台">
-          <div className="dsh-workbench-home-section-heading">
+        <section className="dsh-better-workbench-home-section" aria-label="创建工作台">
+          <div className="dsh-better-workbench-home-section-heading">
             <h2>创建工作台</h2>
             <span>从已安装应用或模板开始</span>
           </div>
           {snapshot.templates.length > 0 && (
-            <div className="dsh-workbench-home-grid">
+            <div className="dsh-better-workbench-home-grid">
               {snapshot.templates.map(template => (
                 <TemplateCard
                   key={template.templateId}
@@ -279,7 +279,7 @@ export function WorkbenchHome({ service, snapshot }: WorkbenchHomeProps): JSX.El
             </div>
           )}
           {appsWithoutTemplates.length > 0 ? (
-            <div className="dsh-workbench-home-grid">
+            <div className="dsh-better-workbench-home-grid">
               {appsWithoutTemplates.map(app => (
                 <AppCard
                   key={app.appId}
@@ -292,7 +292,7 @@ export function WorkbenchHome({ service, snapshot }: WorkbenchHomeProps): JSX.El
               ))}
             </div>
           ) : !snapshot.loading && snapshot.templates.length === 0 ? (
-            <div className="dsh-workbench-home-empty">
+            <div className="dsh-better-workbench-home-empty">
               <strong>暂无可用的工作台应用</strong>
               <span>安装工作台应用后，可在这里创建实例。</span>
             </div>
@@ -300,19 +300,19 @@ export function WorkbenchHome({ service, snapshot }: WorkbenchHomeProps): JSX.El
         </section>
       )}
 
-      <section className="dsh-workbench-home-section" aria-label="已有工作台">
-        <div className="dsh-workbench-home-section-heading">
+      <section className="dsh-better-workbench-home-section" aria-label="已有工作台">
+        <div className="dsh-better-workbench-home-section-heading">
           <h2>已有工作台</h2>
           <span>{snapshot.instances.length} 个实例</span>
         </div>
         {snapshot.loading ? null : snapshot.instances.length === 0 ? (
-          <div className="dsh-workbench-home-empty">
+          <div className="dsh-better-workbench-home-empty">
             <strong>还没有工作台</strong>
             <span>从已安装应用或模板创建第一个实例。</span>
             <Button variant="outline" size="sm" disabled={busy} icon={<IconPlusOutline16 />} onClick={() => { service.openHome(true) }}>创建第一个工作台</Button>
           </div>
         ) : (
-          <div className="dsh-workbench-home-grid dsh-workbench-home-instance-grid">
+          <div className="dsh-better-workbench-home-grid dsh-better-workbench-home-instance-grid">
             {availableInstances.map(instance => (
               <InstanceCard
                 key={instance.instanceId}

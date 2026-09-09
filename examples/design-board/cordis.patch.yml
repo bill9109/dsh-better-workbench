@@ -1,4 +1,4 @@
-# Design board bundle: registers one app with dsh-workbench.
+# Design board bundle: registers one app with dsh-better-workbench.
 - insert:
     - id: design-board
-      name: 'dsh-workbench-design-board'
+      name: 'dsh-better-workbench-design-board'

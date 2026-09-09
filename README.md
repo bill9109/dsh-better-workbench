@@ -1,11 +1,11 @@
-# dsh-workbench — Extensible workspaces for DeepSeek Harness
+# dsh-better-workbench — Extensible workspaces for DeepSeek Harness
 
-[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-workbench/releases)
+[![Version v0.2.0](https://img.shields.io/badge/version-v0.2.0-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-better-workbench/releases)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%5E20%20%7C%20%3E%3D22-339933?style=flat-square&logo=nodedotjs&logoColor=white)](package.json)
 [![DSH profile](https://img.shields.io/badge/DSH-Web-5B4CF0?style=flat-square)](cordis.patch.yml)
 
-**Install:** `dsh plugin --profile web add github:omdsh-dev/dsh-workbench`
+**Install:** `dsh plugin --profile web add github:omdsh-dev/dsh-better-workbench`
 
 **A DeepSeek Harness Web UI plugin that provides a permanent Workbench home, durable application instances, templates, and reusable `page`, `panel`, and `capsule` presentation hosts for third-party DSH applications.**
 
@@ -15,7 +15,7 @@
 
 DSH plugins can contribute tools, services, and small UI entries, but a complete browser application needs more than a component mount. It needs a stable place in navigation, persistent instances, a route that survives reloads, explicit coexistence rules with Conversation, and recovery when an application is temporarily unavailable.
 
-`dsh-workbench` owns that shared infrastructure. Applications register a definition with the Workbench Client Service; Workbench renders their instances, stores only stable JSON state, and removes each contribution with its Cordis fiber. Applications remain responsible for their own UI, resources, and asynchronous teardown.
+`dsh-better-workbench` owns that shared infrastructure. Applications register a definition with the Workbench Client Service; Workbench renders their instances, stores only stable JSON state, and removes each contribution with its Cordis fiber. Applications remain responsible for their own UI, resources, and asynchronous teardown.
 
 The built-in home is always available, even when no Workbench application is installed.
 
@@ -49,22 +49,22 @@ The sidebar also provides Workbench search, view options, creation, renaming, de
 This repository's root package is a DSH **bundle** (`package.json` declares `dsh.bundle` and `dsh.client`). Install it into the `web` profile with the standard plugin command. No DSH source changes or `config.yaml` entries are required:
 
 ```sh
-dsh plugin --profile web add github:omdsh-dev/dsh-workbench
+dsh plugin --profile web add github:omdsh-dev/dsh-better-workbench
 # or from a local checkout:
-dsh plugin --profile web add /path/to/dsh-workbench
+dsh plugin --profile web add /path/to/dsh-better-workbench
 ```
 
 Released revisions include committed `lib/` artifacts. This working tree contains an unreleased protocol redesign: before publishing it or installing changed source, rebuild both the base and example artifacts as described below. A source-only change does not update an installed GUI.
 
-dsh-workbench installs as a user plugin row in the profile's `cordis.patch.yml` and is live-applied by the DSH `watchUserPatches` watcher, so **no `dsh web` restart is needed**: a browser refresh (or dev-mode HMR) loads the Client bundle. Restart is only required if you change the package's bundle manifest, its dependencies, or the profile's `dsh.profile.bundles` set.
+dsh-better-workbench installs as a user plugin row in the profile's `cordis.patch.yml` and is live-applied by the DSH `watchUserPatches` watcher, so **no `dsh web` restart is needed**: a browser refresh (or dev-mode HMR) loads the Client bundle. Restart is only required if you change the package's bundle manifest, its dependencies, or the profile's `dsh.profile.bundles` set.
 
 ### Install the design-board example
 
 The reference application is intentionally not enabled by the base bundle. Clone the repository, install the base first, then install the example package:
 
 ```sh
-git clone https://github.com/omdsh-dev/dsh-workbench.git
-cd dsh-workbench
+git clone https://github.com/omdsh-dev/dsh-better-workbench.git
+cd dsh-better-workbench
 dsh plugin --profile web add "$PWD"
 dsh plugin --profile web add "$PWD/examples/design-board"
 ```
@@ -74,7 +74,7 @@ No `dsh web` restart is needed: refresh the browser and **DSH UI 样式看板** 
 ### Upgrade
 
 ```sh
-dsh plugin --profile web update github:omdsh-dev/dsh-workbench
+dsh plugin --profile web update github:omdsh-dev/dsh-better-workbench
 ```
 
 For a local-path installation, pull the replacement checkout and run `add` again for the root and any installed example packages. The change is live-applied: refresh the browser afterward (restart only if you changed the bundle manifest or dependencies).
@@ -84,8 +84,8 @@ For a local-path installation, pull the replacement checkout and run `add` again
 Remove applications before removing their Workbench host:
 
 ```sh
-dsh plugin --profile web remove dsh-workbench-design-board
-dsh plugin --profile web remove dsh-workbench
+dsh plugin --profile web remove dsh-better-workbench-design-board
+dsh plugin --profile web remove dsh-better-workbench
 ```
 
 Removing an application preserves its stored instances as unavailable records. Reinstalling an application with the same `appId` restores those instances.
@@ -95,7 +95,7 @@ Removing an application preserves its stored instances as unavailable records. R
 A Workbench application is a DSH Client plugin that declares a hard dependency on the `workbench` Client Service and registers its contributions inside Cordis effects:
 
 ```ts
-import type { WorkbenchClientContext } from 'dsh-workbench/client'
+import type { WorkbenchClientContext } from 'dsh-better-workbench/client'
 import { MyWorkbench } from './MyWorkbench.tsx'
 
 export const inject = ['workbench']
@@ -196,7 +196,7 @@ pnpm run build
 pnpm run build:example
 ```
 
-`--dry-run` prints the plan without writes; `--check` and `--verify` use temporary output. [examples/starter](examples/starter) demonstrates the public `dsh-workbench/build/client-bundle` helper in a standalone package layout; it is distinct from the design-board repository example. Copied standalone-layout validation is not a fresh registry-install test; registry use requires publication of the new helper and protocol artifacts.
+`--dry-run` prints the plan without writes; `--check` and `--verify` use temporary output. [examples/starter](examples/starter) demonstrates the public `dsh-better-workbench/build/client-bundle` helper in a standalone package layout; it is distinct from the design-board repository example. Copied standalone-layout validation is not a fresh registry-install test; registry use requires publication of the new helper and protocol artifacts.
 
 Repository layout:
 
@@ -208,7 +208,7 @@ Repository layout:
 
 ## Community and about
 
-- Use [GitHub Issues](https://github.com/omdsh-dev/dsh-workbench/issues) for reproducible bugs, focused feature requests, and usage questions.
+- Use [GitHub Issues](https://github.com/omdsh-dev/dsh-better-workbench/issues) for reproducible bugs, focused feature requests, and usage questions.
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes; report vulnerabilities privately through [SECURITY.md](SECURITY.md).
 - See [CHANGELOG.md](CHANGELOG.md) for release and compatibility notes.
 

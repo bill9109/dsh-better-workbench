@@ -1,5 +1,5 @@
 {
-  "name": "dsh-workbench-starter",
+  "name": "dsh-better-workbench-starter",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -34,14 +34,14 @@
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
-    "dsh-workbench": "^0.2.0",
+    "dsh-better-workbench": "^0.2.0",
     "react": "^18.2.0"
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
     "@types/node": "^24.0.0",
     "@types/react": "~18.3.1",
-    "dsh-workbench": "^0.2.0",
+    "dsh-better-workbench": "^0.2.0",
     "react": "18.2.0",
     "typescript": "^5.6.0",
     "tsdown": "^0.22.2"
@@ -53,7 +53,7 @@
     "client": {
       "platform": "web",
       "inject": [
-        "dsh-workbench"
+        "dsh-better-workbench"
       ]
     }
   }

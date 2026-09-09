@@ -14,7 +14,7 @@ const create = (t, options = {}) => {
   t.after(() => repository.dispose())
   return repository
 }
-const rawRecord = async (factory, key, dbName = 'dsh-workbench') => {
+const rawRecord = async (factory, key, dbName = 'dsh-better-workbench') => {
   const db = await new Promise((resolve, reject) => {
     const request = factory.open(dbName, 1)
     request.onsuccess = () => resolve(request.result)
@@ -124,7 +124,7 @@ for (const backend of ['memory', 'indexeddb']) {
 for (const version of [1, 2, 3]) {
   test('indexeddb: imports v' + version + ' once, preserving raw JSON and config backups', async t => {
     const indexedDB = new IDBFactory()
-    const key = version === 1 ? 'dsh-workbench.instances.v1' : 'dsh-workbench.state.v' + version
+    const key = version === 1 ? 'dsh-better-workbench.instances.v1' : 'dsh-better-workbench.state.v' + version
     const old = { instanceId: 'legacy', appId: 'app', title: 'Legacy', config: { text: 'saved' }, order: 2, updatedAt: 123 }
     const raw = JSON.stringify({ version, instances: [old], dismissedDefaultAppIds: ['hidden'], route: { kind: 'conversation' } })
     const entries = { [key]: raw }
@@ -147,8 +147,8 @@ for (const version of [1, 2, 3]) {
 test('indexeddb: most recent legacy key wins, all originals are retained', async t => {
   const indexedDB = new IDBFactory()
   const entries = {
-    'dsh-workbench.state.v3': JSON.stringify({ version: 3, instances: [instance('new')] }),
-    'dsh-workbench.state.v2': JSON.stringify({ version: 2, instances: [instance('old')] }),
+    'dsh-better-workbench.state.v3': JSON.stringify({ version: 3, instances: [instance('new')] }),
+    'dsh-better-workbench.state.v2': JSON.stringify({ version: 2, instances: [instance('old')] }),
   }
   const repository = create(t, { indexedDB, localStorage: storage(entries) })
   assert.equal((await repository.read()).instances[0].instanceId, 'new')
@@ -158,8 +158,8 @@ test('indexeddb: most recent legacy key wins, all originals are retained', async
 test('indexeddb: malformed legacy data is quarantined without falling back to stale data', async t => {
   const indexedDB = new IDBFactory()
   const entries = {
-    'dsh-workbench.state.v3': '{corrupt',
-    'dsh-workbench.state.v2': JSON.stringify({ version: 2, instances: [instance('older')] }),
+    'dsh-better-workbench.state.v3': '{corrupt',
+    'dsh-better-workbench.state.v2': JSON.stringify({ version: 2, instances: [instance('older')] }),
   }
   const repository = create(t, { indexedDB, localStorage: storage(entries) })
   const state = await repository.read()
@@ -167,14 +167,14 @@ test('indexeddb: malformed legacy data is quarantined without falling back to st
   assert.match(state.recovery.errors[0], /Invalid JSON/)
   assert.equal(state.recovery.sources.length, 2)
   assert.equal((await rawRecord(indexedDB, 'legacy-backup')).sources[0].raw, '{corrupt')
-  assert.equal(entries['dsh-workbench.state.v3'], '{corrupt')
-  entries['dsh-workbench.state.v3'] = JSON.stringify({ version: 3, instances: [instance('fixed')] })
+  assert.equal(entries['dsh-better-workbench.state.v3'], '{corrupt')
+  entries['dsh-better-workbench.state.v3'] = JSON.stringify({ version: 3, instances: [instance('fixed')] })
   assert.equal((await repository.read()).recovery.sources[0].raw, '{corrupt', 'original backup survives later changes to localStorage')
 })
 
 test('indexeddb: invalid instance does not silently disappear or clear its config', async t => {
   const repository = create(t, { localStorage: storage({
-    'dsh-workbench.state.v3': JSON.stringify({ version: 3, instances: [{ ...instance(), config: null }, instance('valid')] }),
+    'dsh-better-workbench.state.v3': JSON.stringify({ version: 3, instances: [{ ...instance(), config: null }, instance('valid')] }),
   }) })
   const state = await repository.read()
   assert.equal(state.instances[0].instanceId, 'valid')
@@ -223,7 +223,7 @@ test('indexeddb: asynchronous request errors preserve their cause and committed 
 test('indexeddb: failed initial import rolls back backup, marker and state together', async t => {
   const indexedDB = new IDBFactory()
   const raw = JSON.stringify({ version: 3, instances: [instance()] })
-  const entries = { 'dsh-workbench.state.v3': raw }
+  const entries = { 'dsh-better-workbench.state.v3': raw }
   const repository = create(t, { indexedDB, localStorage: storage(entries) })
   const originalPut = IDBObjectStore.prototype.put
   IDBObjectStore.prototype.put = function (value, key) {
@@ -233,7 +233,7 @@ test('indexeddb: failed initial import rolls back backup, marker and state toget
   try { await assert.rejects(repository.read(), { name: 'QuotaExceededError' }) }
   finally { IDBObjectStore.prototype.put = originalPut }
   for (const key of ['main', 'legacy-import', 'legacy-backup']) assert.equal(await rawRecord(indexedDB, key), undefined)
-  assert.equal(entries['dsh-workbench.state.v3'], raw)
+  assert.equal(entries['dsh-better-workbench.state.v3'], raw)
   assert.equal((await repository.read()).instances.length, 1)
 })
 

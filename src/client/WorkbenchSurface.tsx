@@ -26,17 +26,17 @@ function SurfaceToolbar({ service, title, presentation, app, onMode, exporting, 
 }): JSX.Element {
   const [menuOpen, setMenuOpen] = useState(false)
   return (
-    <header className="dsh-workbench-frame-toolbar">
+    <header className="dsh-better-workbench-frame-toolbar">
       <Tooltip label="工作台首页">
-        <button type="button" className="dsh-workbench-frame-button" aria-label="工作台首页" onClick={() => { service.openHome() }}><IconPersonalizationOutline16 /></button>
+        <button type="button" className="dsh-better-workbench-frame-button" aria-label="工作台首页" onClick={() => { service.openHome() }}><IconPersonalizationOutline16 /></button>
       </Tooltip>
-      <span className="dsh-workbench-frame-title" title={title}>{title}</span>
-      <div className="dsh-workbench-frame-modes" role="group" aria-label="显示模式">
+      <span className="dsh-better-workbench-frame-title" title={title}>{title}</span>
+      <div className="dsh-better-workbench-frame-modes" role="group" aria-label="显示模式">
         {([...new Set(app?.presentations.map(item => item.kind) ?? [])]).map(kind => {
           const { label, Icon } = modes[kind]
           return (
             <Tooltip key={kind} label={label}>
-              <button type="button" className="dsh-workbench-frame-button" aria-label={label} aria-pressed={presentation?.kind === kind} onClick={() => { onMode?.(kind) }}><Icon /></button>
+              <button type="button" className="dsh-better-workbench-frame-button" aria-label={label} aria-pressed={presentation?.kind === kind} onClick={() => { onMode?.(kind) }}><Icon /></button>
             </Tooltip>
           )
         })}
@@ -45,11 +45,11 @@ function SurfaceToolbar({ service, title, presentation, app, onMode, exporting, 
         <Menu open={menuOpen} onClose={() => { setMenuOpen(false) }} portal dense
           items={[{ id: 'export', label: '导出配置', icon: <IconDownloadOutline16 />, disabled: exporting }]}
           onSelect={() => { setMenuOpen(false); onExport() }}
-          anchor={<button type="button" className="dsh-workbench-frame-button" aria-label="工作台操作" title="工作台操作" onClick={() => { setMenuOpen(value => !value) }}><IconEllipsisOutline16 /></button>}
+          anchor={<button type="button" className="dsh-better-workbench-frame-button" aria-label="工作台操作" title="工作台操作" onClick={() => { setMenuOpen(value => !value) }}><IconEllipsisOutline16 /></button>}
         />
       )}
       <Tooltip label="关闭工作台">
-        <button type="button" className="dsh-workbench-frame-button" aria-label="关闭工作台" onClick={() => { service.close() }}><IconCloseOutline16 /></button>
+        <button type="button" className="dsh-better-workbench-frame-button" aria-label="关闭工作台" onClick={() => { service.close() }}><IconCloseOutline16 /></button>
       </Tooltip>
     </header>
   )
@@ -181,7 +181,7 @@ function InstanceFrame({ service, instance, app, generation, presentation }: {
   const Renderer = presentation.kind === 'panel' ? app?.renderPanel : presentation.kind === 'capsule' ? app?.renderCapsule : app?.renderMain
   const Secondary = presentation.kind === 'page' ? app?.renderSecondary : undefined
   let content: ReactNode = (
-    <div className="dsh-workbench-unavailable">
+    <div className="dsh-better-workbench-unavailable">
       <strong>{preparing || instance?.status === 'preparing' ? '正在准备工作台...' : '工作台应用暂不可用'}</strong>
       <span>{instance === undefined ? '实例不存在' : instance.error ?? `应用标识：${instance.appId}`}</span>
       {app !== undefined && !preparing && <Button variant="outline" size="sm" onClick={() => { void retryPreparation() }}>重试</Button>}
@@ -189,26 +189,26 @@ function InstanceFrame({ service, instance, app, generation, presentation }: {
   )
   if (ready && Renderer !== undefined && renderProps !== undefined) {
     content = (
-      <div className="dsh-workbench-center-body">
-        {Secondary !== undefined && <aside className="dsh-workbench-center-secondary"><Secondary {...renderProps} /></aside>}
-        <main className="dsh-workbench-center-main"><Renderer {...renderProps} /></main>
+      <div className="dsh-better-workbench-center-body">
+        {Secondary !== undefined && <aside className="dsh-better-workbench-center-secondary"><Secondary {...renderProps} /></aside>}
+        <main className="dsh-better-workbench-center-main"><Renderer {...renderProps} /></main>
       </div>
     )
   }
   return (
-    <div className="dsh-workbench-frame">
+    <div className="dsh-better-workbench-frame">
       {presentation.kind !== 'page' && <SurfaceToolbar service={service} title={instance?.title ?? '工作台'} app={app} presentation={presentation} onMode={setPresentation} exporting={exporting} onExport={instance === undefined ? undefined : () => { void exportConfig() }} />}
       {presentation.kind !== 'page' && app?.source !== undefined && (
-        <details className="dsh-workbench-frame-source">
+        <details className="dsh-better-workbench-frame-source">
           <summary>开发者声明</summary>
           <span>{app.source.packageName} · {app.source.version}</span>
           {repositoryUrl(app.source.repository) !== undefined && <a href={repositoryUrl(app.source.repository)} target="_blank" rel="noopener noreferrer">项目仓库</a>}
         </details>
       )}
-      {exporting && <div className="dsh-workbench-frame-status" role="status">正在导出...</div>}
-      <div className="dsh-workbench-save-status" role="status" aria-live="polite" aria-atomic="true">{saving > 0 ? '正在保存...' : ''}</div>
-      {(preparing || instance?.status === 'preparing') && <div className="dsh-workbench-frame-status" role="status">正在准备工作台...</div>}
-      {(error ?? instance?.error) && <div className="dsh-workbench-frame-error" role="alert">{error ?? instance?.error}</div>}
+      {exporting && <div className="dsh-better-workbench-frame-status" role="status">正在导出...</div>}
+      <div className="dsh-better-workbench-save-status" role="status" aria-live="polite" aria-atomic="true">{saving > 0 ? '正在保存...' : ''}</div>
+      {(preparing || instance?.status === 'preparing') && <div className="dsh-better-workbench-frame-status" role="status">正在准备工作台...</div>}
+      {(error ?? instance?.error) && <div className="dsh-better-workbench-frame-error" role="alert">{error ?? instance?.error}</div>}
       <WorkbenchErrorBoundary key={retry} onRetry={retryView}>{content}</WorkbenchErrorBoundary>
     </div>
   )
@@ -221,7 +221,7 @@ export function WorkbenchSurface({ service }: WorkbenchSurfaceProps): JSX.Elemen
   const [size, setSize] = useState({ width: 0, height: 0 })
   useEffect(() => {
     const mount = root.current?.parentElement
-    const host = mount?.hasAttribute('data-dsh-workbench-center') ? mount.parentElement : mount
+    const host = mount?.hasAttribute('data-dsh-better-workbench-center') ? mount.parentElement : mount
     if (host === undefined || host === null) return
     const update = (): void => { setSize({ width: host.clientWidth, height: host.clientHeight }) }
     update()
@@ -231,11 +231,11 @@ export function WorkbenchSurface({ service }: WorkbenchSurfaceProps): JSX.Elemen
   }, [])
   const route = snapshot.route
   const layout = resolvePresentationLayout(resolveActivePresentation(snapshot, service), size.width, size.height)
-  if (route.kind === 'conversation') return <div ref={root} className="dsh-workbench-center" data-open="false" aria-hidden="true" />
+  if (route.kind === 'conversation') return <div ref={root} className="dsh-better-workbench-center" data-open="false" aria-hidden="true" />
   if (route.kind === 'workbench-home') {
     return (
-      <div ref={root} className="dsh-workbench-center" data-open="true" data-kind="page">
-        <div className="dsh-workbench-frame">
+      <div ref={root} className="dsh-better-workbench-center" data-open="true" data-kind="page">
+        <div className="dsh-better-workbench-frame">
           <WorkbenchHome service={service} snapshot={snapshot} />
         </div>
       </div>
@@ -249,14 +249,14 @@ export function WorkbenchSurface({ service }: WorkbenchSurfaceProps): JSX.Elemen
   return (
     <div
       ref={root}
-      className="dsh-workbench-center"
+      className="dsh-better-workbench-center"
       data-open="true"
       data-kind={presentation.kind}
       data-placement={presentation.kind === 'page' ? undefined : presentation.placement}
       data-behavior={presentation.kind === 'panel' ? presentation.behavior : undefined}
       style={{ '--workbench-panel-size': `${layout.panelSize}px` } as CSSProperties}
     >
-      {presentation.kind === 'page' ? frame : <aside className={presentation.kind === 'panel' ? 'dsh-workbench-panel' : 'dsh-workbench-capsule'} aria-label={instance?.title ?? '工作台'}>{frame}</aside>}
+      {presentation.kind === 'page' ? frame : <aside className={presentation.kind === 'panel' ? 'dsh-better-workbench-panel' : 'dsh-better-workbench-capsule'} aria-label={instance?.title ?? '工作台'}>{frame}</aside>}
     </div>
   )
 }

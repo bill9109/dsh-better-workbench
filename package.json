@@ -1,5 +1,5 @@
 {
-  "name": "dsh-workbench",
+  "name": "dsh-better-workbench",
   "version": "0.2.0",
   "description": "Extensible DSH Web workbench host with durable instances, templates, and page, panel, and capsule presentations",
   "keywords": [
@@ -7,7 +7,7 @@
     "deepseek-harness",
     "dsh-plugin",
     "dsh-bundle",
-    "dsh-workbench",
+    "dsh-better-workbench",
     "web-ui",
     "workbench",
     "plugin-host"
@@ -53,12 +53,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/omdsh-dev/dsh-workbench.git"
+    "url": "git+https://github.com/omdsh-dev/dsh-better-workbench.git"
   },
   "bugs": {
-    "url": "https://github.com/omdsh-dev/dsh-workbench/issues"
+    "url": "https://github.com/omdsh-dev/dsh-better-workbench/issues"
   },
-  "homepage": "https://github.com/omdsh-dev/dsh-workbench#readme",
+  "homepage": "https://github.com/omdsh-dev/dsh-better-workbench#readme",
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
     "@deepseek-ai/dsh-client-ui-primitives": "^0.1.2-alpha.5",

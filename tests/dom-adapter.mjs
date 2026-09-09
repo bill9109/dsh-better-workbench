@@ -120,8 +120,8 @@ test('waits for React commit and restores original styles and all owned resource
   assert.equal(f.main.style.getPropertyPriority('position'), 'important')
   assert.equal(f.main.style.getPropertyValue('--workbench-panel-size'), '17px')
   assert.equal(f.main.style.getPropertyPriority('--workbench-panel-size'), 'important')
-  assert.equal(f.doc.querySelector('[data-dsh-workbench-style]'), null)
-  assert.equal(f.doc.querySelector('[data-dsh-workbench-center]'), null)
+  assert.equal(f.doc.querySelector('[data-dsh-better-workbench-style]'), null)
+  assert.equal(f.doc.querySelector('[data-dsh-better-workbench-center]'), null)
   assert.equal(f.listeners.size + f.navigationListeners.size + f.intervals.size + f.resizes.size, 0)
   f.doc.body.append(f.doc.createElement('div'))
   await flush()
@@ -131,8 +131,8 @@ test('waits for React commit and restores original styles and all owned resource
 test('failed center does not hide chat or remove a healthy sidebar and can retry', async t => {
   const f = fixture(t, { failCenter: true })
   assert.equal(f.doc.querySelector('article').style.visibility, 'visible')
-  assert.ok(f.doc.querySelector('[data-dsh-workbench-sidebar]'))
-  assert.equal(f.doc.querySelector('[data-dsh-workbench-center]'), null)
+  assert.ok(f.doc.querySelector('[data-dsh-better-workbench-sidebar]'))
+  assert.equal(f.doc.querySelector('[data-dsh-better-workbench-center]'), null)
   assert.equal(f.main.style.position, 'absolute')
   await flush()
   assert.equal(f.renders.center, 1, 'failed insertion must not trigger its own observer retry loop')
@@ -144,8 +144,8 @@ test('failed center does not hide chat or remove a healthy sidebar and can retry
 
 test('sidebar failure retries independently while healthy center stays mounted', t => {
   const f = fixture(t, { failSidebar: true })
-  assert.ok(f.doc.querySelector('[data-dsh-workbench-center]'))
-  assert.equal(f.doc.querySelector('[data-dsh-workbench-sidebar]'), null)
+  assert.ok(f.doc.querySelector('[data-dsh-better-workbench-center]'))
+  assert.equal(f.doc.querySelector('[data-dsh-better-workbench-sidebar]'), null)
   f.failures.sidebar = false
   f.tick()
   assert.deepEqual(f.renders, { sidebar: 2, center: 1 })
@@ -163,7 +163,7 @@ test('late anchors mount independently and removed hosts are replaced', async t 
   f.doc.querySelector('aside').append(sidebar)
   await flush()
   assert.deepEqual(f.renders, { sidebar: 1, center: 1 })
-  f.doc.querySelector('[data-dsh-workbench-center]').remove()
+  f.doc.querySelector('[data-dsh-better-workbench-center]').remove()
   await flush()
   assert.deepEqual(f.renders, { sidebar: 1, center: 2 })
   assert.deepEqual(f.unmounts, { sidebar: 0, center: 1 })
@@ -175,7 +175,7 @@ test('owned DOM changes and conversation descendants never cause global scans', 
   let scans = 0
   const original = f.doc.querySelector.bind(f.doc)
   f.doc.querySelector = (...args) => { scans++; return original(...args) }
-  const surface = original('[data-dsh-workbench-center]')
+  const surface = original('[data-dsh-better-workbench-center]')
   const chat = original('article')
   for (let i = 0; i < 20; i++) {
     surface.replaceChildren(f.doc.createElement('div'))
@@ -189,7 +189,7 @@ test('owned DOM changes and conversation descendants never cause global scans', 
 
 test('resize applies identical effective behavior and inset to host and conversation', t => {
   const f = fixture(t, { presentation: panel() })
-  const host = f.doc.querySelector('[data-dsh-workbench-center]')
+  const host = f.doc.querySelector('[data-dsh-better-workbench-center]')
   const chat = f.doc.querySelector('article')
   assert.equal(host.dataset.workbenchBehavior, 'push')
   assert.equal(chat.style.marginRight, '360px')
@@ -246,7 +246,7 @@ test('an async failed render immediately restores chat and retry remains bounded
   const f = fixture(t)
   f.readyCallbacks.center(false)
   assert.equal(f.doc.querySelector('article').style.visibility, 'visible')
-  f.doc.querySelector('[data-dsh-workbench-center]').replaceChildren()
+  f.doc.querySelector('[data-dsh-better-workbench-center]').replaceChildren()
   await flush()
   assert.equal(f.renders.center, 1)
   f.tick()

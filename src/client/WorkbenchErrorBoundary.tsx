@@ -15,13 +15,13 @@ export class WorkbenchErrorBoundary extends Component<Props, { error: string | n
   }
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
-    console.error('[dsh-workbench] application render failed', error, info.componentStack)
+    console.error('[dsh-better-workbench] application render failed', error, info.componentStack)
   }
 
   render(): ReactNode {
     if (this.state.error !== null) {
       return (
-        <div className="dsh-workbench-unavailable" role="alert">
+        <div className="dsh-better-workbench-unavailable" role="alert">
           <strong>工作台显示失败</strong>
           <span>{this.state.error}</span>
           <Button variant="outline" size="sm" onClick={this.props.onRetry}>重新加载视图</Button>

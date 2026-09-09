@@ -1,5 +1,5 @@
 ---
-name: dsh-workbench-application-authoring
+name: dsh-better-workbench-application-authoring
 description: "Build and review activation-owned Workbench applications with versioned configuration, async persistence, templates and presentation."
 whenToUse: "Register a Workbench application or creator, migrate configuration, or verify disposal and storage conflicts."
 ---

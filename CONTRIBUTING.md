@@ -1,4 +1,4 @@
-# Contributing to dsh-workbench
+# Contributing to dsh-better-workbench
 
 Focused fixes, tests, documentation changes, and protocol-compatible Workbench improvements are welcome. By participating, you agree to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
@@ -6,13 +6,13 @@ Focused fixes, tests, documentation changes, and protocol-compatible Workbench i
 
 1. Read [README.md](README.md) for installation, usage, lifecycle, and troubleshooting.
 2. Read [docs/application-authoring/SKILL.md](docs/application-authoring/SKILL.md) before changing the application protocol or the reference application.
-3. Search existing [issues](https://github.com/omdsh-dev/dsh-workbench/issues) and pull requests before opening duplicate work.
+3. Search existing [issues](https://github.com/omdsh-dev/dsh-better-workbench/issues) and pull requests before opening duplicate work.
 4. Open an issue before changing persistence, routes, presentation semantics, application identity, or bundle manifests.
 5. Keep each change narrowly scoped; do not mix behavior changes with unrelated refactoring or generated-output churn.
 
 ## Architecture and scope
 
-`dsh-workbench` is an out-of-tree DSH Web bundle. Contributions must preserve these responsibilities:
+`dsh-better-workbench` is an out-of-tree DSH Web bundle. Contributions must preserve these responsibilities:
 
 - The base owns the Workbench Client Service, registries, durable instances, routes, sidebar integration, home, and presentation hosts.
 - Applications own their components, styles, observers, timers, workers, sockets, processes, and asynchronous teardown.

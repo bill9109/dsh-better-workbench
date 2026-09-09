@@ -107,7 +107,7 @@ test('copied starter builds with an installed workbench package and no parent he
   await cp(join(repository, 'examples/starter'), root, { recursive: true, filter: path => !path.includes('/node_modules') && !path.includes('/lib/') })
   await mkdir(join(root, 'lib'), { recursive: true })
   await writeFile(join(root, 'lib/sentinel'), 'existing starter output')
-  const installed = join(root, 'node_modules/dsh-workbench')
+  const installed = join(root, 'node_modules/dsh-better-workbench')
   await mkdir(join(installed, 'scripts'), { recursive: true })
   const workbench = JSON.parse(await readFile(join(repository, 'package.json'), 'utf8'))
   await writeFile(join(installed, 'package.json'), JSON.stringify(workbench))
@@ -115,7 +115,7 @@ test('copied starter builds with an installed workbench package and no parent he
   await buildPackage(repository, join(installed, 'lib'))
   const starter = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'))
   for (const name of Object.keys(starter.devDependencies)) {
-    if (name === 'dsh-workbench') continue
+    if (name === 'dsh-better-workbench') continue
     const target = join(root, 'node_modules', name)
     await mkdir(dirname(target), { recursive: true })
     await symlink(await realpath(join(repository, 'node_modules', name)), target, 'dir')
@@ -124,7 +124,7 @@ test('copied starter builds with an installed workbench package and no parent he
     const source = await readFile(join(root, file), 'utf8')
     assert.ok(!source.includes('../../../scripts') && !source.includes('../../scripts'))
   }
-  assert.equal(starter.devDependencies['dsh-workbench'], '^0.2.0')
+  assert.equal(starter.devDependencies['dsh-better-workbench'], '^0.2.0')
   const result = spawnSync(process.execPath, ['scripts/build.mjs', '--verify'], {
     cwd: root, encoding: 'utf8', env: { ...process.env, DSH_CHECKOUT: '/not-a-checkout' },
   })

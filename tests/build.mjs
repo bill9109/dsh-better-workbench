@@ -105,7 +105,7 @@ test('full compiler runner writes only its output and preserves existing lib', a
   const workbenchTypes = join(dir, 'current-workbench-types')
   await mkdir(join(workbenchTypes, 'client'), { recursive: true })
   await writeFile(join(workbenchTypes, 'client/index.d.ts'), 'export interface CurrentContract { current: true }')
-  await writeFile(join(dir, 'src/client/index.ts'), "import type { CurrentContract } from 'dsh-workbench/client'; export const current: CurrentContract = { current: true }")
+  await writeFile(join(dir, 'src/client/index.ts'), "import type { CurrentContract } from 'dsh-better-workbench/client'; export const current: CurrentContract = { current: true }")
   await buildPackage(dir, join(dir, 'example-output'), { workbenchTypes, declarationsOnly: true })
   assert.match(await readFile(join(dir, 'example-output/types/client/index.d.ts'), 'utf8'), /CurrentContract/)
 })

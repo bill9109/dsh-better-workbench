@@ -4,7 +4,7 @@
 
 - Read [README.md](README.md) for installation, usage, lifecycle, and troubleshooting.
 - Read the [application-authoring Skill](docs/application-authoring/SKILL.md) when developing a Workbench application.
-- Search existing [issues](https://github.com/omdsh-dev/dsh-workbench/issues) and [pull requests](https://github.com/omdsh-dev/dsh-workbench/pulls) before opening a duplicate.
+- Search existing [issues](https://github.com/omdsh-dev/dsh-better-workbench/issues) and [pull requests](https://github.com/omdsh-dev/dsh-better-workbench/pulls) before opening a duplicate.
 
 ## Where to ask
 

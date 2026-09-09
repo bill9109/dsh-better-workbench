@@ -41,7 +41,7 @@ export interface IndexedDbRepositoryOptions {
   broadcastChannel?: typeof BroadcastChannel | null
 }
 
-const LEGACY_KEYS = ['dsh-workbench.state.v3', 'dsh-workbench.state.v2', 'dsh-workbench.instances.v1']
+const LEGACY_KEYS = ['dsh-better-workbench.state.v3', 'dsh-better-workbench.state.v2', 'dsh-better-workbench.instances.v1']
 const peers = new Set<IndexedDbRepository>()
 const origin = Math.random().toString(36).slice(2)
 
@@ -168,7 +168,7 @@ export class IndexedDbRepository implements WorkbenchRepository {
 
   constructor(options: IndexedDbRepositoryOptions = {}) {
     this.options = options
-    this.dbName = options.dbName ?? 'dsh-workbench'
+    this.dbName = options.dbName ?? 'dsh-better-workbench'
     peers.add(this)
   }
 
@@ -201,7 +201,7 @@ export class IndexedDbRepository implements WorkbenchRepository {
         await this.database
         const Channel = this.options.broadcastChannel === undefined ? globalThis.BroadcastChannel : this.options.broadcastChannel
         if (Channel && !this.disposed && !this.channel) {
-          this.channel = new Channel('dsh-workbench:' + this.dbName)
+          this.channel = new Channel('dsh-better-workbench:' + this.dbName)
           this.channel.onmessage = event => {
             if (isRecord(event.data) && event.data.type === 'invalidate' && event.data.origin !== origin) notify(this.listeners)
           }

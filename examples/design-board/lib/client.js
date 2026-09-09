@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-	id: "dsh-workbench-design-board",
+	id: "dsh-better-workbench-design-board",
 	factory: (require) => {
 		var module = { exports: {} };
 		var exports = module.exports;
@@ -5716,7 +5716,7 @@ window.__ModuleLoader__.load({
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
 									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "< 1024px" }),
 									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: "shell collapsed，sidebar 56px rail；Workbench 不渲染自己的 rail icons。" }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: "dsh-workbench + ui-sidebar" })
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: "dsh-better-workbench + ui-sidebar" })
 								] }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
 									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "≤ 720px" }),
@@ -6743,20 +6743,20 @@ body[data-ds-dark-theme] .dsh-cg-hover-content { color: var(--dsw-alias-label-pr
 			const workbench = ctx.workbench;
 			ctx.effect(() => {
 				const style = document.createElement("style");
-				style.setAttribute("data-dsh-workbench-design-board-style", "");
+				style.setAttribute("data-dsh-better-workbench-design-board-style", "");
 				style.textContent = DESIGN_BOARD_STYLE + COMPONENT_GALLERY_STYLE;
 				document.head.appendChild(style);
 				return () => {
 					style.remove();
 				};
-			}, "dsh-workbench-design-board: styles");
+			}, "dsh-better-workbench-design-board: styles");
 			ctx.effect(() => workbench.registerApp({
 				protocolVersion: 1,
 				appId: "dsh-design-board",
 				source: {
-					packageName: "dsh-workbench-design-board",
+					packageName: "dsh-better-workbench-design-board",
 					version: "0.2.0",
-					repository: "https://github.com/omdsh-dev/dsh-workbench"
+					repository: "https://github.com/omdsh-dev/dsh-better-workbench"
 				},
 				config: {
 					version: 1,
@@ -6780,7 +6780,7 @@ body[data-ds-dark-theme] .dsh-cg-hover-content { color: var(--dsw-alias-label-pr
 				},
 				renderMain: DesignBoard,
 				renderSecondary: DesignBoardSidebar
-			}), "dsh-workbench-design-board: app registration");
+			}), "dsh-better-workbench-design-board: app registration");
 			ctx.effect(() => workbench.registerTemplate({
 				templateId: "dsh-design-board:reference",
 				title: "DSH UI 样式看板",
@@ -6789,7 +6789,7 @@ body[data-ds-dark-theme] .dsh-cg-hover-content { color: var(--dsw-alias-label-pr
 				appId: "dsh-design-board",
 				defaultTitle: "DSH UI 样式看板",
 				defaultConfig: { section: "primitives" }
-			}), "dsh-workbench-design-board: template registration");
+			}), "dsh-better-workbench-design-board: template registration");
 		}
 		//#endregion
 		exports.apply = apply;

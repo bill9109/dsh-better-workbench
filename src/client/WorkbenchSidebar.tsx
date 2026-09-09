@@ -63,12 +63,12 @@ function WorkbenchHomeRow({ active, onOpen }: { active: boolean; onOpen: () => v
   return (
     <button
       type="button"
-      className="dsh-workbench-sidebar-row dsh-workbench-sidebar-home"
+      className="dsh-better-workbench-sidebar-row dsh-better-workbench-sidebar-home"
       data-active={active}
       onClick={onOpen}
     >
-      <WorkbenchHomeIcon className="dsh-workbench-sidebar-home-icon" />
-      <span className="dsh-workbench-sidebar-row-label">首页</span>
+      <WorkbenchHomeIcon className="dsh-better-workbench-sidebar-home-icon" />
+      <span className="dsh-better-workbench-sidebar-row-label">首页</span>
     </button>
   )
 }
@@ -99,7 +99,7 @@ function ViewOptionsMenu({ orderBy, onOrderPick }: {
         <Tooltip label="视图选项" side="bottom" delayMs={500}>
           <button
             type="button"
-            className="dsh-workbench-sidebar-icon-button dsh-workbench-sidebar-wide-only"
+            className="dsh-better-workbench-sidebar-icon-button dsh-better-workbench-sidebar-wide-only"
             aria-label="视图选项"
             onClick={() => { setOpen(value => !value) }}
           >
@@ -150,7 +150,7 @@ function WorkbenchRow({
 
   return (
     <div
-      className="dsh-workbench-sidebar-row"
+      className="dsh-better-workbench-sidebar-row"
       data-active={active}
       data-menu-open={menuOpen}
       data-drop-position={dropPosition ?? undefined}
@@ -169,10 +169,10 @@ function WorkbenchRow({
       onDrop={onDrop}
       onDragEnd={onDragEnd}
     >
-      {compact && <IconPersonalizationOutline16 className="dsh-workbench-sidebar-rail-icon" />}
-      <span className="dsh-workbench-sidebar-row-label">{instance.title}</span>
+      {compact && <IconPersonalizationOutline16 className="dsh-better-workbench-sidebar-rail-icon" />}
+      <span className="dsh-better-workbench-sidebar-row-label">{instance.title}</span>
       {!compact && (
-        <span className="dsh-workbench-sidebar-row-actions">
+        <span className="dsh-better-workbench-sidebar-row-actions">
           <Menu
             open={menuOpen}
             onClose={() => { setMenuOpen(false) }}
@@ -195,7 +195,7 @@ function WorkbenchRow({
             anchor={(
               <button
                 type="button"
-                className="dsh-workbench-sidebar-row-action"
+                className="dsh-better-workbench-sidebar-row-action"
                 aria-label={`工作台“${instance.title}”的操作`}
                 title="更多操作"
                 disabled={busy}
@@ -410,7 +410,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
       )}
     >
       <input
-        className="dsh-workbench-rename-input"
+        className="dsh-better-workbench-rename-input"
         value={renameDraft}
         aria-label="工作台名称"
         autoFocus
@@ -428,7 +428,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
         }}
       />
       {renaming && <div role="status">正在重命名...</div>}
-      {renameError !== null && <div className="dsh-workbench-rename-error" role="alert">{renameError}</div>}
+      {renameError !== null && <div className="dsh-better-workbench-rename-error" role="alert">{renameError}</div>}
     </Modal>
   )
 
@@ -444,20 +444,20 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
       footer={(
         <>
           <Button variant="outline" disabled={deleting} onClick={closeDelete}>取消</Button>
-          <Button variant="outline" className="dsh-workbench-delete-action" disabled={deleting} onClick={confirmDelete}>
+          <Button variant="outline" className="dsh-better-workbench-delete-action" disabled={deleting} onClick={confirmDelete}>
             <IconTrashOutline16 size={16} />删除
           </Button>
         </>
       )}
     >
       {deleting && <div role="status">正在删除...</div>}
-      {deleteError !== null && <div className="dsh-workbench-delete-error" role="alert">{deleteError}</div>}
+      {deleteError !== null && <div className="dsh-better-workbench-delete-error" role="alert">{deleteError}</div>}
     </Modal>
   )
 
   if (compact) {
     return (
-      <section ref={section} className="dsh-workbench-sidebar-section" aria-label="工作台" data-compact="true">
+      <section ref={section} className="dsh-better-workbench-sidebar-section" aria-label="工作台" data-compact="true">
         {renameDialog}
         {deleteDialog}
       </section>
@@ -465,15 +465,15 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
   }
 
   return (
-    <section ref={section} className="dsh-workbench-sidebar-section" aria-label="工作台" aria-busy={busy}>
-      <div className="dsh-workbench-sidebar-heading">
-        <span className={`dsh-workbench-sidebar-heading-label${searchExpanded && !compact ? ' is-hidden' : ''}`}>工作台</span>
-        <div ref={searchRoot} className={`dsh-workbench-sidebar-search-slot${searchExpanded ? ' is-expanded' : ''}`}>
-          <div className="dsh-workbench-sidebar-search">
+    <section ref={section} className="dsh-better-workbench-sidebar-section" aria-label="工作台" aria-busy={busy}>
+      <div className="dsh-better-workbench-sidebar-heading">
+        <span className={`dsh-better-workbench-sidebar-heading-label${searchExpanded && !compact ? ' is-hidden' : ''}`}>工作台</span>
+        <div ref={searchRoot} className={`dsh-better-workbench-sidebar-search-slot${searchExpanded ? ' is-expanded' : ''}`}>
+          <div className="dsh-better-workbench-sidebar-search">
             <Tooltip label="搜索工作台" side="bottom" delayMs={500} disabled={searchExpanded}>
               <button
                 type="button"
-                className="dsh-workbench-sidebar-search-button"
+                className="dsh-better-workbench-sidebar-search-button"
                 aria-label="搜索工作台"
                 aria-expanded={searchExpanded}
                 onClick={() => {
@@ -486,7 +486,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
             </Tooltip>
             <input
               ref={searchInput}
-              className="dsh-workbench-sidebar-search-input"
+              className="dsh-better-workbench-sidebar-search-input"
               type="text"
               placeholder="搜索工作台…"
               value={query}
@@ -502,7 +502,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
             {searchExpanded && (
               <button
                 type="button"
-                className="dsh-workbench-sidebar-search-clear"
+                className="dsh-better-workbench-sidebar-search-clear"
                 aria-label="清除搜索"
                 onClick={event => {
                   event.stopPropagation()
@@ -515,12 +515,12 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
             )}
           </div>
         </div>
-        <div className={`dsh-workbench-sidebar-heading-actions${searchExpanded && !compact ? ' is-hidden' : ''}`}>
+        <div className={`dsh-better-workbench-sidebar-heading-actions${searchExpanded && !compact ? ' is-hidden' : ''}`}>
           <ViewOptionsMenu orderBy={orderBy} onOrderPick={setOrderBy} />
           <Tooltip label="创建工作台" side="bottom" delayMs={500}>
             <button
               type="button"
-              className="dsh-workbench-sidebar-icon-button dsh-workbench-sidebar-add"
+              className="dsh-better-workbench-sidebar-icon-button dsh-better-workbench-sidebar-add"
               aria-label="创建工作台"
               disabled={busy}
               onClick={() => {
@@ -535,11 +535,11 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
       </div>
 
       {compact && (
-        <div className="dsh-workbench-sidebar-rail-search">
+        <div className="dsh-better-workbench-sidebar-rail-search">
           <Tooltip label="搜索工作台" side="right" delayMs={500}>
             <button
               type="button"
-              className="dsh-workbench-sidebar-search-button"
+              className="dsh-better-workbench-sidebar-search-button"
               aria-label="搜索工作台"
               aria-expanded={searchExpanded}
               onClick={() => {
@@ -553,7 +553,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
         </div>
       )}
 
-      <div className="dsh-workbench-sidebar-list" aria-label="工作台列表">
+      <div className="dsh-better-workbench-sidebar-list" aria-label="工作台列表">
         <WorkbenchHomeRow active={snapshot.route.kind === 'workbench-home'} onOpen={() => { service.openHome() }} />
         {instances.map((instance, index) => (
           <WorkbenchRow
@@ -587,11 +587,11 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
           />
         ))}
       </div>
-      {snapshot.loading && <div className="dsh-workbench-sidebar-empty" role="status">正在加载工作台...</div>}
-      {reordering && <div className="dsh-workbench-sidebar-empty" role="status">正在保存排序...</div>}
-      {(reorderError ?? snapshot.error) && <div className="dsh-workbench-rename-error" role="alert">{reorderError ?? snapshot.error}</div>}
+      {snapshot.loading && <div className="dsh-better-workbench-sidebar-empty" role="status">正在加载工作台...</div>}
+      {reordering && <div className="dsh-better-workbench-sidebar-empty" role="status">正在保存排序...</div>}
+      {(reorderError ?? snapshot.error) && <div className="dsh-better-workbench-rename-error" role="alert">{reorderError ?? snapshot.error}</div>}
       {!snapshot.loading && instances.length === 0 && (
-        <div className="dsh-workbench-sidebar-empty">{normalizedQuery === '' ? '从首页创建实例。' : '无匹配工作台'}</div>
+        <div className="dsh-better-workbench-sidebar-empty">{normalizedQuery === '' ? '从首页创建实例。' : '无匹配工作台'}</div>
       )}
       {renameDialog}
       {deleteDialog}

@@ -1,5 +1,5 @@
 ---
-name: dsh-workbench-application-authoring
+name: dsh-better-workbench-application-authoring
 description: "Build or review a DSH Workbench application with versioned configuration, async persistence, presentation and activation-owned resources."
 whenToUse: "Register a Workbench app, template or creator; migrate configuration; verify disposal and persistence."
 ---
@@ -20,7 +20,7 @@ Put this compiled Client module in `src/client/index.tsx`. The UI intentionally 
 
 ```tsx
 import { useState } from 'react'
-import type { WorkbenchClientContext, WorkbenchRenderProps } from 'dsh-workbench/client'
+import type { WorkbenchClientContext, WorkbenchRenderProps } from 'dsh-better-workbench/client'
 
 export const inject = ['workbench']
 
@@ -72,7 +72,7 @@ export function apply(ctx: WorkbenchClientContext): void {
 }
 ```
 
-The package must declare DSH Client metadata, build a Client closure bundle, and be installed alongside the base in the Web profile. Use [examples/starter](../examples/starter) for a standalone package using the public `dsh-workbench/build/client-bundle` helper. It has been tested in a copied standalone layout, not through a fresh registry install; clean registry use requires publishing this redesign and helper first. The [design-board package](../examples/design-board/package.json) is a repository-local reference, not the standalone starter. Type-only imports from `dsh-workbench/client` do not create a runtime import requirement. Do not paste TSX into an untransformed dynamic-plugin body.
+The package must declare DSH Client metadata, build a Client closure bundle, and be installed alongside the base in the Web profile. Use [examples/starter](../examples/starter) for a standalone package using the public `dsh-better-workbench/build/client-bundle` helper. It has been tested in a copied standalone layout, not through a fresh registry install; clean registry use requires publishing this redesign and helper first. The [design-board package](../examples/design-board/package.json) is a repository-local reference, not the standalone starter. Type-only imports from `dsh-better-workbench/client` do not create a runtime import requirement. Do not paste TSX into an untransformed dynamic-plugin body.
 
 ## Identity And Configuration
 
@@ -109,7 +109,7 @@ IndexedDB stores one complete repository-state record, including instances, dism
 
 Same-origin tabs share instance data; notifications invalidate caches and cause fresh reads. Config writes use revision compare-and-swap, not blind overwrite or automatic merge. `updateConfig(patch, expectedRevision?)` returns the committed revision. Drafts retain their original editing revision across remote snapshots. Without an explicit revision, the host uses the baseline captured by the first setDirty(true), otherwise the rendered revision. Advance the draft baseline using the successful result, not a later remote snapshot. After a conflict, reload/reconcile the latest snapshot before retrying; do not repeatedly overwrite with stale state. Rename/delete also check the revision; ordering is an atomic list update. A successful save means the transaction completed, not merely that an optimistic UI changed.
 
-The current tab's route uses `sessionStorage` key `dsh-workbench.navigation.v1`, separate from shared instances. Per-instance presentation preferences use `dsh-workbench.presentations.v1`; `open(id)` reuses a still-supported remembered kind before falling back to the app default. Initial repository creation imports recognized records from `dsh-workbench.state.v3`, `dsh-workbench.state.v2`, or `dsh-workbench.instances.v1`; original localStorage keys remain, with source strings/import markers recorded in IndexedDB. This is data import, not support for older application APIs. Browser storage is origin-local and may be cleared or unavailable; it is not a hosted backup service.
+The current tab's route uses `sessionStorage` key `dsh-better-workbench.navigation.v1`, separate from shared instances. Per-instance presentation preferences use `dsh-better-workbench.presentations.v1`; `open(id)` reuses a still-supported remembered kind before falling back to the app default. Initial repository creation imports recognized records from `dsh-better-workbench.state.v3`, `dsh-better-workbench.state.v2`, or `dsh-better-workbench.instances.v1`; original localStorage keys remain, with source strings/import markers recorded in IndexedDB. This is data import, not support for older application APIs. Browser storage is origin-local and may be cleared or unavailable; it is not a hosted backup service.
 
 ## Service And Renderer Contract
 
