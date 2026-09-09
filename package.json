@@ -1,6 +1,6 @@
 {
   "name": "dsh-better-workbench",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Extensible DSH Web workbench host with durable instances, templates, and page, panel, and capsule presentations",
   "keywords": [
     "deepseek",
