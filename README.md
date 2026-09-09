@@ -46,7 +46,9 @@ The sidebar also provides Workbench search, view options, creation, renaming, de
 
 ## Install
 
-This repository's root package is a DSH **bundle** (`package.json` declares `dsh.bundle` and `dsh.client`). Install it into the `web` profile with the standard plugin command. No DSH source changes or `config.yaml` entries are required:
+This repository's root package is a DSH **bundle** (`package.json` declares `dsh.bundle` and `dsh.client`). No DSH source changes or `config.yaml` entries are required. There are two supported activation paths — pick one, and never register the same package both ways: the plugin row `id` would be inserted twice and startup fails with a duplicate loader entry.
+
+**As a profile bundle** (standard, for consumers):
 
 ```sh
 dsh plugin --profile web add github:omdsh-dev/dsh-better-workbench
@@ -54,9 +56,21 @@ dsh plugin --profile web add github:omdsh-dev/dsh-better-workbench
 dsh plugin --profile web add /path/to/dsh-better-workbench
 ```
 
-Released revisions include committed `lib/` artifacts. This working tree contains an unreleased protocol redesign: before publishing it or installing changed source, rebuild both the base and example artifacts as described below. A source-only change does not update an installed GUI.
+Because the package declares `dsh.bundle`, `dsh plugin add` records it in the profile's `dsh.profile.bundles` and activates it as a bundle layer. Adding or removing a bundle, or changing the package's bundle manifest or its dependencies, requires **restarting `dsh web`**, then hard-refreshing the browser to load the Client bundle.
 
-dsh-better-workbench installs as a user plugin row in the profile's `cordis.patch.yml` and is live-applied by the DSH `watchUserPatches` watcher, so **no `dsh web` restart is needed**: a browser refresh (or dev-mode HMR) loads the Client bundle. Restart is only required if you change the package's bundle manifest, its dependencies, or the profile's `dsh.profile.bundles` set.
+**As a user plugin row** (hot reload, for local development):
+
+```sh
+dsh plugin --profile web add /path/to/dsh-better-workbench
+# then add to ~/.dsh/profiles/web/cordis.patch.yml:
+#   - insert:
+#     - id: workbench       name: 'dsh-better-workbench'
+#     - id: design-board    name: 'dsh-better-workbench-design-board'
+```
+
+A user plugin row is live-applied by the DSH `watchUserPatches` watcher, so source or bundle-content changes apply **without a `dsh web` restart** — refresh the browser (or use dev-mode HMR) to load the Client bundle. Only bundle-manifest/dependency changes still require a restart. When using this path, keep the package out of the profile's `dsh.profile.bundles` (running `dsh plugin` can re-add bundle-declaring packages there).
+
+Released revisions include committed `lib/` artifacts. This working tree contains an unreleased protocol redesign: before publishing it or installing changed source, rebuild both the base and example artifacts as described below. A source-only change does not update an installed GUI.
 
 ### Install the design-board example
 
