@@ -213,6 +213,16 @@ export const WORKBENCH_STYLE = `
   width: 100%;
   border: 0;
 }
+.dsh-better-workbench-sidebar-app-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  color: var(--dsw-alias-label-secondary);
+}
+.dsh-better-workbench-sidebar-app-icon > * { width: 16px; height: 16px; }
 .dsh-better-workbench-sidebar-home-icon {
   flex: none;
   width: 16px;

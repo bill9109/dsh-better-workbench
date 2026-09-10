@@ -91,6 +91,12 @@ export interface WorkbenchCreatorDefinition {
   start(template: Extract<WorkbenchTemplateDefinition, { kind: 'agent' }>, context: { signal: AbortSignal; requestId: string }): Promise<WorkbenchCreationResult>
 }
 
+/** Props accepted by optional application-provided DSH-standard icons. */
+export interface WorkbenchIconProps {
+  size?: number
+  className?: string
+}
+
 /** Props passed to an application main view or secondary sidebar. */
 export interface WorkbenchRenderProps {
   instance: WorkbenchInstance
@@ -117,6 +123,8 @@ export interface WorkbenchAppDefinition {
   allowMultiple?: boolean
   presentations: readonly WorkbenchPresentation[]
   defaultPresentation: WorkbenchPresentationKind
+  /** Runtime-only icon renderer; never included in snapshots or persistence. */
+  renderIcon?: ComponentType<WorkbenchIconProps>
   renderMain?: ComponentType<WorkbenchRenderProps>
   renderSecondary?: ComponentType<WorkbenchRenderProps>
   renderPanel?: ComponentType<WorkbenchRenderProps>

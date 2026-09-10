@@ -8,7 +8,7 @@ import { MemoryRepository } from '../src/client/storage.ts'
 
 const require = createRequire(import.meta.url)
 const sources = new Map()
-for (const name of ['WorkbenchSurface', 'WorkbenchHome', 'WorkbenchSidebar', 'WorkbenchErrorBoundary', 'presentation']) {
+for (const name of ['WorkbenchSurface', 'WorkbenchHome', 'WorkbenchSidebar', 'WorkbenchIcon', 'WorkbenchErrorBoundary', 'presentation']) {
   const extension = name === 'presentation' ? 'ts' : 'tsx'
   sources.set(name, ts.transpileModule(await readFile(new URL(`../src/client/${name}.${extension}`, import.meta.url), 'utf8'), {
     compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
@@ -116,7 +116,8 @@ const Main = () => null
 const page = { kind: 'page', conversation: 'exclusive' }
 const panel = { kind: 'panel', placement: 'right', behavior: 'push', conversation: 'resident' }
 const capsule = { kind: 'capsule', placement: 'floating', conversation: 'resident' }
-const app = { appId: 'board', title: 'Board', allowMultiple: false, presentations: [page, panel, capsule], defaultPresentation: 'page', renderMain: Main, renderPanel: Main, renderCapsule: Main }
+const AppIcon = () => null
+const app = { appId: 'board', title: 'Board', allowMultiple: false, presentations: [page, panel, capsule], defaultPresentation: 'page', renderIcon: AppIcon, renderMain: Main, renderPanel: Main, renderCapsule: Main }
 const instance = { instanceId: 'one', appId: 'board', title: 'One', config: {}, status: 'ready', available: true, revision: 7, order: 0 }
 const snapshot = { loading: false, error: null, creation: { status: 'idle' }, apps: [{ ...app, generation: 3 }], instances: [instance, { ...instance, instanceId: 'two', title: 'Two', order: 1 }], templates: [], route: { kind: 'workbench-instance', instanceId: 'one', presentation: 'page' } }
 const calls = []
@@ -270,6 +271,11 @@ assert.equal(sorted.join(','), 'two,one')
 tree = sidebar.render()
 findAll(tree, item => item.type === 'input' && item.props.placeholder)[0].props.onChange({ target: { value: 'One' } })
 const filtered = named(sidebar.render(), 'WorkbenchRow')
+assert.equal(filtered.props.appIcon, AppIcon, 'sidebar resolves runtime icon through getApp')
+const rowTree = runtime.mount(filtered.type, { ...filtered.props }).render()
+const iconSlot = findAll(rowTree, item => item.props?.className === 'dsh-better-workbench-sidebar-app-icon')[0]
+assert.ok(iconSlot, 'expanded rows always reserve the icon slot')
+assert.equal(iconSlot.props.className, 'dsh-better-workbench-sidebar-app-icon')
 assert.equal(filtered.props.draggable, false)
 assert.equal(filtered.props.canMoveDown, false)
 let opened = 0
@@ -332,6 +338,33 @@ const actualSurface = actualLoad('WorkbenchSurface').WorkbenchSurface
 const actualRoot = createRoot(rootElement)
 const renderActual = async () => { await act(async () => { actualRoot.render(React.createElement(actualSurface, { service: actualService })) }) }
 try {
+  const actualIcon = actualLoad('WorkbenchIcon').WorkbenchAppIcon
+  const GoodIcon = ({ size, className }) => React.createElement('svg', { width: size, height: size, className, focusable: 'false' })
+  let brokenIconCalls = 0
+  const BrokenIcon = () => { brokenIconCalls++; throw new Error('intentional icon crash') }
+  const renderIcon = async renderer => {
+    await act(async () => { actualRoot.render(React.createElement('div', null,
+      React.createElement(actualIcon, { renderer, className: 'icon-slot' }),
+      React.createElement('button', null, 'Still usable'))) })
+  }
+  await renderIcon(undefined)
+  assert.equal(rootElement.querySelector('.icon-slot').getAttribute('aria-hidden'), 'true')
+  assert.equal(rootElement.querySelector('.icon-slot').childElementCount, 0)
+  await renderIcon(GoodIcon)
+  assert.equal(rootElement.querySelector('svg').getAttribute('width'), '16')
+  assert.equal(rootElement.querySelector('svg').getAttribute('height'), '16')
+  const originalIconError = console.error
+  console.error = () => {}
+  try {
+    await renderIcon(BrokenIcon)
+    assert.equal(rootElement.querySelector('.icon-slot').childElementCount, 0)
+    assert.equal(rootElement.querySelector('button').textContent, 'Still usable')
+    const attempts = brokenIconCalls
+    await renderIcon(BrokenIcon)
+    assert.equal(brokenIconCalls, attempts, 'unrelated re-renders do not retry a broken icon')
+  } finally { console.error = originalIconError }
+  await renderIcon(GoodIcon)
+  assert.ok(rootElement.querySelector('svg'), 'changing the contributed renderer recovers the icon')
   await renderActual()
   assert.equal(rootElement.querySelector('output').textContent, 'one')
   actualSnapshot = { ...actualSnapshot, route: { ...actualSnapshot.route, instanceId: 'two' } }
@@ -362,8 +395,10 @@ try {
   await controller.ready
   controller.registerApp({ protocolVersion: 1, appId: 'editing', title: 'Editing', allowMultiple: true,
     config: { version: 1, defaults: () => ({ text: 'initial' }), validate() {} },
-    presentations: [{ kind: 'page', conversation: 'exclusive' }], defaultPresentation: 'page', renderMain: StatefulApp })
+    presentations: [{ kind: 'page', conversation: 'exclusive' }], defaultPresentation: 'page', renderIcon: AppIcon, renderMain: StatefulApp })
+  assert.equal('renderIcon' in controller.getSnapshot().apps[0], false, 'runtime icon is absent from snapshot')
   const editable = await controller.createInstance('editing')
+  assert.equal('renderIcon' in (await repository.read()).instances[0], false, 'runtime icon is not persisted')
   controller.open(editable.instanceId)
   try {
     await act(async () => { actualRoot.render(React.createElement(actualSurface, { service: controller })) })

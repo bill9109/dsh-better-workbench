@@ -162,6 +162,19 @@ start(template, context: { signal: AbortSignal; requestId: string }):
 
 Register it with `ctx.effect(() => workbench.registerCreator(definition))`. Connect it only to real, inspected Host/Session APIs; Workbench does not create an Agent automatically. Model-visible requests/results/errors belong in an auditable Session flow. Return an existing committed Workbench instance ID or the actual Session ID. `cancelCreation()` aborts the signal and ignores stale results; it cannot guarantee that a remote Host/Agent stopped or that already committed work was rolled back. The creator must implement cooperative cancellation and dispose its own resources.
 
+
+
+## Optional Application Icons
+
+Supply `renderIcon?: ComponentType<WorkbenchIconProps>` alongside `renderMain` to show an icon before the sidebar name. The props accept optional `size?: number` and `className?: string`, compatible with DSH primitive icons. For example, add `renderIcon: MyAppIcon` to your app definition.
+
+- The host reserves a 16 x 16px decorative slot plus an 8px title gap. Apps without icons keep an empty slot for aligned names; the existing compact fallback is unchanged.
+- Prefer an existing `@deepseek-ai/dsh-client-ui-primitives` icon. Custom brand marks use a 16 x 16 viewBox with safe visible stroke bounds.
+- Custom outlines use `fill="none"`, `stroke="currentColor"`, 1.3-1.5 stroke width, and round caps/joins. Official filled glyphs may retain their construction. The host uses `--dsw-alias-label-secondary`, matching the Home icon; inherit this via `currentColor` rather than hard-coding theme colors.
+- Accept the host size/className; mark SVGs `aria-hidden="true"` and `focusable="false"`. Icons must have no controls, network side effects, or independent focus stops.
+- Check actual ink bounds, default/hover/active states, light/dark themes, and narrow layouts. A throwing renderer blanks only its icon; replacing it recovers the icon.
+- Renderers are Client runtime contributions resolved through `workbench.getApp(appId)`, never snapshot or persisted data. Legacy `icon?: string` remains compatible metadata, not parsed SVG, HTML, or an image URL.
+
 ## Build And Acceptance
 
 The repository-local build helper does not require a DSH checkout or `DSH_CHECKOUT`. Build tooling follows `^22.18.0 || >=24.11.0` Node support; source tests require Node 22.18+ TypeScript stripping, with installed dependencies' engine requirements also respected. The published runtime engine range in package.json is a separate constraint.

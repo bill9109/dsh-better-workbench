@@ -162,6 +162,19 @@ start(template, context: { signal: AbortSignal; requestId: string }):
 
 用 `ctx.effect(() => workbench.registerCreator(definition))` 注册。只能连接已经核实的真实 Host/Session API，Workbench 不自动创建 Agent。模型可见的请求、结果、错误必须进入可审计的 Session 流程。返回已经提交且存在的 Workbench instanceId 或真实 sessionId。`cancelCreation()` 会 abort signal 并忽略旧结果，不保证远端 Host/Agent 停止，也不回滚已提交工作。Creator 必须自行实现协作取消与资源清理。
 
+
+
+## 可选应用图标
+
+在 `renderMain` 旁提供 `renderIcon?: ComponentType<WorkbenchIconProps>`，即可在侧栏名称前显示图标。Props 接受可选的 `size?: number` 和 `className?: string`，兼容 DSH primitive 图标。例如在应用定义中添加 `renderIcon: MyAppIcon`。
+
+- 宿主预留 16 x 16px 装饰图标位，与标题间距 8px。未提供图标时保留空位，使名称对齐；原有紧凑模式回退不变。
+- 优先复用 `@deepseek-ai/dsh-client-ui-primitives` 的现有图标。自定义品牌标识使用 16 x 16 viewBox，并保留笔画安全边界。
+- 手绘 outline 使用 `fill="none"`、`stroke="currentColor"`、1.3-1.5 线宽及 round 端点和连接；官方 fill glyph 可保持原构造。宿主统一使用与首页图标相同的 `--dsw-alias-label-secondary`，通过 `currentColor` 继承，不要写死主题颜色。
+- 接受宿主传入的 size/className。SVG 标记 `aria-hidden="true"` 和 `focusable="false"`，不得包含控件、网络副作用或独立焦点。
+- 检查实际笔画像素边界、默认/悬停/选中状态、明暗主题和窄屏布局。图标渲染异常只留空图标位，替换渲染器后恢复。
+- 渲染器属于 Client 运行时，通过 `workbench.getApp(appId)` 获取，不进入 snapshot 或持久化。旧 `icon?: string` 仅保留为兼容元数据，不会解析为 SVG、HTML 或图片 URL。
+
 ## 构建与验收
 
 仓库自带 build helper，不依赖 DSH checkout 或 `DSH_CHECKOUT`。构建工具支持 Node `^22.18.0 || >=24.11.0`；source 测试需要 Node 22.18+ 的 TypeScript stripping，同时还需满足所安装依赖的 engine 要求。package.json 的已发布产物 runtime engine 范围是另一项约束。

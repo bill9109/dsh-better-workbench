@@ -12,7 +12,8 @@ import {
   Modal,
   Tooltip,
 } from '@deepseek-ai/dsh-client-ui-primitives'
-import type { WorkbenchInstance, WorkbenchService } from './types.ts'
+import type { WorkbenchAppDefinition, WorkbenchInstance, WorkbenchService } from './types.ts'
+import { WorkbenchAppIcon } from './WorkbenchIcon.tsx'
 
 export interface WorkbenchSidebarProps {
   service: WorkbenchService
@@ -113,6 +114,7 @@ function ViewOptionsMenu({ orderBy, onOrderPick }: {
 
 function WorkbenchRow({
   instance,
+  appIcon,
   compact,
   active,
   draggable,
@@ -130,6 +132,7 @@ function WorkbenchRow({
   onDragEnd,
 }: {
   instance: WorkbenchInstance
+  appIcon?: WorkbenchAppDefinition['renderIcon']
   compact: boolean
   active: boolean
   draggable: boolean
@@ -169,7 +172,7 @@ function WorkbenchRow({
       onDrop={onDrop}
       onDragEnd={onDragEnd}
     >
-      {compact && <IconPersonalizationOutline16 className="dsh-better-workbench-sidebar-rail-icon" />}
+      {compact ? <IconPersonalizationOutline16 className="dsh-better-workbench-sidebar-rail-icon" /> : <WorkbenchAppIcon renderer={appIcon} className="dsh-better-workbench-sidebar-app-icon" />}
       <span className="dsh-better-workbench-sidebar-row-label">{instance.title}</span>
       {!compact && (
         <span className="dsh-better-workbench-sidebar-row-actions">
@@ -559,6 +562,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
           <WorkbenchRow
             key={instance.instanceId}
             instance={instance}
+            appIcon={service.getApp(instance.appId)?.renderIcon}
             compact={compact}
             active={snapshot.route.kind === 'workbench-instance' && snapshot.route.instanceId === instance.instanceId}
             draggable={canReorder}
