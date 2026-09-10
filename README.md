@@ -9,6 +9,10 @@
 
 **A DeepSeek Harness Web UI plugin that provides a permanent Workbench home, durable application instances, templates, and reusable `page`, `panel`, and `capsule` presentation hosts for third-party DSH applications.**
 
+<img width="3024" height="1482" alt="Snipaste_2026-09-10_11-52-30" src="https://github.com/user-attachments/assets/5f469016-c897-47a1-b036-b7e5258f8b8c" />
+<img width="3024" height="1478" alt="Snipaste_2026-09-10_11-52-57" src="https://github.com/user-attachments/assets/68236ec4-72df-4e51-9f8f-69869cfeb17e" />
+
+
 [English](README.md) | [中文](README.zh.md)
 
 ## Why this exists
