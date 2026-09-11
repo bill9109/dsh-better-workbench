@@ -290,6 +290,8 @@ export const WORKBENCH_STYLE = `
   color: var(--dsw-alias-label-tertiary);
   font: var(--dsw-font-xs-13);
 }
+/* A hidden-overflow shell can still scroll on iframe/modal focus. Clip only during exclusive pages. */
+div:has(> div > [data-dsh-better-workbench-center][data-workbench-presentation="page"]) { overflow: clip; }
 .dsh-better-workbench-center {
   position: absolute;
   inset: 0;

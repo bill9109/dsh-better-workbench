@@ -1,6 +1,7 @@
 import type { Context as ClientContext } from '@deepseek-ai/cordis';
 import type { WorkbenchService } from './types.ts';
 export type * from './types.ts';
+export { createWorkbenchReferenceSource, WORKBENCH_REFERENCE_SOURCE } from './workbench-reference.ts';
 export { resolveActivePresentation, resolvePresentationLayout } from './presentation.ts';
 export type { WorkbenchPresentationLayout } from './presentation.ts';
 /** Client service supplied to all workbench application plugins. */

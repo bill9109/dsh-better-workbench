@@ -60,7 +60,10 @@ export declare class WorkbenchController implements WorkbenchService {
     registerCreator(definition: WorkbenchCreatorDefinition): () => Promise<void>;
     createInstance(appId: string, title?: string, config?: WorkbenchConfig): Promise<WorkbenchInstance>;
     private createCheckedInstance;
-    startCreation(templateId: string): Promise<WorkbenchCreationResult>;
+    startCreation(templateId: string, options?: {
+        title?: string;
+        config?: WorkbenchConfig;
+    }): Promise<WorkbenchCreationResult>;
     cancelCreation(): void;
     prepareInstance(id: string): Promise<void>;
     renameInstance(id: string, title: string): Promise<void>;

@@ -61,13 +61,15 @@
   "homepage": "https://github.com/omdsh-dev/dsh-better-workbench#readme",
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
-    "@deepseek-ai/dsh-client-ui-primitives": "^0.1.2-alpha.5",
+    "@deepseek-ai/dsh-client-ui-primitives": "^0.1.5-alpha.2",
+    "@deepseek-ai/dsh-client-ui-input-trigger": "^0.1.5-alpha.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
-    "@deepseek-ai/dsh-client-ui-primitives": "0.1.2-alpha.5",
+    "@deepseek-ai/dsh-client-ui-primitives": "0.1.5-alpha.2",
+    "@deepseek-ai/dsh-client-ui-input-trigger": "0.1.5-alpha.2",
     "@types/node": "^24.0.0",
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.1",
@@ -86,7 +88,7 @@
     "build:example": "pnpm --dir examples/design-board run build",
     "check": "tsc -p tsconfig.json --noEmit --pretty false",
     "check:example": "pnpm --dir examples/design-board run check",
-    "test": "node --test tests/service.mjs tests/storage.mjs tests/dom-adapter.mjs tests/ui.mjs tests/build.mjs tests/starter-build.mjs",
+    "test": "node --test tests/service.mjs tests/storage.mjs tests/dom-adapter.mjs tests/ui.mjs tests/website.mjs tests/workbench-reference.mjs tests/build.mjs tests/starter-build.mjs",
     "verify:i18n": "node scripts/verify-i18n.mjs"
   },
   "dsh": {
@@ -96,7 +98,8 @@
     "client": {
       "platform": "web",
       "inject": [
-        "@deepseek-ai/dsh-client-ui-primitives"
+        "@deepseek-ai/dsh-client-ui-primitives",
+        "@deepseek-ai/dsh-client-ui-input-trigger"
       ]
     }
   }

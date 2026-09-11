@@ -44,7 +44,7 @@ The built-in home is always available, even when no Workbench application is ins
 
 Open **首页** in the Workbench section of the expanded DSH sidebar. The home shows every stored instance as a card.
 
-Use **创建工作台** to reveal templates and installed applications. Selecting a template or application creates an instance and opens its default presentation. Existing cards reopen their instance directly.
+Use **创建工作台** to open the creation dialog. Choose a template or application, confirm its name and configuration, then create and open it. Selecting or cancelling a draft does not create an instance. The built-in **从网页地址创建** template adds an HTTP(S) website with a DSH-tinted favicon. Existing cards reopen their instance directly; single-instance applications offer opening the existing instance. See [Website Workbench](docs/website-workbench.md) for browser isolation and compatibility limits.
 
 The sidebar also provides Workbench search, view options, creation, renaming, deletion, and ordering. The compact sidebar does not insert a separate Workbench-home icon.
 
@@ -195,7 +195,7 @@ The board is derived from current DSH component source. It documents semantic to
 
 ## Model experience
 
-The base and design-board example add no model tools, prompts, or Session-log events. Workbench UI state is not model-visible. An optional Agent Creator is a separate application contribution and must record every new model-visible request and result through an auditable Session/Agent path.
+The base provides a unified `@` source through DSH inputTriggers. Selecting an available workbench inserts a native reference chip; sending serializes only its instance ID, application ID and title into the ordinary user-message pipeline. No model tools, file resolver, page content, secrets or application configuration are added. These are browser-stored instance references, not filesystem paths; see [Workbench references](docs/workbench-references.md). Other Workbench UI state remains model-invisible. An optional Agent Creator is a separate application contribution and must record model-visible requests and results through an auditable Session/Agent path.
 
 ## Development and verification
 

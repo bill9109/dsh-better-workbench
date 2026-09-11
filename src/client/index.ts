@@ -6,9 +6,14 @@ import { WorkbenchSidebar } from './WorkbenchSidebar.tsx'
 import { WorkbenchSurface } from './WorkbenchSurface.tsx'
 import { mountWorkbenchDom } from './dom-adapter.ts'
 import { WORKBENCH_STYLE } from './styles.ts'
+import { websiteApp, websiteTemplate } from './website-app.tsx'
+import { WEBSITE_VIEW_STYLE } from './website-view-styles.ts'
+import { CREATION_STYLE } from './creation-styles.ts'
+import { registerWorkbenchReference } from './workbench-reference.ts'
 import type { WorkbenchService } from './types.ts'
 
 export type * from './types.ts'
+export { createWorkbenchReferenceSource, WORKBENCH_REFERENCE_SOURCE } from './workbench-reference.ts'
 export { resolveActivePresentation, resolvePresentationLayout } from './presentation.ts'
 export type { WorkbenchPresentationLayout } from './presentation.ts'
 
@@ -63,9 +68,14 @@ export function apply(ctx: ClientContext): void {
     window.addEventListener('beforeunload', beforeUnload)
     return () => { window.removeEventListener('beforeunload', beforeUnload) }
   }, 'dsh-better-workbench: unsaved changes warning')
+  ctx.inject(['inputTriggers'], scope => {
+    scope.effect(() => registerWorkbenchReference(scope, service), 'dsh-better-workbench: @ reference source')
+  })
+  ctx.effect(() => service.registerApp(websiteApp()), 'dsh-better-workbench: webpage application')
+  ctx.effect(() => service.registerTemplate(websiteTemplate()), 'dsh-better-workbench: webpage template')
   ctx.effect(() => ctx.reflect.provide('workbench', service), 'dsh-better-workbench: service')
   ctx.effect(() => mountWorkbenchDom(service, {
-    style: WORKBENCH_STYLE,
+    style: WORKBENCH_STYLE + CREATION_STYLE + WEBSITE_VIEW_STYLE,
     getSessions: () => ctx.get('sessions'),
     renderSidebar: (host, ready) => renderSurface(host, createElement(WorkbenchSidebar, { service }), ready),
     renderCenter: (host, ready) => renderSurface(host, createElement(WorkbenchSurface, { service }), ready),

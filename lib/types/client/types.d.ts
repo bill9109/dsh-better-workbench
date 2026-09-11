@@ -6,6 +6,8 @@ export interface WorkbenchConfigDefinition {
     version: number;
     defaults(): WorkbenchConfig;
     validate(config: WorkbenchConfig): void;
+    /** Optional stricter check for a new instance, beyond valid empty/default state. */
+    validateCreation?(config: WorkbenchConfig): void;
     migrate?(config: WorkbenchConfig, fromVersion: number, context: {
         signal: AbortSignal;
     }): WorkbenchConfig | Promise<WorkbenchConfig>;
@@ -100,6 +102,13 @@ export interface WorkbenchCreatorDefinition {
 export interface WorkbenchIconProps {
     size?: number;
     className?: string;
+    instance?: WorkbenchInstance;
+}
+/** Controlled, transient configuration editor used before an instance is committed. */
+export interface WorkbenchCreateProps {
+    config: WorkbenchConfig;
+    disabled: boolean;
+    onChange: (config: WorkbenchConfig, suggestedTitle?: string) => void;
 }
 /** Props passed to an application main view or secondary sidebar. */
 export interface WorkbenchRenderProps {
@@ -128,6 +137,7 @@ export interface WorkbenchAppDefinition {
     defaultPresentation: WorkbenchPresentationKind;
     /** Runtime-only icon renderer; never included in snapshots or persistence. */
     renderIcon?: ComponentType<WorkbenchIconProps>;
+    renderCreate?: ComponentType<WorkbenchCreateProps>;
     renderMain?: ComponentType<WorkbenchRenderProps>;
     renderSecondary?: ComponentType<WorkbenchRenderProps>;
     renderPanel?: ComponentType<WorkbenchRenderProps>;
@@ -203,7 +213,10 @@ export interface WorkbenchService {
     getTemplate(templateId: string): WorkbenchTemplateDefinition | undefined;
     registerCreator(definition: WorkbenchCreatorDefinition): () => Promise<void>;
     createInstance(appId: string, title?: string, config?: WorkbenchConfig): Promise<WorkbenchInstance>;
-    startCreation(templateId: string): Promise<WorkbenchCreationResult>;
+    startCreation(templateId: string, options?: {
+        title?: string;
+        config?: WorkbenchConfig;
+    }): Promise<WorkbenchCreationResult>;
     renameInstance(instanceId: string, title: string): Promise<void>;
     deleteInstance(instanceId: string): Promise<void>;
     updateInstanceConfig(instanceId: string, patch: WorkbenchConfig, expectedRevision?: number, generation?: number): Promise<number>;

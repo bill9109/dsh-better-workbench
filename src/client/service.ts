@@ -373,6 +373,7 @@ export class WorkbenchController implements WorkbenchService {
     private newInstance(app: WorkbenchAppDefinition, id: string, title: string | undefined, config: WorkbenchConfig | undefined, order: number): StoredInstance {
         const owned = cloneConfig(config ?? app.config.defaults());
         app.config.validate(cloneConfig(owned));
+        app.config.validateCreation?.(cloneConfig(owned));
         const now = Date.now();
         return { instanceId: id, appId: app.appId, title: title?.trim() || app.title, config: owned, configVersion: app.config.version, revision: 1, order, createdAt: now, updatedAt: now, lastOpenedAt: 0 };
     }
@@ -443,13 +444,16 @@ export class WorkbenchController implements WorkbenchService {
         await this.prepareInstance(id);
         return this.publicInstance(this.require(id));
     }
-    async startCreation(templateId: string): Promise<WorkbenchCreationResult> {
+    async startCreation(templateId: string, options?: { title?: string; config?: WorkbenchConfig }): Promise<WorkbenchCreationResult> {
         this.assertActive();
         if (this.creation.status === 'creating')
             throw new Error('A creation is already in progress');
         const template = this.templates.get(templateId);
         if (!template)
             throw new Error('Template unavailable');
+        if (template.kind === 'agent' && options !== undefined)
+            throw new Error('Agent templates do not accept instance configuration');
+        const draft = options ? { title: options.title, config: options.config === undefined ? undefined : cloneConfig(options.config) } : undefined;
         const abort = new AbortController();
         this.creationAbort = abort;
         this.creation = { status: 'creating', templateId };
@@ -457,7 +461,7 @@ export class WorkbenchController implements WorkbenchService {
         try {
             let result: WorkbenchCreationResult;
             if (template.kind === 'instance') {
-                const created = await this.createCheckedInstance(template.appId, template.defaultTitle, template.defaultConfig, () => {
+                const created = await this.createCheckedInstance(template.appId, draft?.title ?? template.defaultTitle, draft?.config ?? template.defaultConfig, () => {
                     if (abort.signal.aborted || this.creationAbort !== abort || this.templates.get(templateId) !== template) {
                         throw new Error('Creation cancelled');
                     }

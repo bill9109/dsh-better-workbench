@@ -8,8 +8,8 @@ import { MemoryRepository } from '../src/client/storage.ts'
 
 const require = createRequire(import.meta.url)
 const sources = new Map()
-for (const name of ['WorkbenchSurface', 'WorkbenchHome', 'WorkbenchSidebar', 'WorkbenchIcon', 'WorkbenchErrorBoundary', 'presentation']) {
-  const extension = name === 'presentation' ? 'ts' : 'tsx'
+for (const name of ['WorkbenchSurface', 'WorkbenchHome', 'WorkbenchCreateDialog', 'open-workbench', 'website', 'WorkbenchSidebar', 'WebsiteSettings', 'WorkbenchIcon', 'WorkbenchErrorBoundary', 'presentation']) {
+  const extension = ['presentation', 'open-workbench', 'website'].includes(name) ? 'ts' : 'tsx'
   sources.set(name, ts.transpileModule(await readFile(new URL(`../src/client/${name}.${extension}`, import.meta.url), 'utf8'), {
     compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
   }).outputText)
@@ -64,8 +64,8 @@ function createRuntime() {
     const exports = {}
     modules.set(name, exports)
     vm.runInNewContext(sources.get(name), {
-      exports, Error, console, URL, Blob, setTimeout, clearTimeout,
-      document: { addEventListener() {}, removeEventListener() {} },
+      exports, Error, console, URL, Blob, structuredClone, queueMicrotask, setTimeout, clearTimeout,
+      document: { addEventListener() {}, removeEventListener() {}, querySelector() { return null } },
       ResizeObserver: class { observe() {} disconnect() {} },
       require(id) {
         if (id === 'react') return react
@@ -101,7 +101,7 @@ function createRuntime() {
 function findAll(tree, predicate) {
   if (!tree || typeof tree !== 'object') return []
   if (Array.isArray(tree)) return tree.flatMap(child => findAll(child, predicate))
-  return [...(predicate(tree) ? [tree] : []), ...findAll(tree.props?.children, predicate)]
+  return [...(predicate(tree) ? [tree] : []), ...findAll(tree.props?.children, predicate), ...findAll(tree.props?.footer, predicate)]
 }
 const named = (tree, name) => findAll(tree, item => item.type?.name === name)[0]
 const role = (tree, name) => findAll(tree, item => item.props?.role === name)
@@ -152,6 +152,7 @@ assert.equal(findAll(frame.render(), item => item.props.className === 'dsh-bette
 const frameStyles = await readFile(new URL('../src/client/styles.ts', import.meta.url), 'utf8')
 assert.ok(frameStyles.includes('.dsh-better-workbench-save-status { position: absolute;'))
 assert.ok(frameStyles.includes('scrollbar-gutter: stable;'))
+assert.ok(frameStyles.includes('div:has(> div > [data-dsh-better-workbench-center][data-workbench-presentation="page"]) { overflow: clip; }'), 'exclusive workbench pages must prevent native focus scrolling the outer shell')
 write.reject(new Error('save rejected'))
 await assert.rejects(save, /save rejected/)
 assert.ok(role(frame.render(), 'alert').some(item => item.props.children === 'save rejected'))
@@ -211,17 +212,37 @@ assert.equal(named(surface.render(), 'SurfaceToolbar'), undefined, 'home must no
 snapshot.instances = []
 let creation = deferred(), count = 0
 service.createInstance = () => { count++; return creation.promise }
+service.getApp = () => ({ ...app, config: { defaults: () => ({}), validate() {} } })
 const home = runtime.mount(runtime.load('WorkbenchHome').WorkbenchHome, { service, snapshot })
-const card = named(home.render(), 'AppCard')
-card.props.onCreate(); card.props.onCreate()
-assert.equal(count, 1)
-assert.equal(named(home.render(), 'AppCard').props.disabled, true)
+assert.ok(named(home.render(), 'WorkbenchCreateDialog'))
+const createEntry = findAll(home.render(), item => item.props.className === 'dsh-better-workbench-home-add-button')[0]
+assert.equal(createEntry.type, 'button', 'home creation keeps its original dashed button')
+assert.equal(createEntry.props['aria-haspopup'], 'dialog')
+assert.equal(createEntry.props.children[0].props.size, 14)
+createEntry.props.onClick()
+assert.deepEqual(calls.at(-1), ['home', true])
+const entryStyle = frameStyles.match(/\.dsh-better-workbench-home-add-button\s*\{([^}]+)\}/)[1]
+assert.match(entryStyle, /border: 1px dashed/)
+assert.match(entryStyle, /background: transparent/)
+assert.match(entryStyle, /height: 44px/)
+assert.match(entryStyle, /border-radius: 12px/)
+const dialog = runtime.mount(runtime.load('WorkbenchCreateDialog').WorkbenchCreateDialog, { service, snapshot })
+const choose = tree => findAll(tree, item => item.props.className === 'dsh-better-workbench-create-choice')[0]
+const submit = tree => findAll(tree, item => item.type === 'Button' && ['创建并打开', '正在创建...'].includes(item.props.children))[0]
+choose(dialog.render()).props.onClick()
+assert.equal(count, 0, 'selecting a template must not persist anything')
+submit(dialog.render()).props.onClick(); submit(dialog.render()).props.onClick()
+assert.equal(count, 1, 'double submit is guarded before rerender')
+assert.equal(submit(dialog.render()).props.disabled, true)
 snapshot.instances = [instance]
 creation.resolve(instance)
 await tick()
-assert.equal(named(home.render(), 'AppCard').props.existing, true)
-named(home.render(), 'AppCard').props.onCreate()
-assert.equal(count, 1)
+assert.deepEqual(calls.at(-1), ['open', 'one', 'page'])
+dialog.unmount()
+const existingDialog = runtime.mount(runtime.load('WorkbenchCreateDialog').WorkbenchCreateDialog, { service, snapshot })
+choose(existingDialog.render()).props.onClick()
+assert.equal(count, 1, 'single instance choices open the existing workbench')
+existingDialog.unmount()
 home.unmount()
 snapshot.templates = [{ templateId: 'agent', title: 'Agent', kind: 'agent', available: true }]
 const oldCreation = deferred()
@@ -229,14 +250,16 @@ const newCreation = deferred()
 let templateCalls = 0
 service.startCreation = () => { snapshot.creation = { status: 'creating', templateId: 'agent' }; return ++templateCalls === 1 ? oldCreation.promise : newCreation.promise }
 service.cancelCreation = () => { snapshot.creation = { status: 'cancelled' } }
-const cancellable = runtime.mount(runtime.load('WorkbenchHome').WorkbenchHome, { service, snapshot })
-named(cancellable.render(), 'TemplateCard').props.onCreate()
+const cancellable = runtime.mount(runtime.load('WorkbenchCreateDialog').WorkbenchCreateDialog, { service, snapshot })
+choose(cancellable.render()).props.onClick()
+const startAgent = () => findAll(cancellable.render(), item => item.type === 'Button' && item.props.children === '开始创建')[0].props.onClick()
+startAgent()
 findAll(cancellable.render(), item => item.type === 'Button' && item.props.children === '取消等待')[0].props.onClick()
-named(cancellable.render(), 'TemplateCard').props.onCreate()
-assert.equal(templateCalls, 2, 'cancelled wait does not block a new request')
+startAgent()
+assert.equal(templateCalls, 2)
 oldCreation.resolve({ sessionId: 'obsolete-session' })
 await tick()
-assert.equal(named(cancellable.render(), 'TemplateCard').props.disabled, true, 'late old result cannot clear new pending state')
+assert.equal(findAll(cancellable.render(), item => item.type === 'Button' && item.props.children === '正在创建...')[0].props.disabled, true)
 snapshot.creation = { status: 'complete', result: { sessionId: 'new-session' } }
 newCreation.resolve({ sessionId: 'new-session' })
 await tick()
@@ -244,6 +267,58 @@ assert.ok(findAll(cancellable.render(), item => item.type === 'code' && item.pro
 cancellable.unmount()
 snapshot.templates = []
 snapshot.creation = { status: 'idle' }
+
+const replacementRepository = new MemoryRepository()
+const replacementService = new WorkbenchController({ repository: replacementRepository, navigationStorage: null })
+await replacementService.ready
+for (const appId of ['original-app', 'replacement-app']) {
+  replacementService.registerApp({ ...app, protocolVersion: 1, appId, title: appId, allowMultiple: true,
+    config: { version: 1, defaults: () => ({}), validate() {} } })
+}
+const removeOriginalTemplate = replacementService.registerTemplate({
+  kind: 'instance', templateId: 'replaceable-template', appId: 'original-app',
+  title: 'Original template', defaultConfig: { color: 'red' },
+})
+let replacementCreations = 0
+const startReplacementCreation = replacementService.startCreation.bind(replacementService)
+replacementService.startCreation = (...args) => { replacementCreations++; return startReplacementCreation(...args) }
+const replacementDialog = runtime.mount(runtime.load('WorkbenchCreateDialog').WorkbenchCreateDialog, {
+  service: replacementService, snapshot: replacementService.getSnapshot(),
+})
+try {
+  choose(replacementDialog.render()).props.onClick()
+  const staleSubmit = submit(replacementDialog.render())
+  assert.equal(staleSubmit.props.disabled, false)
+  removeOriginalTemplate()
+  replacementService.registerTemplate({
+    kind: 'instance', templateId: 'replaceable-template', appId: 'replacement-app',
+    title: 'Replacement template', defaultConfig: { color: 'blue' },
+  })
+  // A click can reach the old handler before the external-store snapshot rerenders.
+  staleSubmit.props.onClick()
+  await tick()
+  assert.equal(replacementCreations, 0, 'submit must check the latest template even before rerender')
+  assert.equal((await replacementRepository.read()).instances.length, 0)
+  const replacedTree = replacementDialog.render({ service: replacementService, snapshot: replacementService.getSnapshot() })
+  assert.equal(submit(replacedTree).props.disabled, true, 'a replaced template invalidates the open draft')
+  assert.ok(role(replacedTree, 'alert').some(item => item.props.children.includes('应用或模板已更新')))
+  submit(replacedTree).props.onClick()
+  await tick()
+  assert.equal(replacementCreations, 0, 'an invalidated draft must never reach creation')
+
+  findAll(replacedTree, item => item.props['aria-label'] === '返回模板')[0].props.onClick()
+  choose(replacementDialog.render()).props.onClick()
+  submit(replacementDialog.render()).props.onClick()
+  await tick()
+  assert.equal(replacementCreations, 1, 'reselecting the replacement template permits a fresh creation')
+  const [createdReplacement] = (await replacementRepository.read()).instances
+  assert.equal(createdReplacement.appId, 'replacement-app')
+  assert.equal(createdReplacement.config.color, 'blue')
+} finally {
+  replacementDialog.unmount()
+  await replacementService.dispose()
+}
+
 const failedFrame = runtime.mount(first.type, { ...first.props, presentation: panel, instance: { ...instance, status: 'migration-error', error: 'migration failed' } })
 failedFrame.render()
 await tick()
@@ -312,7 +387,7 @@ function actualLoad(name) {
   const exports = {}
   actualModules.set(name, exports)
   vm.runInNewContext(sources.get(name), {
-    exports, Error, console, URL, Blob, setTimeout, clearTimeout,
+    exports, Error, console, URL, Blob, structuredClone, queueMicrotask, setTimeout, clearTimeout,
     document: dom.window.document,
     ResizeObserver: class { observe() {} disconnect() {} },
     require(id) {

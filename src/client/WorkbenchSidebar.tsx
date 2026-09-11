@@ -7,6 +7,7 @@ import {
   IconPersonalizationOutline16,
   IconProjectAddOutline16,
   IconSearchOutline16,
+  IconSettingsOutline16,
   IconTrashOutline16,
   Menu,
   Modal,
@@ -14,6 +15,9 @@ import {
 } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { WorkbenchAppDefinition, WorkbenchInstance, WorkbenchService } from './types.ts'
 import { WorkbenchAppIcon } from './WorkbenchIcon.tsx'
+import { openWorkbench } from './open-workbench.ts'
+import { WebsiteSettings } from './WebsiteSettings.tsx'
+import { WEBSITE_APP_ID } from './website.ts'
 
 export interface WorkbenchSidebarProps {
   service: WorkbenchService
@@ -125,6 +129,7 @@ function WorkbenchRow({
   onMove,
   onOpen,
   onRename,
+  onSettings,
   onDelete,
   onDragStart,
   onDragOver,
@@ -143,6 +148,7 @@ function WorkbenchRow({
   onMove: (direction: -1 | 1) => void
   onOpen: () => void
   onRename: () => void
+  onSettings?: () => void
   onDelete: () => void
   onDragStart: (event: DragEvent<HTMLDivElement>) => void
   onDragOver: (event: DragEvent<HTMLDivElement>) => void
@@ -172,7 +178,7 @@ function WorkbenchRow({
       onDrop={onDrop}
       onDragEnd={onDragEnd}
     >
-      {compact ? <IconPersonalizationOutline16 className="dsh-better-workbench-sidebar-rail-icon" /> : <WorkbenchAppIcon renderer={appIcon} className="dsh-better-workbench-sidebar-app-icon" />}
+      {compact ? <IconPersonalizationOutline16 className="dsh-better-workbench-sidebar-rail-icon" /> : <WorkbenchAppIcon renderer={appIcon} instance={instance} className="dsh-better-workbench-sidebar-app-icon" />}
       <span className="dsh-better-workbench-sidebar-row-label">{instance.title}</span>
       {!compact && (
         <span className="dsh-better-workbench-sidebar-row-actions">
@@ -180,6 +186,7 @@ function WorkbenchRow({
             open={menuOpen}
             onClose={() => { setMenuOpen(false) }}
             items={[
+              ...(onSettings ? [{ id: 'website-settings', label: '网页设置', icon: <IconSettingsOutline16 />, disabled: busy }] : []),
               { id: 'rename', label: '重命名', icon: <IconEditOutline16 />, disabled: busy },
               { id: 'move-up', label: '上移', disabled: !canMoveUp },
               { id: 'move-down', label: '下移', disabled: !canMoveDown },
@@ -187,6 +194,7 @@ function WorkbenchRow({
             ]}
             onSelect={id => {
               setMenuOpen(false)
+              if (id === 'website-settings') onSettings?.()
               if (id === 'rename') onRename()
               if (id === 'delete') onDelete()
               if (id === 'move-up' && canMoveUp) onMove(-1)
@@ -228,6 +236,8 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
   const [draggedId, setDraggedId] = useState<string | null>(null)
   const [dropTarget, setDropTarget] = useState<{ id: string; position: 'before' | 'after' } | null>(null)
   const [renameTarget, setRenameTarget] = useState<{ instanceId: string; currentTitle: string } | null>(null)
+  const [websiteTarget, setWebsiteTarget] = useState<{ id: string; generation: number } | null>(null)
+  const websiteInstance = snapshot.instances.find(instance => instance.instanceId === websiteTarget?.id && instance.appId === WEBSITE_APP_ID)
   const [renameDraft, setRenameDraft] = useState('')
   const [renaming, setRenaming] = useState(false)
   const [renameError, setRenameError] = useState<string | null>(null)
@@ -571,7 +581,8 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
             canMoveDown={canReorder && index < instances.length - 1}
             onMove={direction => { moveInstance(instance.instanceId, direction) }}
             dropPosition={dropTarget?.id === instance.instanceId ? dropTarget.position : null}
-            onOpen={() => { service.open(instance.instanceId) }}
+            onOpen={() => { openWorkbench(service, instance.instanceId) }}
+            onSettings={instance.appId === WEBSITE_APP_ID && instance.available ? () => { setWebsiteTarget({ id: instance.instanceId, generation: snapshot.apps.find(app => app.appId === instance.appId)!.generation }) } : undefined}
             onRename={() => { requestRename(instance) }}
             onDelete={() => { requestDelete(instance) }}
             onDragStart={event => {
@@ -597,6 +608,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
       {!snapshot.loading && instances.length === 0 && (
         <div className="dsh-better-workbench-sidebar-empty">{normalizedQuery === '' ? '从首页创建实例。' : '无匹配工作台'}</div>
       )}
+      {websiteTarget && websiteInstance && <WebsiteSettings key={websiteTarget.id} open instance={websiteInstance} onClose={() => setWebsiteTarget(null)} updateConfig={(patch, revision) => service.updateInstanceConfig(websiteTarget.id, patch, revision, websiteTarget.generation)} />}
       {renameDialog}
       {deleteDialog}
     </section>

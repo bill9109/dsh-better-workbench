@@ -4,6 +4,16 @@ All notable user-facing changes to dsh-better-workbench and its bundled examples
 
 ## [Unreleased]
 
+### Added
+
+- Built-in **网页** Workbench application and its **从网页地址创建** template: strict HTTP(S) URL configuration, an embedded view with explicit origin-bound trust, an external-browser fallback, favicon-derived instance icons and per-instance settings.
+- A creation dialog that edits the name and configuration of a draft before committing it, backed by an optional `renderCreate` application hook and `startCreation(templateId, { title, config })` options.
+- A unified `@` input-trigger source that references any available Workbench instance, serializing only its instance ID, application ID and title (XML-escaped) into the ordinary user message.
+
+### Changed
+
+- Require `@deepseek-ai/dsh-client-ui-input-trigger` and raise `@deepseek-ai/dsh-client-ui-primitives` to `0.1.5-alpha.2`.
+
 ## [0.3.2] - 2026-09-10
 
 ### Fixed

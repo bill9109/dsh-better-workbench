@@ -1,7 +1,7 @@
 import { Component, type ReactNode } from 'react'
-import type { WorkbenchAppDefinition } from './types.ts'
+import type { WorkbenchAppDefinition, WorkbenchInstance } from './types.ts'
 
-interface Props { renderer: WorkbenchAppDefinition['renderIcon']; className?: string }
+interface Props { renderer: WorkbenchAppDefinition['renderIcon']; className?: string; instance?: WorkbenchInstance }
 
 class IconBoundary extends Component<{ children: ReactNode; renderer: Props['renderer'] }, { failed: boolean }> {
   state = { failed: false }
@@ -14,11 +14,11 @@ class IconBoundary extends Component<{ children: ReactNode; renderer: Props['ren
 }
 
 /** Fixed, decorative application icon slot. A bad contribution only blanks this icon. */
-export function WorkbenchAppIcon({ renderer: Renderer, className }: Props): JSX.Element {
+export function WorkbenchAppIcon({ renderer: Renderer, className, instance }: Props): JSX.Element {
   if (!Renderer) return <span className={className} aria-hidden="true" />
   return (
     <span className={className} aria-hidden="true">
-      <IconBoundary renderer={Renderer}><Renderer size={16} className="dsh-better-workbench-rendered-icon" /></IconBoundary>
+      <IconBoundary renderer={Renderer}><Renderer size={16} className="dsh-better-workbench-rendered-icon" instance={instance} /></IconBoundary>
     </span>
   )
 }
