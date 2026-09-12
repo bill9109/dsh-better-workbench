@@ -39,6 +39,7 @@ The built-in home is always available, even when no Workbench application is ins
 - Cordis fiber disposal and reactivation for applications, templates, and creators
 - Application-authoring Skill and bilingual protocol reference under `docs/`
 - A complete DSH design-system reference application under `examples/design-board/`
+- A two-page Skills + MCP reference application under `examples/skill-mcp-panels/`, ported from [Fishquito7/dsh-skill-mcp-panel](https://github.com/Fishquito7/dsh-skill-mcp-panel)
 
 ## Usage
 
@@ -90,6 +91,16 @@ dsh plugin --profile web add "$PWD/examples/design-board"
 ```
 
 No `dsh web` restart is needed: refresh the browser and **DSH UI 样式看板** appears as a default Workbench instance and as a creation template.
+
+### Install the skills + MCP panels example
+
+`examples/skill-mcp-panels` is an independent bundle and is likewise not enabled by the base. Install it after the base — **instead of** the standalone `dsh-better-workbench-skill-mcp` plugin, because both register the same `skillsViewer`/`mcpManager` remote service names:
+
+```sh
+dsh plugin --profile web add "$PWD/examples/skill-mcp-panels"
+```
+
+Refresh the browser and **技能** and **MCP** appear in the Workbench sidebar and home. It is ported from [Fishquito7/dsh-skill-mcp-panel](https://github.com/Fishquito7/dsh-skill-mcp-panel) (MIT); see [its README](examples/skill-mcp-panels/README.md) for the full attribution.
 
 ### Upgrade
 
@@ -193,6 +204,15 @@ Its information architecture is fixed:
 
 The board is derived from current DSH component source. It documents semantic tokens, typography, icons, primitives, shell regions, settings, session UI, conversation flow, the real Composer, trajectory, overlays, states, and accessibility. It is a design reference, not a generic component gallery.
 
+## Skills + MCP panels example
+
+[`examples/skill-mcp-panels`](examples/skill-mcp-panels) is a **port of [Fishquito7/dsh-skill-mcp-panel](https://github.com/Fishquito7/dsh-skill-mcp-panel)** (MIT, Copyright (c) 2026 dsh-skill-viewer contributors) into two Workbench pages:
+
+- **技能** (`dsh-better-workbench-skill-mcp-panels:skills`) manages the skills on disk: card/tree list and search, per-scope hot enable/disable, delete, add by `.md`/`.zip`/folder/drag, a workspace bar, a group bar, and batch migration.
+- **MCP** (`dsh-better-workbench-skill-mcp-panels:mcp`) manages the managed block of the profile `cordis.patch.yml`: stdio and streamable-http servers, add/edit with masked secrets, enable/disable, delete, and a live connection test. Rows outside the managed block stay read-only.
+
+Both are `page + conversation: exclusive` applications sharing one host half. The upstream UI and on-disk skill conventions are preserved, and the upstream MIT notice ships in [`examples/skill-mcp-panels/LICENSE`](examples/skill-mcp-panels/LICENSE). For this repository the example drops the upstream `dsh-panel` CLI, repackages the client for the local build helper, and traces its two 16x16 icons from the upstream PNGs.
+
 ## Model experience
 
 The base provides a unified `@` source through DSH inputTriggers. Selecting an available workbench inserts a native reference chip; sending serializes only its instance ID, application ID and title into the ordinary user-message pipeline. No model tools, file resolver, page content, secrets or application configuration are added. These are browser-stored instance references, not filesystem paths; see [Workbench references](docs/workbench-references.md). Other Workbench UI state remains model-invisible. An optional Agent Creator is a separate application contribution and must record model-visible requests and results through an auditable Session/Agent path.
@@ -208,6 +228,8 @@ pnpm run check
 pnpm test
 pnpm --dir examples/design-board run build:verify
 pnpm run check:example
+pnpm --dir examples/skill-mcp-panels run build:verify
+pnpm run check:example:panels
 pnpm run verify:i18n
 ```
 
@@ -216,6 +238,7 @@ Before release or a source-based installation, explicitly regenerate both sets o
 ```sh
 pnpm run build
 pnpm run build:example
+pnpm run build:example:panels
 ```
 
 `--dry-run` prints the plan without writes; `--check` and `--verify` use temporary output. [examples/starter](examples/starter) demonstrates the public `dsh-better-workbench/build/client-bundle` helper in a standalone package layout; it is distinct from the design-board repository example. Copied standalone-layout validation is not a fresh registry-install test; registry use requires publication of the new helper and protocol artifacts.
@@ -226,6 +249,7 @@ Repository layout:
 - `tests/` — service lifecycle, routing, migration, templates, and unavailable-instance recovery
 - `docs/` — Workbench application-authoring Skill and bilingual protocol references
 - `examples/design-board/` — complete reference Workbench application with its own bundle manifest
+- `examples/skill-mcp-panels/` — two-page Skills + MCP example ported from Fishquito7/dsh-skill-mcp-panel
 - `lib/` — committed base-plugin build output
 
 ## Community and about

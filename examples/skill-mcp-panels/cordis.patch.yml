@@ -1,0 +1,10 @@
+# dsh-better-workbench-skill-mcp-panels bundle patch.
+# Installing this example mounts its host half (the skillsViewer and mcpManager
+# Typert services) together with its two Workbench pages.
+#
+# Install it INSTEAD OF the standalone dsh-better-workbench-skill-mcp plugin:
+# both register the same remote service names, so loading both in one profile
+# collides.
+- insert:
+    - id: skill-mcp-panels
+      name: dsh-better-workbench-skill-mcp-panels

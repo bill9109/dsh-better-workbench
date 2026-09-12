@@ -35,6 +35,7 @@ DSH 插件可以贡献工具、服务和小型 UI 入口，但完整的浏览器
 - 应用、模板和 Creator 随 Cordis fiber 撤销与重新激活
 - `docs/` 中的 Workbench 应用开发 Skill 与中英文协议参考
 - `examples/design-board/` 中完整的 DSH 设计系统参考应用
+- `examples/skill-mcp-panels/` 中技能 + MCP 双页面参考应用，移植自 [Fishquito7/dsh-skill-mcp-panel](https://github.com/Fishquito7/dsh-skill-mcp-panel)
 
 ## 使用
 
@@ -86,6 +87,16 @@ dsh plugin --profile web add "$PWD/examples/design-board"
 ```
 
 无需重启 `dsh web`：刷新浏览器后，**DSH UI 样式看板**会作为默认 Workbench 实例出现，同时提供创建模板。
+
+### 安装技能 + MCP 面板示例
+
+`examples/skill-mcp-panels` 是另一个独立 bundle，同样不由基座默认启用。请在基座之后安装它——并且**用它替代独立的 `dsh-better-workbench-skill-mcp` 插件**，因为两者注册的 `skillsViewer`/`mcpManager` 远程服务名相同：
+
+```sh
+dsh plugin --profile web add "$PWD/examples/skill-mcp-panels"
+```
+
+刷新浏览器后，Workbench 侧栏与首页会出现 **技能** 和 **MCP**。它移植自 [Fishquito7/dsh-skill-mcp-panel](https://github.com/Fishquito7/dsh-skill-mcp-panel)（MIT），完整致谢见[它的 README](examples/skill-mcp-panels/README.zh.md)。
 
 ### 升级
 
@@ -189,6 +200,15 @@ DOM 兼容层不需要修改 DSH 源码。Conversation React 子树仍然存在�
 
 看板基于当前 DSH 组件源码，记录语义 token、字体、图标、基础组件、Shell 区域、设置、会话界面、对话流、真实 Composer、轨迹、浮层、状态和无障碍规则。它是设计参考，不是泛化组件画廊。
 
+## 技能 + MCP 面板示例
+
+[`examples/skill-mcp-panels`](examples/skill-mcp-panels) 是 **[Fishquito7/dsh-skill-mcp-panel](https://github.com/Fishquito7/dsh-skill-mcp-panel) 的移植**（MIT，Copyright (c) 2026 dsh-skill-viewer contributors），拆成两个 Workbench 页面：
+
+- **技能**（`dsh-better-workbench-skill-mcp-panels:skills`）管理磁盘上的技能：卡片/树形列表与搜索、按作用域热启用/停用、删除、以 `.md`/`.zip`/文件夹/拖拽添加、工作区横栏、分组横栏与批量迁移。
+- **MCP**（`dsh-better-workbench-skill-mcp-panels:mcp`）管理 profile `cordis.patch.yml` 的受管块：stdio 与 streamable-http 服务器、带密钥脱敏的新增/编辑、启停、删除与实时连接测试；受管块之外的行保持只读。
+
+两者都是 `page + conversation: exclusive` 应用，共用一个宿主半区。上游界面与磁盘技能约定被完整保留，原始 MIT 声明随 [`examples/skill-mcp-panels/LICENSE`](examples/skill-mcp-panels/LICENSE) 分发。为适配本仓库，示例去掉了上游的 `dsh-panel` CLI、将客户端重新打包以配合本地 build helper，并从上游 PNG 描摹出两个 16x16 图标。
+
 ## 模型体验
 
 基座通过 DSH inputTriggers 提供统一的 `@` 来源。选择可用工作台后插入原生引用标签，发送时仅把实例 ID、应用 ID 和名称序列化到普通用户消息中；不新增模型工具、文件解析器，也不发送网页正文、凭据或应用配置。引用指向浏览器保存的实例，而非磁盘文件，详见 [Workbench references](docs/workbench-references.md)。其他 Workbench UI 状态仍对模型不可见。可选 Agent Creator 是独立应用贡献，必须通过可审计的 Session/Agent 路径记录模型可见请求与结果。
@@ -204,6 +224,8 @@ pnpm run check
 pnpm test
 pnpm --dir examples/design-board run build:verify
 pnpm run check:example
+pnpm --dir examples/skill-mcp-panels run build:verify
+pnpm run check:example:panels
 pnpm run verify:i18n
 ```
 
@@ -212,6 +234,7 @@ pnpm run verify:i18n
 ```sh
 pnpm run build
 pnpm run build:example
+pnpm run build:example:panels
 ```
 
 `--dry-run` 只打印计划，不写入；`--check` 和 `--verify` 使用临时产物。[examples/starter](examples/starter) 演示独立包布局如何使用公开的 `dsh-better-workbench/build/client-bundle` helper，与仓库内设计板示例不同。复制后的独立布局验证不等于全新 registry 安装测试；从 registry 使用前需发布新的 helper 与协议产物。
@@ -222,6 +245,7 @@ pnpm run build:example
 - `tests/` — Service 生命周期、路由、迁移、模板和不可用实例恢复测试
 - `docs/` — Workbench 应用开发 Skill 与中英文协议参考
 - `examples/design-board/` — 拥有独立 bundle manifest 的完整参考应用
+- `examples/skill-mcp-panels/` — 移植自 Fishquito7/dsh-skill-mcp-panel 的技能 + MCP 双页面示例
 - `lib/` — 已提交的基座插件构建产物
 
 ## 社区与关于
