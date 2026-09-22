@@ -330,7 +330,7 @@ window.__ModuleLoader__.load({
 		const codec = (symbol) => ({
 			mode: "strict",
 			typeSymbol: symbol,
-			schema: { parse: identity }
+			create: () => ({ parse: identity })
 		});
 		const CONTRIBUTION = {
 			package: "dsh-skill-mcp-panel",
@@ -1343,7 +1343,7 @@ window.__ModuleLoader__.load({
 						children: [
 							(0, react_jsx_runtime$1.jsx)("span", {
 								className: c.cardLeading,
-								children: (0, react_jsx_runtime$1.jsx)(primitives.IconSkillOutline16, { size: 14 })
+								children: (0, react_jsx_runtime$1.jsx)(primitives.IconSkillOutlineRegular, { size: 14 })
 							}),
 							(0, react_jsx_runtime$1.jsx)("strong", {
 								className: c.cardTitle,
@@ -1364,7 +1364,7 @@ window.__ModuleLoader__.load({
 										"data-enabled": enabled ? "true" : "false",
 										children: enabled ? t("enabledTag") : t("disabledTag")
 									}),
-									(0, react_jsx_runtime$1.jsx)(primitives.IconChevronDownOutline14, {
+									(0, react_jsx_runtime$1.jsx)(primitives.IconChevronDownOutlineRegular, {
 										className: c.chevron,
 										size: 12,
 										"aria-hidden": "true"
@@ -1453,7 +1453,7 @@ window.__ModuleLoader__.load({
 						toggleCollapsed(folder.path);
 					},
 					children: [
-						(0, react_jsx_runtime$1.jsx)(primitives.IconChevronDownOutline14, {
+						(0, react_jsx_runtime$1.jsx)(primitives.IconChevronDownOutlineRegular, {
 							className: collapsed.has(folder.path) ? c.treeChevron : c.treeChevronOpen,
 							size: 12,
 							"aria-hidden": "true"
@@ -1551,7 +1551,7 @@ window.__ModuleLoader__.load({
 							children: [(0, react_jsx_runtime$1.jsx)("span", {
 								className: c.searchIcon,
 								"aria-hidden": "true",
-								children: (0, react_jsx_runtime$1.jsx)(primitives.IconSearchOutline16, {})
+								children: (0, react_jsx_runtime$1.jsx)(primitives.IconSearchOutlineRegular, {})
 							}), (0, react_jsx_runtime$1.jsx)("input", {
 								type: "search",
 								className: c.searchField,

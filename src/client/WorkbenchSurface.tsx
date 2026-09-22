@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
-import { Button, IconCloseOutline16, IconEllipsisOutline16, IconFullscreenOutline16, IconPanelLeftOutline16, IconPersonalizationOutline16, IconDownloadOutline16, Menu, Tooltip } from '@deepseek-ai/dsh-client-ui-primitives'
+import { Button, IconCloseOutlineRegular, IconEllipsisOutlineRegular, IconFullscreenOutlineRegular, IconPanelLeftOutlineRegular, IconPersonalizationOutlineRegular, IconDownloadOutlineRegular, Menu, Tooltip } from '@deepseek-ai/dsh-client-ui-primitives'
 import { WorkbenchHome } from './WorkbenchHome.tsx'
 import { WorkbenchErrorBoundary } from './WorkbenchErrorBoundary.tsx'
 import { resolveActivePresentation, resolvePresentationLayout } from './presentation.ts'
@@ -10,9 +10,9 @@ export interface WorkbenchSurfaceProps {
 }
 
 const modes = {
-  page: { label: '页面', Icon: IconFullscreenOutline16 },
-  panel: { label: '面板', Icon: IconPanelLeftOutline16 },
-  capsule: { label: '胶囊', Icon: IconEllipsisOutline16 },
+  page: { label: '页面', Icon: IconFullscreenOutlineRegular },
+  panel: { label: '面板', Icon: IconPanelLeftOutlineRegular },
+  capsule: { label: '胶囊', Icon: IconEllipsisOutlineRegular },
 }
 
 function SurfaceToolbar({ service, title, presentation, app, onMode, exporting, onExport }: {
@@ -28,7 +28,7 @@ function SurfaceToolbar({ service, title, presentation, app, onMode, exporting, 
   return (
     <header className="dsh-better-workbench-frame-toolbar">
       <Tooltip label="工作台首页">
-        <button type="button" className="dsh-better-workbench-frame-button" aria-label="工作台首页" onClick={() => { service.openHome() }}><IconPersonalizationOutline16 /></button>
+        <button type="button" className="dsh-better-workbench-frame-button" aria-label="工作台首页" onClick={() => { service.openHome() }}><IconPersonalizationOutlineRegular /></button>
       </Tooltip>
       <span className="dsh-better-workbench-frame-title" title={title}>{title}</span>
       <div className="dsh-better-workbench-frame-modes" role="group" aria-label="显示模式">
@@ -43,13 +43,13 @@ function SurfaceToolbar({ service, title, presentation, app, onMode, exporting, 
       </div>
       {onExport !== undefined && (
         <Menu open={menuOpen} onClose={() => { setMenuOpen(false) }} portal dense
-          items={[{ id: 'export', label: '导出配置', icon: <IconDownloadOutline16 />, disabled: exporting }]}
+          items={[{ id: 'export', label: '导出配置', icon: <IconDownloadOutlineRegular />, disabled: exporting }]}
           onSelect={() => { setMenuOpen(false); onExport() }}
-          anchor={<button type="button" className="dsh-better-workbench-frame-button" aria-label="工作台操作" title="工作台操作" onClick={() => { setMenuOpen(value => !value) }}><IconEllipsisOutline16 /></button>}
+          anchor={<button type="button" className="dsh-better-workbench-frame-button" aria-label="工作台操作" title="工作台操作" onClick={() => { setMenuOpen(value => !value) }}><IconEllipsisOutlineRegular /></button>}
         />
       )}
       <Tooltip label="关闭工作台">
-        <button type="button" className="dsh-better-workbench-frame-button" aria-label="关闭工作台" onClick={() => { service.close() }}><IconCloseOutline16 /></button>
+        <button type="button" className="dsh-better-workbench-frame-button" aria-label="关闭工作台" onClick={() => { service.close() }}><IconCloseOutlineRegular /></button>
       </Tooltip>
     </header>
   )

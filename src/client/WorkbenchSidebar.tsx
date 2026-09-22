@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type DragEvent } from 'react'
 import {
   Button,
-  IconCloseFill14,
-  IconEditOutline16,
-  IconEllipsisOutline16,
-  IconPersonalizationOutline16,
-  IconProjectAddOutline16,
-  IconSearchOutline16,
-  IconSettingsOutline16,
-  IconTrashOutline16,
+  IconCloseFillRegular,
+  IconEditOutlineRegular,
+  IconEllipsisOutlineRegular,
+  IconPersonalizationOutlineRegular,
+  IconProjectAddOutlineRegular,
+  IconSearchOutlineRegular,
+  IconSettingsOutlineRegular,
+  IconTrashOutlineRegular,
   Menu,
   Modal,
   Tooltip,
@@ -108,7 +108,7 @@ function ViewOptionsMenu({ orderBy, onOrderPick }: {
             aria-label="视图选项"
             onClick={() => { setOpen(value => !value) }}
           >
-            <IconPersonalizationOutline16 />
+            <IconPersonalizationOutlineRegular />
           </button>
         </Tooltip>
       )}
@@ -178,7 +178,7 @@ function WorkbenchRow({
       onDrop={onDrop}
       onDragEnd={onDragEnd}
     >
-      {compact ? <IconPersonalizationOutline16 className="dsh-better-workbench-sidebar-rail-icon" /> : <WorkbenchAppIcon renderer={appIcon} instance={instance} className="dsh-better-workbench-sidebar-app-icon" />}
+      {compact ? <IconPersonalizationOutlineRegular className="dsh-better-workbench-sidebar-rail-icon" /> : <WorkbenchAppIcon renderer={appIcon} instance={instance} className="dsh-better-workbench-sidebar-app-icon" />}
       <span className="dsh-better-workbench-sidebar-row-label">{instance.title}</span>
       {!compact && (
         <span className="dsh-better-workbench-sidebar-row-actions">
@@ -186,11 +186,11 @@ function WorkbenchRow({
             open={menuOpen}
             onClose={() => { setMenuOpen(false) }}
             items={[
-              ...(onSettings ? [{ id: 'website-settings', label: '网页设置', icon: <IconSettingsOutline16 />, disabled: busy }] : []),
-              { id: 'rename', label: '重命名', icon: <IconEditOutline16 />, disabled: busy },
+              ...(onSettings ? [{ id: 'website-settings', label: '网页设置', icon: <IconSettingsOutlineRegular />, disabled: busy }] : []),
+              { id: 'rename', label: '重命名', icon: <IconEditOutlineRegular />, disabled: busy },
               { id: 'move-up', label: '上移', disabled: !canMoveUp },
               { id: 'move-down', label: '下移', disabled: !canMoveDown },
-              { id: 'delete', label: '删除', icon: <IconTrashOutline16 />, danger: true, disabled: busy },
+              { id: 'delete', label: '删除', icon: <IconTrashOutlineRegular />, danger: true, disabled: busy },
             ]}
             onSelect={id => {
               setMenuOpen(false)
@@ -212,7 +212,7 @@ function WorkbenchRow({
                 disabled={busy}
                 onClick={event => { event.stopPropagation(); setMenuOpen(value => !value) }}
               >
-                <IconEllipsisOutline16 />
+                <IconEllipsisOutlineRegular />
               </button>
             )}
           />
@@ -458,7 +458,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
         <>
           <Button variant="outline" disabled={deleting} onClick={closeDelete}>取消</Button>
           <Button variant="outline" className="dsh-better-workbench-delete-action" disabled={deleting} onClick={confirmDelete}>
-            <IconTrashOutline16 size={16} />删除
+            <IconTrashOutlineRegular size={16} />删除
           </Button>
         </>
       )}
@@ -494,7 +494,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
                   if (compact) requestSidebarExpand()
                 }}
               >
-                <IconSearchOutline16 size={searchExpanded ? 11 : 14} />
+                <IconSearchOutlineRegular size={searchExpanded ? 11 : 14} />
               </button>
             </Tooltip>
             <input
@@ -523,7 +523,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
                   setSearchExpanded(false)
                 }}
               >
-                <IconCloseFill14 />
+                <IconCloseFillRegular size={14} />
               </button>
             )}
           </div>
@@ -541,7 +541,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
                 service.openHome(true)
               }}
             >
-              <IconProjectAddOutline16 size={16} />
+              <IconProjectAddOutlineRegular size={16} />
             </button>
           </Tooltip>
         </div>
@@ -560,7 +560,7 @@ export function WorkbenchSidebar({ service }: WorkbenchSidebarProps): JSX.Elemen
                 requestSidebarExpand()
               }}
             >
-              <IconSearchOutline16 size={18} />
+              <IconSearchOutlineRegular size={18} />
             </button>
           </Tooltip>
         </div>

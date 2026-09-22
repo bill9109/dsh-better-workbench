@@ -1173,7 +1173,7 @@ const MCP_MANIFEST = {
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#McpListResult",
-				schema: mcpListResultSchema
+				create: () => mcpListResultSchema
 			}
 		},
 		{
@@ -1189,13 +1189,13 @@ const MCP_MANIFEST = {
 				codec: {
 					mode: "strict",
 					typeSymbol: "dsh-skill-mcp-panel#McpSavePayload",
-					schema: mcpSavePayloadSchema
+					create: () => mcpSavePayloadSchema
 				}
 			}],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#McpSaveResult",
-				schema: mcpSaveResultSchema
+				create: () => mcpSaveResultSchema
 			}
 		},
 		{
@@ -1211,13 +1211,13 @@ const MCP_MANIFEST = {
 				codec: {
 					mode: "strict",
 					typeSymbol: "dsh-skill-mcp-panel#McpRemovePayload",
-					schema: mcpRemovePayloadSchema
+					create: () => mcpRemovePayloadSchema
 				}
 			}],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#McpRemoveResult",
-				schema: mcpRemoveResultSchema
+				create: () => mcpRemoveResultSchema
 			}
 		},
 		{
@@ -1233,13 +1233,13 @@ const MCP_MANIFEST = {
 				codec: {
 					mode: "strict",
 					typeSymbol: "dsh-skill-mcp-panel#McpSetEnabledPayload",
-					schema: mcpSetEnabledPayloadSchema
+					create: () => mcpSetEnabledPayloadSchema
 				}
 			}],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#McpSaveResult",
-				schema: mcpSaveResultSchema
+				create: () => mcpSaveResultSchema
 			}
 		},
 		{
@@ -1255,13 +1255,13 @@ const MCP_MANIFEST = {
 				codec: {
 					mode: "strict",
 					typeSymbol: "dsh-skill-mcp-panel#McpTestPayload",
-					schema: mcpTestPayloadSchema
+					create: () => mcpTestPayloadSchema
 				}
 			}],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#McpTestResult",
-				schema: mcpTestResultSchema
+				create: () => mcpTestResultSchema
 			}
 		},
 		{
@@ -1274,7 +1274,7 @@ const MCP_MANIFEST = {
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#McpListResult",
-				schema: mcpListResultSchema
+				create: () => mcpListResultSchema
 			}
 		}
 	],
@@ -1850,13 +1850,13 @@ const MANIFEST = {
 				codec: {
 					mode: "strict",
 					typeSymbol: "dsh-skill-mcp-panel#sessionId",
-					schema: sessionIdSchema
+					create: () => sessionIdSchema
 				}
 			}],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#SkillListResult",
-				schema: listResultSchema
+				create: () => listResultSchema
 			}
 		},
 		{
@@ -1869,7 +1869,7 @@ const MANIFEST = {
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#WorkspacesResult",
-				schema: workspacesResultSchema
+				create: () => workspacesResultSchema
 			}
 		},
 		{
@@ -1882,7 +1882,7 @@ const MANIFEST = {
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#GroupsResult",
-				schema: groupsResultSchema
+				create: () => groupsResultSchema
 			}
 		},
 		{
@@ -1895,7 +1895,7 @@ const MANIFEST = {
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#CheckUpdateResult",
-				schema: checkUpdateResultSchema
+				create: () => checkUpdateResultSchema
 			}
 		},
 		{
@@ -1911,13 +1911,13 @@ const MANIFEST = {
 				codec: {
 					mode: "strict",
 					typeSymbol: "dsh-skill-mcp-panel#SaveGroupPayload",
-					schema: saveGroupPayloadSchema
+					create: () => saveGroupPayloadSchema
 				}
 			}],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#GroupsResult",
-				schema: groupsResultSchema
+				create: () => groupsResultSchema
 			}
 		},
 		{
@@ -1933,13 +1933,13 @@ const MANIFEST = {
 				codec: {
 					mode: "strict",
 					typeSymbol: "dsh-skill-mcp-panel#DeleteGroupPayload",
-					schema: deleteGroupPayloadSchema
+					create: () => deleteGroupPayloadSchema
 				}
 			}],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#GroupsResult",
-				schema: groupsResultSchema
+				create: () => groupsResultSchema
 			}
 		},
 		{
@@ -1956,7 +1956,7 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#SkillName",
-						schema: z.string()
+						create: () => z.string()
 					}
 				},
 				{
@@ -1967,7 +1967,7 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#sessionId",
-						schema: sessionIdSchema
+						create: () => sessionIdSchema
 					}
 				},
 				{
@@ -1978,14 +1978,14 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#SkillScope",
-						schema: z.union([z.string(), z.null()])
+						create: () => z.union([z.string(), z.null()])
 					}
 				}
 			],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#SkillContent",
-				schema: skillContentSchema
+				create: () => skillContentSchema
 			}
 		},
 		{
@@ -2002,7 +2002,7 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#SkillName",
-						schema: z.string()
+						create: () => z.string()
 					}
 				},
 				{
@@ -2013,7 +2013,7 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#sessionId",
-						schema: sessionIdSchema
+						create: () => sessionIdSchema
 					}
 				},
 				{
@@ -2023,7 +2023,7 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#EnabledFlag",
-						schema: z.boolean()
+						create: () => z.boolean()
 					}
 				},
 				{
@@ -2034,14 +2034,14 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#SkillScope",
-						schema: z.union([z.string(), z.null()])
+						create: () => z.union([z.string(), z.null()])
 					}
 				}
 			],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#SetEnabledResult",
-				schema: setEnabledResultSchema
+				create: () => setEnabledResultSchema
 			}
 		},
 		{
@@ -2058,7 +2058,7 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#SkillName",
-						schema: z.string()
+						create: () => z.string()
 					}
 				},
 				{
@@ -2069,7 +2069,7 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#sessionId",
-						schema: sessionIdSchema
+						create: () => sessionIdSchema
 					}
 				},
 				{
@@ -2079,14 +2079,14 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#MigratePayload",
-						schema: migratePayloadSchema
+						create: () => migratePayloadSchema
 					}
 				}
 			],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#MigrateResult",
-				schema: migrateResultSchema
+				create: () => migrateResultSchema
 			}
 		},
 		{
@@ -2103,7 +2103,7 @@ const MANIFEST = {
 				codec: {
 					mode: "strict",
 					typeSymbol: "dsh-skill-mcp-panel#sessionId",
-					schema: sessionIdSchema
+					create: () => sessionIdSchema
 				}
 			}, {
 				name: "payload",
@@ -2112,13 +2112,13 @@ const MANIFEST = {
 				codec: {
 					mode: "strict",
 					typeSymbol: "dsh-skill-mcp-panel#BatchMigratePayload",
-					schema: batchMigratePayloadSchema
+					create: () => batchMigratePayloadSchema
 				}
 			}],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#BatchMigrateResult",
-				schema: batchMigrateResultSchema
+				create: () => batchMigrateResultSchema
 			}
 		},
 		{
@@ -2135,7 +2135,7 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#SkillName",
-						schema: z.string()
+						create: () => z.string()
 					}
 				},
 				{
@@ -2146,7 +2146,7 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#sessionId",
-						schema: sessionIdSchema
+						create: () => sessionIdSchema
 					}
 				},
 				{
@@ -2157,14 +2157,14 @@ const MANIFEST = {
 					codec: {
 						mode: "strict",
 						typeSymbol: "dsh-skill-mcp-panel#SkillScope",
-						schema: z.union([z.string(), z.null()])
+						create: () => z.union([z.string(), z.null()])
 					}
 				}
 			],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#DeleteSkillResult",
-				schema: deleteSkillResultSchema
+				create: () => deleteSkillResultSchema
 			}
 		},
 		{
@@ -2181,7 +2181,7 @@ const MANIFEST = {
 				codec: {
 					mode: "strict",
 					typeSymbol: "dsh-skill-mcp-panel#sessionId",
-					schema: sessionIdSchema
+					create: () => sessionIdSchema
 				}
 			}, {
 				name: "payload",
@@ -2190,13 +2190,13 @@ const MANIFEST = {
 				codec: {
 					mode: "strict",
 					typeSymbol: "dsh-skill-mcp-panel#AddPayload",
-					schema: addPayloadSchema
+					create: () => addPayloadSchema
 				}
 			}],
 			result: {
 				mode: "strict",
 				typeSymbol: "dsh-skill-mcp-panel#AddResult",
-				schema: addResultSchema
+				create: () => addResultSchema
 			}
 		}
 	],

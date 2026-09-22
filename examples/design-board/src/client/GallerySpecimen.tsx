@@ -1,5 +1,12 @@
 import { useId, useState, type ReactNode } from 'react'
-import { Button, CodeBlock, Tooltip, IconCopyOutline16, IconCodeOutline16, writeClipboard } from '@deepseek-ai/dsh-client-ui-primitives'
+import {
+  Button,
+  CodeBlock,
+  Tooltip,
+  IconCopyOutlineRegular,
+  IconCodeOutlineRegular,
+  writeClipboard,
+} from '@deepseek-ai/dsh-client-ui-primitives'
 
 export type Notice = (text: string, error?: boolean) => void
 
@@ -17,8 +24,8 @@ export function Specimen({ name, title, metrics, sample, children, notify }: {
     <header className="dsh-cg-section-head">
       <div><h2 id={id}>{title} <code>{name}</code></h2><div className="dsh-cg-metrics">{metrics.map(metric => <span key={metric}>{metric}</span>)}</div></div>
       <div className="dsh-cg-actions">
-        <IconAction label={'复制 ' + name + ' 实例'} onClick={() => { void writeClipboard(sample).then(ok => notify(ok ? '实例已复制' : '无法访问剪贴板', !ok)) }}><IconCopyOutline16 /></IconAction>
-        <Tooltip label="实例代码" side="top"><span className="dsh-cg-icon-anchor"><Button size="sm" aria-label={name + ' 实例代码'} aria-expanded={codeOpen} aria-controls={id + '-code'} onClick={() => setCodeOpen(value => !value)}><IconCodeOutline16 /></Button></span></Tooltip>
+        <IconAction label={'复制 ' + name + ' 实例'} onClick={() => { void writeClipboard(sample).then(ok => notify(ok ? '实例已复制' : '无法访问剪贴板', !ok)) }}><IconCopyOutlineRegular /></IconAction>
+        <Tooltip label="实例代码" side="top"><span className="dsh-cg-icon-anchor"><Button size="sm" aria-label={name + ' 实例代码'} aria-expanded={codeOpen} aria-controls={id + '-code'} onClick={() => setCodeOpen(value => !value)}><IconCodeOutlineRegular /></Button></span></Tooltip>
       </div>
     </header>
     {children}

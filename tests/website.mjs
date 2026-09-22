@@ -177,7 +177,7 @@ test('real favicon and webpage view preserve strict defaults and explicit extern
     assert.ok(img.style.filter.includes('dsh-website-favicon'))
     await act(async()=>img.dispatchEvent(new dom.window.Event('error')))
     assert.equal(element.querySelector('img'),null)
-    assert.ok(element.querySelector('[data-icon="IconGlobeOutline14"]'))
+    assert.ok(element.querySelector('[data-icon="IconGlobeOutlineRegular"]'))
     const View=load('WebsiteView').WebsiteView
     const instance={instanceId:'web',title:'dshfind',revision:1,config:{url:'http://dshfind.com/',openMode:'embedded'}}
     const props={instance,openHome(){},close(){},updateConfig:async()=>{}}

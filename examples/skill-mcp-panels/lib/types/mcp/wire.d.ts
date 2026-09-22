@@ -242,7 +242,7 @@ export declare const MCP_MANIFEST: {
         result: {
             mode: string;
             typeSymbol: string;
-            schema: z.ZodObject<{
+            create: () => z.ZodObject<{
                 servers: z.ZodArray<z.ZodObject<{
                     serverName: z.ZodString;
                     transport: z.ZodEnum<{
@@ -331,7 +331,7 @@ export declare const MCP_MANIFEST: {
             codec: {
                 mode: string;
                 typeSymbol: string;
-                schema: z.ZodObject<{
+                create: () => z.ZodObject<{
                     input: z.ZodDiscriminatedUnion<[z.ZodObject<{
                         serverName: z.ZodString;
                         transport: z.ZodLiteral<"stdio">;
@@ -369,7 +369,7 @@ export declare const MCP_MANIFEST: {
         result: {
             mode: string;
             typeSymbol: string;
-            schema: z.ZodObject<{
+            create: () => z.ZodObject<{
                 server: z.ZodObject<{
                     serverName: z.ZodString;
                     transport: z.ZodEnum<{
@@ -421,7 +421,7 @@ export declare const MCP_MANIFEST: {
             codec: {
                 mode: string;
                 typeSymbol: string;
-                schema: z.ZodObject<{
+                create: () => z.ZodObject<{
                     serverName: z.ZodString;
                 }, z.core.$strip>;
             };
@@ -429,7 +429,7 @@ export declare const MCP_MANIFEST: {
         result: {
             mode: string;
             typeSymbol: string;
-            schema: z.ZodObject<{
+            create: () => z.ZodObject<{
                 ok: z.ZodBoolean;
             }, z.core.$strip>;
         };
@@ -448,7 +448,7 @@ export declare const MCP_MANIFEST: {
             codec: {
                 mode: string;
                 typeSymbol: string;
-                schema: z.ZodObject<{
+                create: () => z.ZodObject<{
                     serverName: z.ZodString;
                     enabled: z.ZodBoolean;
                 }, z.core.$strip>;
@@ -457,7 +457,7 @@ export declare const MCP_MANIFEST: {
         result: {
             mode: string;
             typeSymbol: string;
-            schema: z.ZodObject<{
+            create: () => z.ZodObject<{
                 server: z.ZodObject<{
                     serverName: z.ZodString;
                     transport: z.ZodEnum<{
@@ -509,7 +509,7 @@ export declare const MCP_MANIFEST: {
             codec: {
                 mode: string;
                 typeSymbol: string;
-                schema: z.ZodUnion<readonly [z.ZodDiscriminatedUnion<[z.ZodObject<{
+                create: () => z.ZodUnion<readonly [z.ZodDiscriminatedUnion<[z.ZodObject<{
                     serverName: z.ZodString;
                     transport: z.ZodLiteral<"stdio">;
                     command: z.ZodString;
@@ -545,7 +545,7 @@ export declare const MCP_MANIFEST: {
         result: {
             mode: string;
             typeSymbol: string;
-            schema: z.ZodObject<{
+            create: () => z.ZodObject<{
                 ok: z.ZodBoolean;
                 tools: z.ZodArray<z.ZodObject<{
                     name: z.ZodString;

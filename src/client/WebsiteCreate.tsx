@@ -1,5 +1,5 @@
 import { useId, useState } from 'react'
-import { Button, IconChevronDownOutline14, Input, Menu, Switch } from '@deepseek-ai/dsh-client-ui-primitives'
+import { Button, IconChevronDownOutlineRegular, Input, Menu, Switch } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { WorkbenchCreateProps } from './types.ts'
 import { normalizeWebsiteUrl, websiteName } from './website.ts'
 import { WebsiteIcon } from './WebsiteIcon.tsx'
@@ -53,7 +53,7 @@ export function WebsiteCreate({ config, disabled, onChange }: WorkbenchCreatePro
           anchor={<Button type="button" variant="ghost" size="sm" className="dsh-better-workbench-create-select"
             aria-label="打开方式" aria-haspopup="menu" aria-expanded={modeOpen && !disabled} disabled={disabled}
             onClick={() => setModeOpen(value => !value)}>
-            <span>{external ? '浏览器新标签页' : '工作台内'}</span><IconChevronDownOutline14 />
+            <span>{external ? '浏览器新标签页' : '工作台内'}</span><IconChevronDownOutlineRegular size={14} />
           </Button>} />
       </div>
       {!external && <div className="dsh-better-workbench-create-setting-row dsh-better-workbench-create-trust">

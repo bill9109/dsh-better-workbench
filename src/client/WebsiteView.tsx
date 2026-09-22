@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { IconRightUpOutline16, IconWarningOutline16 } from '@deepseek-ai/dsh-client-ui-primitives'
+import { IconRightUpOutlineRegular, IconWarningOutlineRegular } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { WorkbenchRenderProps } from './types.ts'
 
 const FRAME_SANDBOX = 'allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-downloads'
@@ -15,9 +15,9 @@ function destination(value: unknown): URL | undefined {
 
 function ExternalFallback({ label, url }: { label: string; url?: string }): JSX.Element {
   return <div className="dsh-better-workbench-website-fallback">
-    <span aria-hidden="true"><IconWarningOutline16 size={24} /></span>
+    <span aria-hidden="true"><IconWarningOutlineRegular size={24} /></span>
     <p role="status">{label}</p>
-    {url && <a className="dsh-better-workbench-website-external" href={url} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer"><IconRightUpOutline16 /><span>在浏览器打开</span></a>}
+    {url && <a className="dsh-better-workbench-website-external" href={url} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer"><IconRightUpOutlineRegular /><span>在浏览器打开</span></a>}
   </div>
 }
 

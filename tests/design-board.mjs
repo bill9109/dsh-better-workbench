@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { readFile } from 'node:fs/promises'
+import { readFile, readdir } from 'node:fs/promises'
 import ts from 'typescript'
 
 const root = new URL('../examples/design-board/src/client/', import.meta.url)
@@ -7,6 +7,20 @@ const boardText = await readFile(new URL('DesignBoard.tsx', root), 'utf8')
 const board = ts.createSourceFile('DesignBoard.tsx', boardText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX)
 const declarations = board.statements.filter(ts.isVariableStatement).flatMap(statement => statement.declarationList.declarations)
 const icons = declarations.find(declaration => declaration.name.getText(board) === 'ICON_GROUPS').initializer
+const primitivesRoot = new URL('../node_modules/@deepseek-ai/dsh-client-ui-primitives/lib/types/', import.meta.url)
+const exportNames = new Set()
+const walk = async dir => {
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const url = new URL(entry.name + (entry.isDirectory() ? '/' : ''), dir)
+    if (entry.isDirectory()) { await walk(url); continue }
+    if (!entry.name.endsWith('.d.ts')) continue
+    const text = await readFile(url, 'utf8')
+    for (const match of text.matchAll(/export (?:declare )?(?:const|function|class) ([A-Za-z0-9_$]+)/g)) exportNames.add(match[1])
+    for (const match of text.matchAll(/export \{ ([^}]+) \}/g)) for (const name of match[1].split(',')) exportNames.add(name.trim().split(' as ').pop().trim())
+    for (const match of text.matchAll(/export type \{ ([^}]+) \}/g)) for (const name of match[1].split(',')) exportNames.add(name.trim().split(' as ').pop().trim())
+  }
+}
+await walk(primitivesRoot)
 const seen = new Set()
 for (const group of icons.elements) {
   const items = group.properties.find(property => property.name?.getText(board) === 'icons').initializer
@@ -17,11 +31,11 @@ for (const group of icons.elements) {
     assert.equal(seen.has(name), false, 'Duplicate icon: ' + name)
     seen.add(name)
     assert.equal(fields.icon.getText(board), name, 'Export must match rendered icon')
-    const nativeHeight = Number(name.match(/(\d+)$/)?.[1])
-    assert.equal(size, nativeHeight, name + ' must render at its native height')
+    assert.ok(Number.isInteger(size) && size > 0, name + ' must declare a positive render size')
+    assert.ok(exportNames.has(name), name + ' must be exported by @deepseek-ai/dsh-client-ui-primitives')
   }
 }
-assert.equal(seen.size, 74)
+assert.equal(seen.size, 67)
 assert.ok(boardText.includes('<IconGallery groups={ICON_GROUPS}'))
 assert.ok(boardText.includes('<ComponentGallery />'))
 assert.ok(!boardText.includes('function Primitives(') && !boardText.includes('function Icons('))

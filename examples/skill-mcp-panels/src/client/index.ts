@@ -330,7 +330,7 @@ const en = {
 // 客户端生成 Remote 只要求 codec.mode === "strict" 且调用 schema.parse()；
 // schema 用 parse 直通即可（严格校验由服务端 manifest 承担，无需 zod 依赖）。
 const identity = (value) => value;
-const codec = (symbol) => ({ mode: "strict", typeSymbol: symbol, schema: { parse: identity } });
+const codec = (symbol) => ({ mode: "strict", typeSymbol: symbol, create: () => ({ parse: identity }) });
 
 const CONTRIBUTION = {
 	package: "dsh-skill-mcp-panel",
@@ -1137,7 +1137,7 @@ function SkillsSection(props) {
 				},
 				children: [(0, react_jsx_runtime.jsx)("span", {
 					className: c.cardLeading,
-					children: (0, react_jsx_runtime.jsx)(primitives.IconSkillOutline16, { size: 14 })
+					children: (0, react_jsx_runtime.jsx)(primitives.IconSkillOutlineRegular, { size: 14 })
 				}), (0, react_jsx_runtime.jsx)("strong", {
 					className: c.cardTitle,
 					"data-disabled": enabled ? void 0 : "true",
@@ -1153,7 +1153,7 @@ function SkillsSection(props) {
 						className: c.configTag,
 						"data-enabled": enabled ? "true" : "false",
 						children: enabled ? t("enabledTag") : t("disabledTag")
-					}), (0, react_jsx_runtime.jsx)(primitives.IconChevronDownOutline14, {
+					}), (0, react_jsx_runtime.jsx)(primitives.IconChevronDownOutlineRegular, {
 						className: c.chevron,
 						size: 12,
 						"aria-hidden": "true"
@@ -1234,7 +1234,7 @@ function SkillsSection(props) {
 			onClick: () => {
 				toggleCollapsed(folder.path);
 			},
-			children: [(0, react_jsx_runtime.jsx)(primitives.IconChevronDownOutline14, {
+			children: [(0, react_jsx_runtime.jsx)(primitives.IconChevronDownOutlineRegular, {
 				className: collapsed.has(folder.path) ? c.treeChevron : c.treeChevronOpen,
 				size: 12,
 				"aria-hidden": "true"
@@ -1326,7 +1326,7 @@ function SkillsSection(props) {
 					children: [(0, react_jsx_runtime.jsx)("span", {
 						className: c.searchIcon,
 						"aria-hidden": "true",
-						children: (0, react_jsx_runtime.jsx)(primitives.IconSearchOutline16, {})
+						children: (0, react_jsx_runtime.jsx)(primitives.IconSearchOutlineRegular, {})
 					}), (0, react_jsx_runtime.jsx)("input", {
 						type: "search",
 						className: c.searchField,

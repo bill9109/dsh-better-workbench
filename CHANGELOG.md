@@ -13,6 +13,10 @@ All notable user-facing changes to dsh-better-workbench and its bundled examples
 ### Changed
 
 - Require `@deepseek-ai/dsh-client-ui-input-trigger` and raise `@deepseek-ai/dsh-client-ui-primitives` to `0.1.5-alpha.2`.
+- Support the DSH 0.1.7 size-neutral product icons: the workbench, the built-in **网页** application, the design board and the Skills + MCP panels example now import the `Icon*Regular` exports and pass an explicit `size` where the old name implied 14px. Raise `@deepseek-ai/dsh-client-ui-primitives` to `^0.1.7-alpha.1` and `@deepseek-ai/cordis` to `^4.0.3`.
+- Adapt to the 0.1.7 component contracts: `TerminalBlockLabels` now requires `noExitCode`, and `ConnectionIndicator` no longer accepts `reconnectLabel`.
+- Declare the `create()` schema factory that DSH 0.1.7 requires on every strict typert codec of the Skills + MCP panels example.
+- Show each size-neutral icon once in the design-board icon library instead of a duplicated compact entry.
 
 ## [0.3.2] - 2026-09-10
 

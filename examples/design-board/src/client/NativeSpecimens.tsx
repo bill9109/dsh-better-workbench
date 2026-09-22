@@ -1,6 +1,14 @@
 import { useId, useState, type ButtonHTMLAttributes, type ComponentType, type ReactNode } from 'react'
 import * as Primitives from '@deepseek-ai/dsh-client-ui-primitives'
-import { Button, Input, Pill, Tooltip, IconCopyOutline16, IconBrowseOutline16, IconPlusOutline16 } from '@deepseek-ai/dsh-client-ui-primitives'
+import {
+  Button,
+  Input,
+  Pill,
+  Tooltip,
+  IconCopyOutlineRegular,
+  IconBrowseOutlineRegular,
+  IconPlusOutlineRegular,
+} from '@deepseek-ai/dsh-client-ui-primitives'
 import { Specimen, type Notice } from './GallerySpecimen.js'
 
 // Optional exports keep the board usable on older hosts without cloning their UI.
@@ -15,9 +23,12 @@ export function PresetCardSpecimen({ notify }: { notify: Notice }) {
     { id: 'coding', title: '编码助手', description: '代码分析、实现与验证。', badge: '内置' },
     { id: 'review', title: '代码审阅', description: '检查行为回归、接口约束和测试覆盖。', badge: '自定义' },
   ]
-  const footer = (title: string) => <><Tooltip label={'查看 ' + title}><span><Button size="sm" aria-label={'查看 ' + title} onClick={() => notify(title + ' · 查看示例')}><IconBrowseOutline16 /></Button></span></Tooltip><Tooltip label={'复制 ' + title}><span><Button size="sm" aria-label={'复制 ' + title} onClick={() => notify(title + ' · 复制示例')}><IconCopyOutline16 /></Button></span></Tooltip></>
+  const footer = (title: string) => <><Tooltip label={'查看 ' + title}><span><Button size="sm" aria-label={'查看 ' + title} onClick={() => notify(title + ' · 查看示例')}><IconBrowseOutlineRegular /></Button></span></Tooltip><Tooltip label={'复制 ' + title}><span><Button size="sm" aria-label={'复制 ' + title} onClick={() => notify(title + ' · 复制示例')}><IconCopyOutlineRegular /></Button></span></Tooltip></>
   return <Specimen title="实体选择卡片" name="SelectableCard" metrics={['AgentPresetSection', '主区选择 / 底部独立操作', 'pressed / disabled / broken', 'r20 · 原生规格']} notify={notify}
-    sample={`import { SelectableCard, Button } from "@deepseek-ai/dsh-client-ui-primitives"
+    sample={`import {
+  SelectableCard,
+  Button,
+} from "@deepseek-ai/dsh-client-ui-primitives"
 
 <SelectableCard title={name} description={description} metadata={id}
   pressed={isDefault} disabled={isDefault} broken={Boolean(error)}
@@ -43,12 +54,12 @@ export function CollectionActionSpecimen({ notify }: { notify: Notice }) {
   const [items, setItems] = useState<string[]>([])
   const field = useId()
   const source = 'ui-settings-models / ModelsSection'
-  return <Specimen title="集合扩展入口" name="CollectionAddButton" metrics={['44px · r16', '虚线边框', '图标 + 标签', source]} notify={notify} sample={'import { CollectionAddButton, IconPlusOutline16 } from "@deepseek-ai/dsh-client-ui-primitives"\n\n<CollectionAddButton disabled={!writable} onClick={openProviderForm}>\n  <IconPlusOutline16 size={14} />添加提供方\n</CollectionAddButton>'}>
+  return <Specimen title="集合扩展入口" name="CollectionAddButton" metrics={['44px · r16', '虚线边框', '图标 + 标签', source]} notify={notify} sample={'import { CollectionAddButton, IconPlusOutlineRegular } from "@deepseek-ai/dsh-client-ui-primitives"\n\n<CollectionAddButton disabled={!writable} onClick={openProviderForm}>\n  <IconPlusOutlineRegular size={14} />添加提供方\n</CollectionAddButton>'}>
     {!CollectionAddButton ? <div className="dsh-cg-unavailable" role="status">宿主未提供 CollectionAddButton</div> : <>
       <div className="dsh-native-label"><strong>提供方列表末尾</strong><span>并列入口 · 等宽 · 空间不足时换行</span></div>
       <div className="dsh-native-provider-actions">
-        <CollectionAddButton onClick={() => { setAdding('known'); setName('') }}><IconPlusOutline16 size={14} />添加提供方</CollectionAddButton>
-        <CollectionAddButton onClick={() => { setAdding('custom'); setName('') }}><IconPlusOutline16 size={14} />添加自定义提供方</CollectionAddButton>
+        <CollectionAddButton onClick={() => { setAdding('known'); setName('') }}><IconPlusOutlineRegular size={14} />添加提供方</CollectionAddButton>
+        <CollectionAddButton onClick={() => { setAdding('custom'); setName('') }}><IconPlusOutlineRegular size={14} />添加自定义提供方</CollectionAddButton>
       </div>
       {adding && <form className="dsh-native-inline-form" onSubmit={event => { event.preventDefault(); if (!name.trim()) return; setItems(value => [...value, name.trim()]); setAdding(null); notify('示例提供方已添加') }}>
         <label htmlFor={field}>{adding === 'known' ? '提供方名称' : '自定义提供方名称'}</label><Input id={field} value={name} onChange={event => setName(event.target.value)} autoFocus required maxLength={64} />
@@ -56,9 +67,9 @@ export function CollectionActionSpecimen({ notify }: { notify: Notice }) {
       </form>}
       <div className="dsh-cg-result" role="status"><span>本地示例</span><strong>{items.length ? items.join(' / ') : '尚未添加'}</strong></div>
       <div className="dsh-native-state-grid">
-        <div><small>默认</small><CollectionAddButton onClick={() => notify('默认入口已触发')}><IconPlusOutline16 size={14} />添加提供方</CollectionAddButton></div>
-        <div><small>禁用 / 无可用提供方</small><CollectionAddButton disabled><IconPlusOutline16 size={14} />添加提供方</CollectionAddButton></div>
-        <div><small>长标签</small><CollectionAddButton onClick={() => notify('长标签入口已触发')}><IconPlusOutline16 size={14} />添加兼容 OpenAI 协议的提供方</CollectionAddButton></div>
+        <div><small>默认</small><CollectionAddButton onClick={() => notify('默认入口已触发')}><IconPlusOutlineRegular size={14} />添加提供方</CollectionAddButton></div>
+        <div><small>禁用 / 无可用提供方</small><CollectionAddButton disabled><IconPlusOutlineRegular size={14} />添加提供方</CollectionAddButton></div>
+        <div><small>长标签</small><CollectionAddButton onClick={() => notify('长标签入口已触发')}><IconPlusOutlineRegular size={14} />添加兼容 OpenAI 协议的提供方</CollectionAddButton></div>
       </div>
     </>}
     <dl className="dsh-native-contract"><div><dt>语义</dt><dd>向集合新增一个实体的占位入口</dd></div><div><dt>结构</dt><dd>原生 button / 可选图标 / 标签</dd></div><div><dt>组件负责</dt><dd>边界、尺寸、hover、focus、disabled</dd></div><div><dt>页面负责</dt><dd>等宽分组、换行、新增表单与业务校验</dd></div></dl>

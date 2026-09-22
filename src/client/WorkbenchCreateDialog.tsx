@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, IconChevronLeftOutline14, IconChevronRightOutline14, IconPersonalizationOutline16, IconLoadingOutline16, Input, Modal, Tooltip } from '@deepseek-ai/dsh-client-ui-primitives'
+import { Button, IconChevronLeftOutlineRegular, IconChevronRightOutlineRegular, IconPersonalizationOutlineRegular, IconLoadingOutlineRegular, Input, Modal, Tooltip } from '@deepseek-ai/dsh-client-ui-primitives'
 import { WorkbenchAppIcon } from './WorkbenchIcon.tsx'
 import { openWorkbench } from './open-workbench.ts'
 import { WEBSITE_APP_ID } from './website.ts'
@@ -113,10 +113,10 @@ export function WorkbenchCreateDialog({ service, snapshot }: { service: Workbenc
   return <Modal open title={draft ? draft.choice.title : '创建工作台'} closeLabel="关闭" onClose={close}
     className="dsh-better-workbench-create-dialog" contentClassName="dsh-better-workbench-create-content"
     footer={<>
-      {draft && <Tooltip label="返回模板"><button type="button" className="dsh-better-workbench-frame-button" aria-label="返回模板" disabled={busy} onClick={() => { setDraft(null); setError(null); setHandoff(null) }}><IconChevronLeftOutline14 /></button></Tooltip>}
+      {draft && <Tooltip label="返回模板"><button type="button" className="dsh-better-workbench-frame-button" aria-label="返回模板" disabled={busy} onClick={() => { setDraft(null); setError(null); setHandoff(null) }}><IconChevronLeftOutlineRegular size={14} /></button></Tooltip>}
       <span className="dsh-better-workbench-create-spacer" />
       {snapshot.creation.status === 'creating' ? <Button variant="outline" onClick={cancelWaiting}>取消等待</Button> : <Button variant="outline" disabled={busy} onClick={close}>{handoff ? '完成' : '取消'}</Button>}
-      {draft && !handoff && <Button variant="primary" disabled={busy || !isCurrent || (draft.app !== undefined && (!draft.title.trim() || validation !== null))} onClick={() => { void submit() }} icon={pending ? <IconLoadingOutline16 /> : undefined}>{pending ? '正在创建...' : draft.app ? '创建并打开' : '开始创建'}</Button>}
+      {draft && !handoff && <Button variant="primary" disabled={busy || !isCurrent || (draft.app !== undefined && (!draft.title.trim() || validation !== null))} onClick={() => { void submit() }} icon={pending ? <IconLoadingOutlineRegular /> : undefined}>{pending ? '正在创建...' : draft.app ? '创建并打开' : '开始创建'}</Button>}
     </>}>
     {draft === null ? <>
       <input type="search" className="dsh-better-workbench-create-search" placeholder="搜索模板或应用" aria-label="搜索模板或应用" value={query} onChange={event => setQuery(event.target.value)} />
@@ -125,10 +125,10 @@ export function WorkbenchCreateDialog({ service, snapshot }: { service: Workbenc
           const existing = existingFor(choice)
           const app = choice.appId ? service.getApp(choice.appId) : undefined
           return <button type="button" key={choice.key} className="dsh-better-workbench-create-choice" disabled={busy || !choice.available} onClick={() => choose(choice)}>
-            {app?.renderIcon ? <WorkbenchAppIcon renderer={app.renderIcon} instance={existing} className="dsh-better-workbench-create-choice-icon" /> : <IconPersonalizationOutline16 />}
+            {app?.renderIcon ? <WorkbenchAppIcon renderer={app.renderIcon} instance={existing} className="dsh-better-workbench-create-choice-icon" /> : <IconPersonalizationOutlineRegular />}
             <span className="dsh-better-workbench-create-choice-label">{choice.title}</span>
             <span className="dsh-better-workbench-create-choice-kind">{!choice.available ? '暂不可用' : existing ? '打开已有' : choice.template?.kind === 'agent' ? 'Agent' : choice.template ? '模板' : '应用'}</span>
-            <IconChevronRightOutline14 />
+            <IconChevronRightOutlineRegular size={14} />
           </button>
         })}
       </div>

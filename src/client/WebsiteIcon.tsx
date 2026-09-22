@@ -1,5 +1,5 @@
 import { useId, useState } from 'react'
-import { IconGlobeOutline14 } from '@deepseek-ai/dsh-client-ui-primitives'
+import { IconGlobeOutlineRegular } from '@deepseek-ai/dsh-client-ui-primitives'
 
 export interface WebsiteIconProps {
   url?: string
@@ -24,7 +24,7 @@ function Favicon({ src, size }: { src: string; size: number }): JSX.Element {
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading')
   return (
     <>
-      {state !== 'ready' && <IconGlobeOutline14 size={size} />}
+      {state !== 'ready' && <IconGlobeOutlineRegular size={size} />}
       {state !== 'error' && (
         <>
           <svg width="0" height="0" aria-hidden="true" focusable="false" style={{ position: 'absolute', pointerEvents: 'none' }}>
@@ -67,7 +67,7 @@ export function WebsiteIcon({ url, faviconUrl, size = 16, className }: WebsiteIc
       data-dsh-website-icon=""
       style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flex: 'none', width: edge, height: edge, lineHeight: 0, verticalAlign: 'middle' }}
     >
-      {src ? <Favicon key={src} src={src} size={edge} /> : <IconGlobeOutline14 size={edge} />}
+      {src ? <Favicon key={src} src={src} size={edge} /> : <IconGlobeOutlineRegular size={edge} />}
     </span>
   )
 }

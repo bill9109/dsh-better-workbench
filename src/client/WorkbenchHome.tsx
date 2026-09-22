@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, IconPlusOutline16 } from '@deepseek-ai/dsh-client-ui-primitives'
+import { Button, IconPlusOutlineRegular } from '@deepseek-ai/dsh-client-ui-primitives'
 import { WorkbenchCreateDialog } from './WorkbenchCreateDialog.tsx'
 import { WorkbenchAppIcon } from './WorkbenchIcon.tsx'
 import { openWorkbench } from './open-workbench.ts'
@@ -36,7 +36,7 @@ export function WorkbenchHome({ service, snapshot }: WorkbenchHomeProps): JSX.El
       <div className="dsh-better-workbench-home-actions">
         <button type="button" className="dsh-better-workbench-home-add-button" aria-haspopup="dialog" aria-expanded={creating}
           disabled={snapshot.loading} onClick={() => service.openHome(true)}>
-          <IconPlusOutline16 size={14} />
+          <IconPlusOutlineRegular size={14} />
           <span>创建工作台</span>
         </button>
       </div>
@@ -53,7 +53,7 @@ export function WorkbenchHome({ service, snapshot }: WorkbenchHomeProps): JSX.El
       <div className="dsh-better-workbench-home-section-heading"><h2>已有工作台</h2><span>{snapshot.instances.length} 个工作台</span></div>
       {!snapshot.loading && snapshot.instances.length === 0 ? <div className="dsh-better-workbench-home-empty">
         <strong>还没有工作台</strong>
-        <Button variant="outline" icon={<IconPlusOutline16 />} onClick={() => service.openHome(true)}>创建工作台</Button>
+        <Button variant="outline" icon={<IconPlusOutlineRegular />} onClick={() => service.openHome(true)}>创建工作台</Button>
       </div> : <div className="dsh-better-workbench-home-grid dsh-better-workbench-home-instance-grid">
         {snapshot.instances.map(instance => {
           const app = service.getApp(instance.appId)

@@ -6,3 +6,7 @@ linkWorkspacePackages: true
 
 minimumReleaseAgeExclude:
   - '@deepseek-ai/dsh-client-ui-primitives@0.1.2-alpha.5'
+  - '@deepseek-ai/cordis@4.0.3'
+  - '@deepseek-ai/cosmokit@1.8.4'
+  - '@deepseek-ai/dsh-client-ui-input-trigger@0.1.7-alpha.1'
+  - '@deepseek-ai/dsh-client-ui-primitives@0.1.7-alpha.1'

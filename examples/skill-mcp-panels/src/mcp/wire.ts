@@ -94,7 +94,7 @@ export const MCP_MANIFEST = {
       method: "list",
       invocation: { kind: "direct" },
       parameters: [],
-      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpListResult", schema: mcpListResultSchema }
+      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpListResult", create: () => mcpListResultSchema }
     },
     {
       id: "dsh-skill-mcp-panel#mcpManager/save",
@@ -103,9 +103,9 @@ export const MCP_MANIFEST = {
       method: "save",
       invocation: { kind: "direct" },
       parameters: [
-        { name: "payload", wire: "payload", source: "json", codec: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpSavePayload", schema: mcpSavePayloadSchema } }
+        { name: "payload", wire: "payload", source: "json", codec: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpSavePayload", create: () => mcpSavePayloadSchema } }
       ],
-      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpSaveResult", schema: mcpSaveResultSchema }
+      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpSaveResult", create: () => mcpSaveResultSchema }
     },
     {
       id: "dsh-skill-mcp-panel#mcpManager/removeServer",
@@ -114,9 +114,9 @@ export const MCP_MANIFEST = {
       method: "removeServer",
       invocation: { kind: "direct" },
       parameters: [
-        { name: "payload", wire: "payload", source: "json", codec: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpRemovePayload", schema: mcpRemovePayloadSchema } }
+        { name: "payload", wire: "payload", source: "json", codec: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpRemovePayload", create: () => mcpRemovePayloadSchema } }
       ],
-      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpRemoveResult", schema: mcpRemoveResultSchema }
+      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpRemoveResult", create: () => mcpRemoveResultSchema }
     },
     {
       id: "dsh-skill-mcp-panel#mcpManager/setEnabled",
@@ -125,9 +125,9 @@ export const MCP_MANIFEST = {
       method: "setEnabled",
       invocation: { kind: "direct" },
       parameters: [
-        { name: "payload", wire: "payload", source: "json", codec: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpSetEnabledPayload", schema: mcpSetEnabledPayloadSchema } }
+        { name: "payload", wire: "payload", source: "json", codec: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpSetEnabledPayload", create: () => mcpSetEnabledPayloadSchema } }
       ],
-      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpSaveResult", schema: mcpSaveResultSchema }
+      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpSaveResult", create: () => mcpSaveResultSchema }
     },
     {
       id: "dsh-skill-mcp-panel#mcpManager/test",
@@ -136,9 +136,9 @@ export const MCP_MANIFEST = {
       method: "test",
       invocation: { kind: "direct" },
       parameters: [
-        { name: "payload", wire: "payload", source: "json", codec: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpTestPayload", schema: mcpTestPayloadSchema } }
+        { name: "payload", wire: "payload", source: "json", codec: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpTestPayload", create: () => mcpTestPayloadSchema } }
       ],
-      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpTestResult", schema: mcpTestResultSchema }
+      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpTestResult", create: () => mcpTestResultSchema }
     },
     {
       id: "dsh-skill-mcp-panel#mcpManager/reload",
@@ -147,7 +147,7 @@ export const MCP_MANIFEST = {
       method: "reload",
       invocation: { kind: "direct" },
       parameters: [],
-      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpListResult", schema: mcpListResultSchema }
+      result: { mode: "strict", typeSymbol: "dsh-skill-mcp-panel#McpListResult", create: () => mcpListResultSchema }
     }
   ],
   model: { services: [], events: [], objects: [] }
