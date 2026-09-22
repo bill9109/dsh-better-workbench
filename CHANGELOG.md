@@ -4,6 +4,8 @@ All notable user-facing changes to dsh-better-workbench and its bundled examples
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-22
+
 ### Added
 
 - Built-in **网页** Workbench application and its **从网页地址创建** template: strict HTTP(S) URL configuration, an embedded view with explicit origin-bound trust, an external-browser fallback, favicon-derived instance icons and per-instance settings.
